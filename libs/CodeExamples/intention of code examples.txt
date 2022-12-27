@@ -1,0 +1,7 @@
+These demos may help you get started with DanoGameLab. Each file contains a separate example with varying degrees of complexity.
+
+Each file is entirely self-contained, meaning that using an IDE open with your own project you can copy any of the files to your project and execute its main as is, without getting any exception regarding missing files (as long as the project already defines a dependency on DanoGameLab). 
+
+The downside of having these examples self-contained is:
+1) They don't rely on any assets (sounds/images). That's not a good example of how to use the library, as using nice assets is very simple and really enhances your game.
+2) They're not a good example of readability, as some of them contain multiple large classes in the same file.

@@ -1,0 +1,9 @@
+© 2016 Dan Nirel.  All rights reserved.
+
+The exception to the above is that you may make games/apps using the engine, and distribute the COMPILED product in any way you want, including commercially, as long as you attribute.
+Attribution may either be made by using the builtin splashscreen logo, or by including a line in your credits section:
+"this work was made using the DanoGameLab library by Dan Nirel".
+
+Do not distribute the library's code itself or a variation of it, no matter the terms or intention of the distribution. This is meant to ensure only official channels of distribution exist, thus allowing additions, updates and fixes to reach all users.
+
+The logo itself is also protected, and all rights are reserved to the author. It can be displayed as part of your application but may not be altered or derived from.
