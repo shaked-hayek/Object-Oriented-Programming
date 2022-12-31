@@ -48,6 +48,6 @@ public class PepseGameManager extends GameManager {
         GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND+1, windowDimensions,30);
         GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND+2, sun,
                 new Color(255, 255,0, 20));
-        sunHalo.addComponent(daltaTime-> {sunHalo.setCenter(sun.getCenter());});
+        sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
     }
 }
