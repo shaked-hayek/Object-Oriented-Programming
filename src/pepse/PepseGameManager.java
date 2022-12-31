@@ -13,6 +13,10 @@ import danogl.util.Vector2;
 import pepse.world.Sky;
 import pepse.world.Terrain;
 import pepse.world.daynight.Night;
+import pepse.world.daynight.Sun;
+import pepse.world.daynight.SunHalo;
+
+import java.awt.*;
 
 
 public class PepseGameManager extends GameManager {
@@ -41,5 +45,9 @@ public class PepseGameManager extends GameManager {
         GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
         Terrain terrain = new Terrain(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions, 0);
         GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, 30);
+        GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND+1, windowDimensions,30);
+        GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND+2, sun,
+                new Color(255, 255,0, 20));
+        sunHalo.addComponent(daltaTime-> {sunHalo.setCenter(sun.getCenter());});
     }
 }
