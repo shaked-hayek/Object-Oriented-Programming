@@ -13,6 +13,7 @@ import danogl.util.Vector2;
 import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
+import pepse.world.daynight.Night;
 
 
 public class PepseGameManager extends GameManager {
@@ -40,5 +41,6 @@ public class PepseGameManager extends GameManager {
 
         GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
         Terrain terrain = new Terrain(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions, 0);
+        Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, 30);
     }
 }
