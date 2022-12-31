@@ -4,13 +4,12 @@ import danogl.GameManager;
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
+import danogl.components.Transition;
 import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
-import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
-import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
 import pepse.world.daynight.Night;
@@ -41,6 +40,6 @@ public class PepseGameManager extends GameManager {
 
         GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
         Terrain terrain = new Terrain(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions, 0);
-        Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, 30);
+        GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, 30);
     }
 }
