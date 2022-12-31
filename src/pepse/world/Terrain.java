@@ -12,6 +12,9 @@ import java.util.Random;
 
 
 public class Terrain {
+    /**
+     * needs to be added to every value of ground. this way, ground will always be covered by 20+
+     */
     private static final int TERRAIN_DEPTH = 20;
     private final float groundHeightAtX0;
     private final int seed;
