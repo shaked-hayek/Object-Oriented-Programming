@@ -15,6 +15,7 @@ import java.awt.*;
 public class Sun {
     private static final float MIDNIGHT = 0.5f; //todo:change
 
+
     private static Vector2 calcSunPosition(Vector2 windowDimensions,
                                            float angleInSky){
         return Vector2.ZERO; //todo: change
@@ -26,14 +27,14 @@ public class Sun {
             Vector2 windowDimensions,
             float cycleLength){
         Renderable sunCircle = new OvalRenderable(ColorSupplier.approximateColor(Color.YELLOW));
-        GameObject sun = new GameObject(Vector2.ZERO,windowDimensions, sunCircle);
+        GameObject sun = new GameObject(Vector2.ZERO,new Vector2(100,100), sunCircle);
         sun.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         gameObjects.addGameObject(sun, layer);
         sun.setTag("sun");
-        Transition<Float> transition = new Transition<>(sun,
-                sun.renderer()::setOpaqueness /**todo: change */,
-                0f, MIDNIGHT, Transition.LINEAR_INTERPOLATOR_FLOAT, cycleLength,
-                Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
+//        Transition<Float> transition = new Transition<>(sun,
+//                sun.renderer()::setOpaqueness /**todo: change */,
+//                0f, MIDNIGHT, Transition.LINEAR_INTERPOLATOR_FLOAT, cycleLength,
+//                Transition.TransitionType.TRANSITION_BACK_AND_FORTH, null);
         return sun;
     }
 }
