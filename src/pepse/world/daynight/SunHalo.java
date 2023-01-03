@@ -17,7 +17,6 @@ public class SunHalo {
             int layer,
             GameObject sun,
             Color color){
-//        Renderable haloCircle = new OvalRenderable(ColorSupplier.approximateColor(color));
         Renderable haloCircle = new OvalRenderable(color);
 //        GameObject halo = new GameObject(Vector2.ZERO, new Vector2(150,150), haloCircle);
         GameObject halo = new GameObject(Vector2.ZERO, sun.getDimensions().add(new Vector2(30,30)),

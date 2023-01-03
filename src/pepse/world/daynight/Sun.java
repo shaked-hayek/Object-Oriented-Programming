@@ -28,6 +28,7 @@ public class Sun {
             float cycleLength){
         Renderable sunCircle = new OvalRenderable(ColorSupplier.approximateColor(Color.YELLOW));
         GameObject sun = new GameObject(Vector2.ZERO,new Vector2(100,100), sunCircle);
+        sun.setCenter(new Vector2(windowDimensions.x()/2, 100));
         sun.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         gameObjects.addGameObject(sun, layer);
         sun.setTag("sun");
