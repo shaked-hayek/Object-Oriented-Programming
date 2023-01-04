@@ -26,6 +26,8 @@ public class PepseGameManager extends GameManager {
     private Vector2 windowDimensions;
     private UserInputListener inputListener;
     private GameObjectCollection gameObjectCollection;
+    private static final int CYCLE_LENGTH = 30;
+    private static final Color HALO_COLOR = new Color(255, 255,0, 20);
 
     public static void main(String[] args) {
         new PepseGameManager().run();
@@ -44,10 +46,9 @@ public class PepseGameManager extends GameManager {
 
         GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
         Terrain terrain = new Terrain(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions, 0);
-        GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, 30);
-        GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND+1, windowDimensions,30);
-        GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND+2, sun,
-                new Color(255, 255,0, 20));
+        GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, CYCLE_LENGTH);
+        GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + 1, windowDimensions,CYCLE_LENGTH);
+        GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + 2, sun, HALO_COLOR);
 //        GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND+2, sun,
 //                Color.BLACK);
         sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});

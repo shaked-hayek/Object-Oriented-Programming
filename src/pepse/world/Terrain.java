@@ -21,6 +21,7 @@ public class Terrain {
     private final Vector2 windowDimensions;
     private GameObjectCollection gameObjects;
     private final int groundLayer;
+    private static final String tagName = "ground";
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
     private static final float GROUND_START_HEIGHT = (float) 2 / 3;
 
@@ -52,7 +53,7 @@ public class Terrain {
             Block block = new Block(new Vector2(currMin, windowDimensions.y()-30), blockRender);
             block.setTopLeftCorner(new Vector2(currMin, windowDimensions.y()-30));
             gameObjects.addGameObject(block, groundLayer);
-            block.setTag("ground");
+            block.setTag(tagName);
             currMin+=blockRand;
             if (maxXFixed-currMin <= Block.SIZE){ //added because otherwise get stuck
                 break;
@@ -61,7 +62,7 @@ public class Terrain {
         Block block = new Block(new Vector2(currMin, windowDimensions.y()-30), blockRender);
         block.setTopLeftCorner(new Vector2(currMin, windowDimensions.y()-30));
         gameObjects.addGameObject(block, groundLayer);
-        block.setTag("ground"); //added in case not all full, not a problem to fill extra
+        block.setTag(tagName); //added in case not all full, not a problem to fill extra
 
 //        Block block = new Block(Vector2.ZERO, blockRender);
 //        Block block = new Block(new Vector2(0, windowDimensions.y()-30), blockRender);
