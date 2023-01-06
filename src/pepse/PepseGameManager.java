@@ -44,13 +44,18 @@ public class PepseGameManager extends GameManager {
         this.inputListener = inputListener;
         this.gameObjectCollection = gameObjects();
 
+        // Create world
         GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
         Terrain terrain = new Terrain(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions, 0);
         GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, CYCLE_LENGTH);
         GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + 1, windowDimensions,CYCLE_LENGTH);
         GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + 2, sun, HALO_COLOR);
-//        GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND+2, sun,
-//                Color.BLACK);
         sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
+
+        // Create avatar
+        Avatar avatar = Avatar.create(gameObjectCollection, Layer.DEFAULT,
+        new Vector2(windowDimensions.x() / 2, 0), // TO change?
+        inputListener,
+        imageReader);
     }
 }
