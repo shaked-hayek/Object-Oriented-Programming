@@ -54,9 +54,8 @@ public class PepseGameManager extends GameManager {
         sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
 
         // Create avatar
+        float avatarLeftCorr = (float) (Block.SIZE * (Math.floor((windowDimensions.x() / 2) / Block.SIZE)));
         Avatar avatar = Avatar.create(gameObjectCollection, Layer.DEFAULT,
-        new Vector2(windowDimensions.x() / 2, 0), // TO change?
-        inputListener,
-        imageReader);
+                new Vector2(avatarLeftCorr, 0), inputListener, imageReader);
     }
 }
