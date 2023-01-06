@@ -4,6 +4,7 @@ import danogl.GameManager;
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
+import danogl.components.Transition;
 import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
@@ -15,6 +16,7 @@ import pepse.world.Terrain;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
+import pepse.world.trees.Tree;
 
 import java.awt.Color;
 
@@ -51,6 +53,9 @@ public class PepseGameManager extends GameManager {
         GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + 1, windowDimensions,CYCLE_LENGTH);
         GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + 2, sun, HALO_COLOR);
         sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
+        Tree tree = new Tree(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions,
+                terrain::groundHeightAt);
+        tree.createInRange(0, (int)windowDimensions.x());
 
         // Create avatar
         Avatar avatar = Avatar.create(gameObjectCollection, Layer.DEFAULT,
