@@ -4,19 +4,19 @@ import danogl.GameManager;
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
-import danogl.components.Transition;
 import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
 import danogl.util.Vector2;
+import pepse.world.Avatar;
 import pepse.world.Sky;
 import pepse.world.Terrain;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
 
-import java.awt.*;
+import java.awt.Color;
 
 
 public class PepseGameManager extends GameManager {

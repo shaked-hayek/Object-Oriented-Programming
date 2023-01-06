@@ -10,7 +10,7 @@ import danogl.util.Vector2;
 import java.awt.Color;
 
 public class SunHalo {
-    private static final String tagName = "sun halo";
+    private static final String TAG_NAME = "sun halo";
     private static final int HALO_SIZE = 70;
 
     public static GameObject create(
@@ -27,14 +27,7 @@ public class SunHalo {
         halo.setCenter(sun.getCenter());
         halo.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         gameObjects.addGameObject(halo, layer);
-        halo.setTag(tagName);
+        halo.setTag(TAG_NAME);
         return halo;
     }
-
-//    @FunctionalInterface
-//    public interface Component {
-//        void update(float deltaTime);
-//
-//    }
-
 }

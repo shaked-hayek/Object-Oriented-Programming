@@ -19,7 +19,7 @@ public class Terrain {
     private final int seed;
     private GameObjectCollection gameObjects;
     private final int groundLayer;
-    private static final String tagName = "ground";
+    private static final String TAG_NAME = "ground";
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
     private static final float GROUND_START_HEIGHT = (float) 2 / 3;
     private static final int GROUND_SPREAD = 15;
@@ -52,7 +52,7 @@ public class Terrain {
                         blockRender
                 );
                 gameObjects.addGameObject(block, groundLayer);
-                block.setTag(tagName);
+                block.setTag(TAG_NAME);
             }
         }
     }

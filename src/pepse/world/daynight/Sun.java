@@ -15,7 +15,7 @@ public class Sun {
     private static final int SUN_SIZE = 100;
     private static final float FINAL_ANGLE = 360;
     private static final float SUN_Y_RELATIVE_LOCATION = (float) 1.5;
-    private static final String tagName = "sun";
+    private static final String TAG_NAME = "sun";
 
     private static Vector2 calcSunPosition(Vector2 windowDimensions, float angleInSky){
         Vector2 rotatedVector = Vector2.UP.mult(windowDimensions.y() / 2).rotated(angleInSky);
@@ -38,7 +38,7 @@ public class Sun {
         );
         sun.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         gameObjects.addGameObject(sun, layer);
-        sun.setTag(tagName);
+        sun.setTag(TAG_NAME);
         Transition<Float> transition = new Transition<>(
                 sun,
                 angle -> sun.setCenter(calcSunPosition(windowDimensions, angle)),

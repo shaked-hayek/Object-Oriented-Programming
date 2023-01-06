@@ -13,7 +13,7 @@ import java.awt.Color;
 
 public class Night {
     private static final float MIDNIGHT_OPACITY = 0.5f;
-    private static final String tagName = "night";
+    private static final String TAG_NAME = "night";
 
     public static GameObject create(GameObjectCollection gameObjects,
                                     int layer,
@@ -23,7 +23,7 @@ public class Night {
         GameObject night = new GameObject(Vector2.ZERO, windowDimensions, nightRectRend);
         night.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         gameObjects.addGameObject(night, layer);
-        night.setTag(tagName);
+        night.setTag(TAG_NAME);
         Transition<Float> transition = new Transition<>(
                 night,
                 night.renderer()::setOpaqueness,
