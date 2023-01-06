@@ -3,17 +3,15 @@ package pepse.world.daynight;
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.components.CoordinateSpace;
-import danogl.components.Transition;
 import danogl.gui.rendering.OvalRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
-import pepse.util.ColorSupplier;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class SunHalo {
     private static final String tagName = "sun halo";
-    private static final int HALO_SIZE = 30;
+    private static final int HALO_SIZE = 70;
 
     public static GameObject create(
             GameObjectCollection gameObjects,
@@ -21,7 +19,6 @@ public class SunHalo {
             GameObject sun,
             Color color){
         Renderable haloCircle = new OvalRenderable(color);
-//        GameObject halo = new GameObject(Vector2.ZERO, new Vector2(150,150), haloCircle);
         GameObject halo = new GameObject(
                 Vector2.ZERO,
                 sun.getDimensions().add(new Vector2(HALO_SIZE, HALO_SIZE)),
