@@ -35,15 +35,15 @@ public class Terrain {
         this.groundHeightAtX0 = windowDimensions.y() * GROUND_START_HEIGHT;
         this.seed = seed;
 
-        createInRange(0, 1280);
+        createInRange(0, (int) windowDimensions.x());
     }
 
     public void createInRange(int minX, int maxX) {
         int minXFixed = (int) (Block.SIZE * (Math.floor((double) minX / Block.SIZE)));
         int maxXFixed = (int) (Block.SIZE * (Math.ceil((double) maxX / Block.SIZE)));
 
-        for (int i = minXFixed; i < maxXFixed; i++) {
-            float currentX = minXFixed + (i * Block.SIZE);
+        for (int i = minXFixed; i < maxXFixed; i+=Block.SIZE) {
+            float currentX = i;
             float topY = groundHeightAt(currentX);
             for (int j = 0; j < TERRAIN_DEPTH; j++) {
                 Renderable blockRender = new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR));

@@ -10,6 +10,7 @@ import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
 import danogl.util.Vector2;
 import pepse.world.Avatar;
+import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
 import pepse.world.daynight.Night;
