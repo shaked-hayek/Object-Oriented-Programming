@@ -42,6 +42,9 @@ public class Tree {
 
         //TODO: check if <= or <
         for (int i = minXFixed; i <= maxXFixed; i+=Block.SIZE) {
+            if (i==windowDimensions.x()/2){
+                continue;
+            }
             randToPlant = rand.nextFloat(0,1);
             if (randToPlant<0.15){
                 plant((float) i);
