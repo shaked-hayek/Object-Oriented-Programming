@@ -10,10 +10,7 @@ import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
 import danogl.gui.rendering.Camera;
 import danogl.util.Vector2;
-import pepse.world.Avatar;
-import pepse.world.Block;
-import pepse.world.Sky;
-import pepse.world.Terrain;
+import pepse.world.*;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
@@ -31,7 +28,7 @@ public class PepseGameManager extends GameManager {
     private GameObjectCollection gameObjectCollection;
     private static final int CYCLE_LENGTH = 30;
     private static final int SEED = 2;
-    private static final Color HALO_COLOR = new Color(255, 255,0, 20);
+    private static final Color HALO_COLOR = new Color(255, 255, 0, 20);
     private static float currentMiddleX;
     private static float worldEndRight;
     private static float worldEndLeft;
@@ -60,12 +57,14 @@ public class PepseGameManager extends GameManager {
         GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
         terrain = new Terrain(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions, SEED);
         GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, CYCLE_LENGTH);
-        GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + 1, windowDimensions,CYCLE_LENGTH);
-        GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + 2, sun, HALO_COLOR);
-        sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
+        GameObject sun = Sun.create(gameObjectCollection, Layer.BACKGROUND + 1, windowDimensions, CYCLE_LENGTH);
+        GameObject sunHalo = SunHalo.create(gameObjectCollection, Layer.BACKGROUND + 2, sun, HALO_COLOR);
+        sunHalo.addComponent(deltaTime -> {
+            sunHalo.setCenter(sun.getCenter());
+        });
         Tree tree = new Tree(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions,
                 terrain::groundHeightAt, SEED);
-        tree.createInRange(-Terrain.WORLD_BUFFER, (int)windowDimensions.x() + Terrain.WORLD_BUFFER);
+        tree.createInRange(-Terrain.WORLD_BUFFER, (int) windowDimensions.x() + Terrain.WORLD_BUFFER);
 
         // Create avatar
         float avatarLeftCorr = (float) (Block.SIZE * (Math.floor((windowDimensions.x() / 2) / Block.SIZE)));
@@ -81,6 +80,11 @@ public class PepseGameManager extends GameManager {
         ));
         currentMiddleX = avatar.getCenter().x();
         blocksSideFromAvatar = (int) Math.floor(terrain.getWidthInBlocks() / 2f);
+
+        EnergyText energyText = new EnergyText(new Vector2(40, 40), new Vector2(40, 40));
+        energyText.setTopLeftCorner(Vector2.ZERO);
+        this.gameObjects().addGameObject(energyText, Layer.BACKGROUND + 1);
+
     }
 
     private void createWorldInRange(int minX, int maxX) {
@@ -100,10 +104,10 @@ public class PepseGameManager extends GameManager {
                 int numBlocksRight = (int) (Math.floor((worldEndRight - avatar.getCenter().x()) / Block.SIZE));
                 distToAdd = (blocksSideFromAvatar - numBlocksRight) * Block.SIZE;
                 createWorldInRange((int) worldEndRight, (int) worldEndRight + distToAdd);
-                removeWorldInRange((int) worldEndLeft, (int) worldEndLeft  + distToAdd);
+                removeWorldInRange((int) worldEndLeft, (int) worldEndLeft + distToAdd);
                 worldEndLeft = worldEndLeft + distToAdd;
                 worldEndRight = worldEndRight + distToAdd;
-            // We moved left
+                // We moved left
             } else if (movementSize < -(Terrain.WORLD_BUFFER / 2f)) {
                 int numBlocksLeft = (int) (Math.floor((avatar.getCenter().x() - worldEndLeft) / Block.SIZE));
                 distToAdd = (blocksSideFromAvatar - numBlocksLeft) * Block.SIZE;

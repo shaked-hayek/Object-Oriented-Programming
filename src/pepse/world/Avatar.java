@@ -158,4 +158,8 @@ public class Avatar extends GameObject {
             transform().setVelocityY(0);
         }
     }
+
+    public static double getEnergy() {
+        return energy;
+    }
 }
