@@ -3,37 +3,31 @@ package pepse.world.trees;
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
-import danogl.components.CoordinateSpace;
-import danogl.components.GameObjectPhysics;
 import danogl.components.ScheduledTask;
 import danogl.components.Transition;
 import danogl.gui.rendering.RectangleRenderable;
-import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
 import pepse.world.Block;
+import pepse.world.Terrain;
 
 import java.awt.*;
+import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.Future;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 //
 public class Leaf extends Block {
-    private static final int MOVING_WAIT_TIME_BASE = 25;
-    /**
-     * Factor by which to divide the random wait time for moving transition
-     */
-    private static final float MOVING_WAIT_TIME_DENOMINATOR = 10;
     private static final String LEAF_TAG = "leaf";
     private static final int CYCLE_LENGTH = 5;
     private final Random rand;
     private final GameObjectCollection gameObjects;
     private final Vector2 topLeftCorner;
+//    private final int fadeOutTime;
     private Transition<Float> angleTransition;
     private Transition<Vector2> widthTransition;
     private ScheduledTask scheduledMoveTask;
+    private ScheduledTask scheduledFallTask;
+    private Transition<Float> fallTransition;
 
     public Leaf(GameObjectCollection gameObjects,
                 Vector2 topLeftCorner,
@@ -44,18 +38,24 @@ public class Leaf extends Block {
         this.gameObjects = gameObjects;
         this.topLeftCorner = topLeftCorner;
         this.rand = new Random();
-//        block leaf = new GameObject(Vector2.ZERO, topLeftCorner, super.renderer().getRenderable());
 //        leaf.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         physics().setMass(0);
         gameObjects.addGameObject(this, Layer.BACKGROUND);
         this.setTag(LEAF_TAG);
+
         //add movement to leaves at different time
-        scheduledMoveTask();
+        scheduledTransitionTask();
+
     }
 
+    /**
+     *
+     * @param other any other object
+     * @return false - so no collision will be made with any obj
+     */
     @Override
     public boolean shouldCollideWith(GameObject other) {
-        return false;
+        return Objects.equals(other.getTag(), Terrain.TAG_NAME);
     }
 
     void moveTransition(){
@@ -81,9 +81,29 @@ public class Leaf extends Block {
                 null);
     }
 
-    void scheduledMoveTask (){
-        float waitTime = (rand.nextInt(300))/(float)100;
-        scheduledMoveTask = new ScheduledTask(this, waitTime, false, this::moveTransition);
+    void scheduledTransitionTask(){
+        float waitTimeMove = (rand.nextInt(300))/(float)100;
+        float waitTimeFall = (rand.nextInt(20000))/(float)100;
+        scheduledMoveTask = new ScheduledTask(this, waitTimeMove, false, this::moveTransition);
+        scheduledFallTask = new ScheduledTask(this, waitTimeFall, true, this::fallTransition);
+
+    }
+
+    void fallTransition() {
+
+        this.transform().setVelocityY(60);
+
+        int fadeOutTime = rand.nextInt(120);
+
+        this.fallTransition = new Transition<>(
+                this,
+                this.renderer()::fadeOut,
+                10f,
+                -10f,
+                Transition.LINEAR_INTERPOLATOR_FLOAT,
+                fadeOutTime,
+                Transition.TransitionType.TRANSITION_ONCE,
+                null);
     }
 
 }
