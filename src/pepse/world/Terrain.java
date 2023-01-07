@@ -6,6 +6,7 @@ import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
 import pepse.util.NoiseGenerator;
+import pepse.util.Utils;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -52,8 +53,8 @@ public class Terrain {
     }
 
     public void createInRange(int minX, int maxX) {
-        int minXFixed = (int) (Block.SIZE * (Math.floor((double) minX / Block.SIZE)));
-        int maxXFixed = (int) (Block.SIZE * (Math.ceil((double) maxX / Block.SIZE)));
+        int minXFixed = Utils.getFixedMin(minX);
+        int maxXFixed = Utils.getFixedMax(maxX);
 
         for (int currentX = minXFixed; currentX < maxXFixed; currentX+=Block.SIZE) {
             float topY = groundHeightAt(currentX);
@@ -82,8 +83,8 @@ public class Terrain {
     }
 
     public void removeInRange(int minX, int maxX) {
-        int minXFixed = (int) (Block.SIZE * (Math.floor((double) minX / Block.SIZE)));
-        int maxXFixed = (int) (Block.SIZE * (Math.ceil((double) maxX / Block.SIZE)));
+        int minXFixed = Utils.getFixedMin(minX);
+        int maxXFixed = Utils.getFixedMax(maxX);
 
         for (int currentX = minXFixed; currentX < maxXFixed; currentX+=Block.SIZE) {
             boolean first = true;

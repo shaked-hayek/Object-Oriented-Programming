@@ -5,23 +5,23 @@ import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
+import pepse.util.Utils;
 import pepse.world.Block;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Random;
 import java.util.function.Function;
 
 public class Tree {
     private static final String TREE_TAG = "tree stem";
-    public static Color STEM_COLOR =  new Color(100, 50, 20);
-    public static Color LEAVES_COLOR =  new Color(50, 200, 30);
-    public final float STEM_MIN_SIZE = Block.SIZE;
+    public static final Color STEM_COLOR =  new Color(100, 50, 20);
+    public static final Color LEAVES_COLOR =  new Color(50, 200, 30);
     public final Random rand;
     private final int seed;
-    private GameObjectCollection gameObjects;
-    private int layer;
-    private Vector2 windowDimensions;
-    private Function<Float, Float> groundHeightAt;
+    private final GameObjectCollection gameObjects;
+    private final int layer;
+    private final Vector2 windowDimensions;
+    private final Function<Float, Float> groundHeightAt;
 
     public Tree(GameObjectCollection gameObjects,
                 int layer,
@@ -39,8 +39,8 @@ public class Tree {
     public void createInRange(int minX, int maxX) {
         float randToPlant;
 
-        int minXFixed = (int) (Block.SIZE * (Math.floor((double) minX / Block.SIZE)));
-        int maxXFixed = (int) (Block.SIZE * (Math.ceil((double) maxX / Block.SIZE)));
+        int minXFixed = Utils.getFixedMin(minX);
+        int maxXFixed = Utils.getFixedMax(maxX);
 
         for (int i = minXFixed; i <= maxXFixed; i+=Block.SIZE) {
             if (i<windowDimensions.x()/2+Block.SIZE && i>windowDimensions.x()/2-Block.SIZE){
