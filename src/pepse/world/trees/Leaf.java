@@ -27,6 +27,7 @@ public class Leaf extends Block {
     private final Vector2 topLeftCorner;
     private final int seed;
     private final Color color;
+    public final int LAYER = Layer.STATIC_OBJECTS+5;
     //    private final int fadeOutTime;
     private Transition<Float> angleTransition;
     private Transition<Vector2> widthTransition;
@@ -48,7 +49,7 @@ public class Leaf extends Block {
         this.rand = new Random();
 //        leaf.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         physics().setMass(0);
-        gameObjects.addGameObject(this, Layer.BACKGROUND+5);
+        gameObjects.addGameObject(this, LAYER);
         this.setTag(LEAF_TAG);
 
         //add movement to leaves at different time
@@ -137,4 +138,13 @@ public class Leaf extends Block {
         scheduledTransitionTask();
     }
 
+    public void removeLeaf() {
+        removeComponent(angleTransition);
+        angleTransition = null;
+        removeComponent(widthTransition);
+        widthTransition = null;
+        removeComponent(fallTransition);
+        fallTransition = null;
+        gameObjects.removeGameObject(this, LAYER);
+    }
 }

@@ -66,7 +66,7 @@ public class Tree {
                 randToPlant = rand.nextFloat(0, 1);
                 if (randToPlant < 0.1) {
                     stemBlocks = plant((float) i, GET_RAND_SIZE);
-                    i += Block.SIZE; // Don't plant two tree near each other
+//                    i += Block.SIZE; // Don't plant two tree near each other
                 }
                 treeStemMap.put(i, stemBlocks);
             }
@@ -93,7 +93,8 @@ public class Tree {
                 continue;
             }
             for (Leaf leaf:leafMap.get((float) currentX)){
-                gameObjects.removeGameObject(leaf);
+                leaf.removeLeaf();
+                gameObjects.removeGameObject(leaf, leaf.LAYER);
             }
         }
     }
