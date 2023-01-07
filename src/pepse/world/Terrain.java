@@ -87,6 +87,10 @@ public class Terrain {
 
         for (int currentX = minXFixed; currentX < maxXFixed; currentX+=Block.SIZE) {
             boolean first = true;
+            if (!blockMap.containsKey(currentX)) {
+                System.out.println("Something wrong!"); // TODO: remove
+                continue;
+            }
             for (Block block : blockMap.get(currentX)) {
                 if (first) {
                     gameObjects.removeGameObject(block, groundLayer);
