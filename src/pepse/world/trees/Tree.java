@@ -54,20 +54,18 @@ public class Tree {
             // Check if used to exist tree
             if (treeStemMap.containsKey(i)) {
                 if (treeStemMap.get(i) != null) {
-                    plant((float) i, treeStemMap.get(i).length); // TODO: change
+                    plant((float) i, treeStemMap.get(i).length);
                 }
             } else {
                 Block[] stemBlocks = null;
                 randToPlant = rand.nextFloat(0, 1);
                 if (randToPlant < 0.1) {
                     stemBlocks = plant((float) i, GET_RAND_SIZE);
-                    i += Block.SIZE; // Don't plant two tree near each other
+//                    i += Block.SIZE; // Don't plant two tree near each other
                 }
                 treeStemMap.put(i, stemBlocks);
             }
-
         }
-
     }
 
     public void RemoveInRange(int minX, int maxX) {
