@@ -9,7 +9,9 @@ import pepse.util.Utils;
 import pepse.world.Block;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -25,6 +27,7 @@ public class Tree {
     private final Vector2 windowDimensions;
     private final Function<Float, Float> groundHeightAt;
     private HashMap<Integer, Block[]> treeStemMap;
+    private HashMap<Float, List<Leaf>> leafMap;
 
     public Tree(GameObjectCollection gameObjects,
                 int layer,
@@ -36,6 +39,8 @@ public class Tree {
         this.seed = seed;
         this.rand = new Random(seed);
         treeStemMap = new HashMap<>();
+        leafMap = new HashMap<>();
+
 
         this.groundHeightAt = groundHeightAt;
     }
@@ -75,11 +80,20 @@ public class Tree {
         int maxXFixed = Utils.getFixedMax(maxX);
 
         for (int currentX = minXFixed; currentX < maxXFixed; currentX += Block.SIZE) {
+            // remove trees' stem
             if (!treeStemMap.containsKey(currentX) || treeStemMap.get(currentX) == null) {
                 continue;
             }
             for (Block block : treeStemMap.get(currentX)) {
                 gameObjects.removeGameObject(block, layer);
+            }
+
+            // remove trees' leaves
+            if (!leafMap.containsKey((float) currentX) || leafMap.get((float) currentX) == null) {
+                continue;
+            }
+            for (Leaf leaf:leafMap.get((float) currentX)){
+                gameObjects.removeGameObject(leaf);
             }
         }
     }
@@ -119,9 +133,11 @@ public class Tree {
         Vector2 topLeftSquare = topBlock.getTopLeftCorner().subtract(new Vector2(leavesSquareEdge,
                 leavesSquareEdge));
         for (float i = topLeftSquare.x(); i <= topLeftSquare.x()+leavesSquareEdge*2; i+=Block.SIZE) {
+                leafMap.put(i, new ArrayList<>());
             for (float j = topLeftSquare.y(); j <= topLeftSquare.y() + leavesSquareEdge*2; j+=Block.SIZE) {
                 Leaf leaf = new Leaf(gameObjects, new Vector2(i,j), LEAVES_COLOR, seed);
-                gameObjects.addGameObject(leaf);
+//                gameObjects.addGameObject(leaf);
+                leafMap.get(i).add(leaf);
             }
         }
     }
