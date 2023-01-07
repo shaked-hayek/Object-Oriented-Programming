@@ -1,6 +1,7 @@
 package pepse.world.trees;
 
 import danogl.collisions.GameObjectCollection;
+import danogl.collisions.Layer;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
@@ -42,7 +43,7 @@ public class Tree {
 
         //TODO: check if <= or <
         for (int i = minXFixed; i <= maxXFixed; i+=Block.SIZE) {
-            if (i==windowDimensions.x()/2){
+            if (i<windowDimensions.x()/2+Block.SIZE && i>windowDimensions.x()/2-Block.SIZE){
                 continue;
             }
             randToPlant = rand.nextFloat(0,1);
@@ -80,9 +81,25 @@ public class Tree {
     }
 
     private void plantTreeLeaves(Block topBlock){
-//        int blocksInTree =
-//                (int) (groundHeightAt.apply(topBlock.getDimensions().x()) - topBlock.getDimensions().y())
-//                        /Block.SIZE;
-//        int leavesSquareEdge = Math.max(blocksInTree/4, 2);
+        int blocksInTree =
+                (int) ((groundHeightAt.apply(topBlock.getTopLeftCorner().x())) - topBlock.getTopLeftCorner().y())
+                        /Block.SIZE;
+        int leavesSquareEdge = Math.max(blocksInTree/4, 1) * Block.SIZE;
+
+        // create a square of leaves at size leavesSquareEdge where topBlock.center is the center
+        Vector2 topLeftSquare = topBlock.getTopLeftCorner().subtract(new Vector2(leavesSquareEdge,
+                leavesSquareEdge));
+        for (float i = topLeftSquare.x(); i <= topLeftSquare.x()+leavesSquareEdge*2; i+=Block.SIZE) {
+            for (float j = topLeftSquare.y(); j <= topLeftSquare.y() + leavesSquareEdge*2; j+=Block.SIZE) {
+                Leaf leaf = new Leaf(gameObjects, new Vector2(i,j), LEAVES_COLOR);
+                gameObjects.addGameObject(leaf);
+
+
+            }
+
+        }
+
+
+
     }
 }
