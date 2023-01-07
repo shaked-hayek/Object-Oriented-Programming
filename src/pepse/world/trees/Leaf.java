@@ -21,11 +21,6 @@ import java.util.function.Function;
 
 //
 public class Leaf extends Block {
-    private static final int MOVING_WAIT_TIME_BASE = 25;
-    /**
-     * Factor by which to divide the random wait time for moving transition
-     */
-    private static final float MOVING_WAIT_TIME_DENOMINATOR = 10;
     private static final String LEAF_TAG = "leaf";
     private static final int CYCLE_LENGTH = 5;
     private final Random rand;
@@ -44,15 +39,20 @@ public class Leaf extends Block {
         this.gameObjects = gameObjects;
         this.topLeftCorner = topLeftCorner;
         this.rand = new Random();
-//        block leaf = new GameObject(Vector2.ZERO, topLeftCorner, super.renderer().getRenderable());
 //        leaf.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         physics().setMass(0);
         gameObjects.addGameObject(this, Layer.BACKGROUND);
         this.setTag(LEAF_TAG);
+
         //add movement to leaves at different time
         scheduledMoveTask();
     }
 
+    /**
+     *
+     * @param other any other object
+     * @return false - so no collision will be made with any obj
+     */
     @Override
     public boolean shouldCollideWith(GameObject other) {
         return false;
