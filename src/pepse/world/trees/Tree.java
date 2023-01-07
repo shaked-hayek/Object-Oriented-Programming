@@ -9,6 +9,8 @@ import pepse.util.Utils;
 import pepse.world.Block;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -16,12 +18,14 @@ public class Tree {
     private static final String TREE_TAG = "tree stem";
     public static final Color STEM_COLOR = new Color(100, 50, 20);
     public static final Color LEAVES_COLOR = new Color(50, 200, 30);
+    public static final int GET_RAND_SIZE = -1;
     public final Random rand;
     private final int seed;
     private final GameObjectCollection gameObjects;
     private final int layer;
     private final Vector2 windowDimensions;
     private final Function<Float, Float> groundHeightAt;
+    private HashMap<Integer, Block[]> treeStemMap;
 
     public Tree(GameObjectCollection gameObjects,
                 int layer,
@@ -32,6 +36,7 @@ public class Tree {
         this.windowDimensions = windowDimensions;
         this.seed = seed;
         this.rand = new Random(seed);
+        treeStemMap = new HashMap<>();
 
         this.groundHeightAt = groundHeightAt;
     }
@@ -43,38 +48,64 @@ public class Tree {
         int maxXFixed = Utils.getFixedMax(maxX);
 
         for (int i = minXFixed; i <= maxXFixed; i += Block.SIZE) {
-            // Don't plant tree in middle
+            // Don't plant tree in the middle
             if (i < windowDimensions.x() / 2 + Block.SIZE && i > windowDimensions.x() / 2 - Block.SIZE) {
                 continue;
             }
-            randToPlant = rand.nextFloat(0, 1);
-            if (randToPlant < 0.15) {
-                plant((float) i);
-                i += Block.SIZE; // Don't plant two tree near ech other
+            // Check if used to exist tree
+            if (treeStemMap.containsKey(i)) {
+                if (treeStemMap.get(i) != null) {
+                    plant((float) i, treeStemMap.get(i).length); // TODO: change
+                }
+            } else {
+                Block[] stemBlocks = null;
+                randToPlant = rand.nextFloat(0, 1);
+                if (randToPlant < 0.1) {
+                    stemBlocks = plant((float) i, GET_RAND_SIZE);
+                    i += Block.SIZE; // Don't plant two tree near each other
+                }
+                treeStemMap.put(i, stemBlocks);
             }
         }
     }
 
-    private void plant(float x) {
-        Block topBlock = plantTreeStem(x);
-        if (topBlock != null) {
-            plantTreeLeaves(topBlock);
+    public void RemoveInRange(int minX, int maxX) {
+        int minXFixed = Utils.getFixedMin(minX);
+        int maxXFixed = Utils.getFixedMax(maxX);
+
+        for (int currentX = minXFixed; currentX < maxXFixed; currentX+=Block.SIZE) {
+            if (!treeStemMap.containsKey(currentX) || treeStemMap.get(currentX) == null) {
+                continue;
+            }
+            for (Block block : treeStemMap.get(currentX)) {
+                gameObjects.removeGameObject(block, layer);
+            }
         }
     }
 
-    private Block plantTreeStem(float x) {
+    private Block[] plant(float x, int size) {
+        Block[] stemBlocks = plantTreeStem(x, size);
+        plantTreeLeaves(stemBlocks[stemBlocks.length - 1]);
+        return stemBlocks;
+    }
+
+    private Block[] plantTreeStem(float x, int numBlocks) {
         float stemBottom = groundHeightAt.apply(x);
-        float stemTop = rand.nextFloat(windowDimensions.y() / 4, stemBottom - Block.SIZE * 4);
-        Block highestBlock = null;
-        for (float j = stemBottom - Block.SIZE; j > stemTop; j -= Block.SIZE) {
+        if (numBlocks == GET_RAND_SIZE) {
+            float stemTop = rand.nextFloat(windowDimensions.y() / 4, stemBottom - Block.SIZE * 4);
+            numBlocks = Utils.blocksInDist(stemTop, stemBottom);
+        }
+        Block[] stemBlocks = new Block[numBlocks];
+        for (int i = 0; i < numBlocks; i++) {
             Renderable blockRender =
                     new RectangleRenderable(ColorSupplier.approximateColor(STEM_COLOR));
-            Block block = new Block(new Vector2(x, j), blockRender);
+            float y = (stemBottom - Block.SIZE) - (Block.SIZE * i);
+            Block block = new Block(new Vector2(x, y), blockRender);
             gameObjects.addGameObject(block, layer);
             block.setTag(TREE_TAG);
-            highestBlock = block;
+            stemBlocks[i] = block;
         }
-        return highestBlock;
+        return stemBlocks;
     }
 
     private void plantTreeLeaves(Block topBlock) {

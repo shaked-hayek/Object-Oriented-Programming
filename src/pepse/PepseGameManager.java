@@ -37,6 +37,7 @@ public class PepseGameManager extends GameManager {
     private static float worldEndLeft;
     private Terrain terrain;
     private Avatar avatar;
+    private Tree tree;
     private int blocksSideFromAvatar;
 
     public static void main(String[] args) {
@@ -63,7 +64,7 @@ public class PepseGameManager extends GameManager {
         GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + 1, windowDimensions,CYCLE_LENGTH);
         GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + 2, sun, HALO_COLOR);
         sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
-        Tree tree = new Tree(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions,
+        tree = new Tree(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions,
                 terrain::groundHeightAt, SEED);
         tree.createInRange(-Terrain.WORLD_BUFFER, (int)windowDimensions.x() + Terrain.WORLD_BUFFER);
 
@@ -85,10 +86,12 @@ public class PepseGameManager extends GameManager {
 
     private void createWorldInRange(int minX, int maxX) {
         terrain.createInRange(minX, maxX);
+        tree.createInRange(minX, maxX);
     }
 
     private void removeWorldInRange(int minX, int maxX) {
         terrain.removeInRange(minX, maxX);
+        tree.RemoveInRange(minX, maxX);
     }
 
     private void updateEndlessWorld() {
