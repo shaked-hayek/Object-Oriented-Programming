@@ -52,8 +52,8 @@ public class Terrain {
                         new Vector2(currentX, topY + j * Block.SIZE),
                         blockRender
                 );
-                // Put only 2 top blocks in groundLayer
-                if (j <= 1) {
+                // Put only the top block in groundLayer
+                if (j == 0) {
                     gameObjects.addGameObject(block, groundLayer);
                 } else {
                     gameObjects.addGameObject(block, groundLayer - 1);

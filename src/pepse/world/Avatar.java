@@ -18,8 +18,7 @@ public class Avatar extends GameObject {
     public static final double ENERGY_CHANGE = 0.5;
     public static final int VELOCITY_X = 300;
     public static final int VELOCITY_Y = 300;
-    public static final int ACCELERATION_Y = 400;
-    public static final int FLY_Y = 100;
+    public static final int ACCELERATION_Y = 300;
     private static final String AVATAR_IMG_FOLDER = "assets/";
     private static final String AVATAR_STANDING = "avatar_standing.png";
     private static final String TAG_NAME = "avatar";
@@ -76,7 +75,7 @@ public class Avatar extends GameObject {
         if (inputListener.isKeyPressed(KeyEvent.VK_SPACE) &&
                 inputListener.isKeyPressed(KeyEvent.VK_SHIFT) &&
                 energy > MIN_ENERGY) {
-            transform().setVelocityY(- (VELOCITY_Y + FLY_Y));
+            transform().setVelocityY(-VELOCITY_Y);
             flyingMode = true;
         } else {
             flyingMode = false;
@@ -85,12 +84,12 @@ public class Avatar extends GameObject {
 
     private void updateEnergy() {
         if (flyingMode) {
-            if (energy < INIT_ENERGY) {
-                energy += ENERGY_CHANGE;
-            }
-        } else {
             if (energy > MIN_ENERGY) {
                 energy -= ENERGY_CHANGE;
+            }
+        } else {
+            if (energy < INIT_ENERGY) {
+                energy += ENERGY_CHANGE;
             }
         }
     }
