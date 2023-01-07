@@ -10,7 +10,6 @@ import pepse.world.Block;
 
 import java.awt.Color;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -66,14 +65,16 @@ public class Tree {
                 }
                 treeStemMap.put(i, stemBlocks);
             }
+
         }
+
     }
 
     public void RemoveInRange(int minX, int maxX) {
         int minXFixed = Utils.getFixedMin(minX);
         int maxXFixed = Utils.getFixedMax(maxX);
 
-        for (int currentX = minXFixed; currentX < maxXFixed; currentX+=Block.SIZE) {
+        for (int currentX = minXFixed; currentX < maxXFixed; currentX += Block.SIZE) {
             if (!treeStemMap.containsKey(currentX) || treeStemMap.get(currentX) == null) {
                 continue;
             }
@@ -108,18 +109,18 @@ public class Tree {
         return stemBlocks;
     }
 
-    private void plantTreeLeaves(Block topBlock) {
+    private void plantTreeLeaves(Block topBlock){
         int blocksInTree =
                 (int) ((groundHeightAt.apply(topBlock.getTopLeftCorner().x())) - topBlock.getTopLeftCorner().y())
-                        / Block.SIZE;
-        int leavesSquareEdge = Math.max(blocksInTree / 4, 1) * Block.SIZE;
+                        /Block.SIZE;
+        int leavesSquareEdge = Math.max(blocksInTree/4, 1) * Block.SIZE;
 
         // create a square of leaves at size leavesSquareEdge where topBlock.center is the center
         Vector2 topLeftSquare = topBlock.getTopLeftCorner().subtract(new Vector2(leavesSquareEdge,
                 leavesSquareEdge));
-        for (float i = topLeftSquare.x(); i <= topLeftSquare.x() + leavesSquareEdge * 2; i += Block.SIZE) {
-            for (float j = topLeftSquare.y(); j <= topLeftSquare.y() + leavesSquareEdge * 2; j += Block.SIZE) {
-                Leaf leaf = new Leaf(gameObjects, new Vector2(i, j), LEAVES_COLOR, seed);
+        for (float i = topLeftSquare.x(); i <= topLeftSquare.x()+leavesSquareEdge*2; i+=Block.SIZE) {
+            for (float j = topLeftSquare.y(); j <= topLeftSquare.y() + leavesSquareEdge*2; j+=Block.SIZE) {
+                Leaf leaf = new Leaf(gameObjects, new Vector2(i,j), LEAVES_COLOR, seed);
                 gameObjects.addGameObject(leaf);
             }
         }
