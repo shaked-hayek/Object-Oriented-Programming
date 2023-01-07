@@ -41,7 +41,6 @@ public class Tree {
         int minXFixed = (int) (Block.SIZE * (Math.floor((double) minX / Block.SIZE)));
         int maxXFixed = (int) (Block.SIZE * (Math.ceil((double) maxX / Block.SIZE)));
 
-        //TODO: check if <= or <
         for (int i = minXFixed; i <= maxXFixed; i+=Block.SIZE) {
             if (i<windowDimensions.x()/2+Block.SIZE && i>windowDimensions.x()/2-Block.SIZE){
                 continue;

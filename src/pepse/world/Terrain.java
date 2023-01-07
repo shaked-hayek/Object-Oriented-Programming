@@ -19,8 +19,9 @@ public class Terrain {
     private final int seed;
     private GameObjectCollection gameObjects;
     private final int groundLayer;
-    private static final String TAG_NAME = "ground";
-    private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
+    public static final String TAG_NAME = "ground";
+//    private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
+    private static final Color BASE_GROUND_COLOR = new Color(206, 222, 227);
     private static final float GROUND_START_HEIGHT = (float) 2 / 3;
     private static final int GROUND_SPREAD = 15;
     private static final int GROUND_SHARPNESS = 6 * Block.SIZE;
