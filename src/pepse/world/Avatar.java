@@ -111,7 +111,7 @@ public class Avatar extends GameObject {
     }
 
     private void updateEnergy() {
-        if (energy < MIN_ENERGY) {
+        if (energy == MIN_ENERGY) {
             isFlying = false;
         }
         if (isFlying) {
