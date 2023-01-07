@@ -48,7 +48,7 @@ public class Leaf extends Block {
         this.rand = new Random();
 //        leaf.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         physics().setMass(0);
-        gameObjects.addGameObject(this, Layer.BACKGROUND);
+        gameObjects.addGameObject(this, Layer.BACKGROUND+5);
         this.setTag(LEAF_TAG);
 
         //add movement to leaves at different time
