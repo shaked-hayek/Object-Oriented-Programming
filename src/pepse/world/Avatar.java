@@ -10,6 +10,7 @@ import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 
 
 public class Avatar extends GameObject {
@@ -114,13 +115,13 @@ public class Avatar extends GameObject {
         if (energy == MIN_ENERGY) {
             isFlying = false;
         }
-        if (isFlying) {
-            if (energy > MIN_ENERGY) {
-                energy -= ENERGY_CHANGE;
-            }
-        } else {
+        if (getVelocity().y() == 0 && !isFlying) {
             if (energy < INIT_ENERGY) {
                 energy += ENERGY_CHANGE;
+            }
+        } else {
+            if (energy > MIN_ENERGY) {
+                energy -= ENERGY_CHANGE;
             }
         }
     }
@@ -153,5 +154,8 @@ public class Avatar extends GameObject {
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
         isFlying = false;
+        if (Objects.equals(other.getTag(), Terrain.TAG_NAME)) {
+            transform().setVelocityY(0);
+        }
     }
 }
