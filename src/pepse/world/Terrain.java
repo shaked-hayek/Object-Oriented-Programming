@@ -18,12 +18,13 @@ public class Terrain {
     private static final int TERRAIN_DEPTH = 18;
     private final float groundHeightAtX0;
     private final int seed;
+    private final int widthInBlocks;
     private GameObjectCollection gameObjects;
     private final int groundLayer;
     public static final String TAG_NAME = "ground";
 //    private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
     private static final Color BASE_GROUND_COLOR = new Color(206, 222, 227);
-    private static final float GROUND_START_HEIGHT = (float) 2 / 3;
+    private static final float GROUND_START_HEIGHT = (float) 3 / 4;
     private static final int GROUND_SPREAD = 15;
     private static final int GROUND_SHARPNESS = 6 * Block.SIZE;
     public static final int WORLD_BUFFER = 6 * Block.SIZE;
@@ -39,7 +40,15 @@ public class Terrain {
         this.seed = seed;
         blockMap = new HashMap<>();
 
-        createInRange(-WORLD_BUFFER, (int) windowDimensions.x() + WORLD_BUFFER);
+        widthInBlocks = (int) (
+                Math.abs(Math.floor((double) -WORLD_BUFFER / Block.SIZE)) +
+                Math.abs(Math.ceil((double) (windowDimensions.x() + WORLD_BUFFER) / Block.SIZE))
+            ) + 1; // For getting uneven number of blocks
+        createInRange(-WORLD_BUFFER, (int) windowDimensions.x() + WORLD_BUFFER + Block.SIZE);
+    }
+
+    public int getWidthInBlocks() {
+        return widthInBlocks;
     }
 
     public void createInRange(int minX, int maxX) {

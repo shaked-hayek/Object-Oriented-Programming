@@ -37,6 +37,7 @@ public class PepseGameManager extends GameManager {
     private static float worldEndLeft;
     private Terrain terrain;
     private Avatar avatar;
+    private int blocksSideFromAvatar;
 
     public static void main(String[] args) {
         new PepseGameManager().run();
@@ -78,8 +79,8 @@ public class PepseGameManager extends GameManager {
                 windowController.getWindowDimensions(),
                 windowController.getWindowDimensions()
         ));
-//        currentMiddleX = getCamera().getTopLeftCorner().x();
         currentMiddleX = avatar.getCenter().x();
+        blocksSideFromAvatar = (int) Math.floor(terrain.getWidthInBlocks() / 2f);
     }
 
     private void createWorldInRange(int minX, int maxX) {
@@ -92,21 +93,25 @@ public class PepseGameManager extends GameManager {
 
     private void updateEndlessWorld() {
         double movementSize = avatar.getCenter().x() - currentMiddleX;
-        int movementSizeNorm = 0;
+        int distToAdd = 0;
         if (Math.abs(movementSize) > (Terrain.WORLD_BUFFER / 2f)) { // We moved
             // We moved right
             if (movementSize > (Terrain.WORLD_BUFFER / 2f)) {
-                movementSizeNorm = (int) (Block.SIZE * (Math.floor(movementSize / Block.SIZE)));
-                createWorldInRange((int) worldEndRight, (int) worldEndRight + movementSizeNorm);
-                removeWorldInRange((int) worldEndLeft, (int) worldEndLeft  + movementSizeNorm);
+                int numBlocksRight = (int) (Math.floor((worldEndRight - avatar.getCenter().x()) / Block.SIZE));
+                distToAdd = (blocksSideFromAvatar - numBlocksRight) * Block.SIZE;
+                createWorldInRange((int) worldEndRight, (int) worldEndRight + distToAdd);
+                removeWorldInRange((int) worldEndLeft, (int) worldEndLeft  + distToAdd);
+                worldEndLeft = worldEndLeft + distToAdd;
+                worldEndRight = worldEndRight + distToAdd;
             // We moved left
             } else if (movementSize < -(Terrain.WORLD_BUFFER / 2f)) {
-                movementSizeNorm = (int) (Block.SIZE * (Math.ceil(movementSize / Block.SIZE)));
-                createWorldInRange((int) worldEndLeft + movementSizeNorm, (int) worldEndLeft);
-                removeWorldInRange((int) worldEndRight + movementSizeNorm, (int) worldEndRight);
+                int numBlocksLeft = (int) (Math.floor((avatar.getCenter().x() - worldEndLeft) / Block.SIZE));
+                distToAdd = (blocksSideFromAvatar - numBlocksLeft) * Block.SIZE;
+                createWorldInRange((int) worldEndLeft - distToAdd, (int) worldEndLeft);
+                removeWorldInRange((int) worldEndRight - distToAdd, (int) worldEndRight);
+                worldEndLeft = worldEndLeft - distToAdd;
+                worldEndRight = worldEndRight - distToAdd;
             }
-            worldEndLeft = worldEndLeft + movementSizeNorm;
-            worldEndRight = worldEndRight + movementSizeNorm;
             currentMiddleX = avatar.getCenter().x();
         }
     }
