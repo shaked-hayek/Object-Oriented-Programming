@@ -30,11 +30,13 @@ public class PepseGameManager extends GameManager {
     private UserInputListener inputListener;
     private GameObjectCollection gameObjectCollection;
     private static final int CYCLE_LENGTH = 30;
-    private static final int SEED = 0;
+    private static final int SEED = 2;
     private static final Color HALO_COLOR = new Color(255, 255,0, 20);
     private static float currentMiddleX;
     private static float worldEndRight;
     private static float worldEndLeft;
+    private Terrain terrain;
+    private Avatar avatar;
 
     public static void main(String[] args) {
         new PepseGameManager().run();
@@ -55,7 +57,7 @@ public class PepseGameManager extends GameManager {
 
         // Create world
         GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
-        Terrain terrain = new Terrain(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions, SEED);
+        terrain = new Terrain(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions, SEED);
         GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, CYCLE_LENGTH);
         GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + 1, windowDimensions,CYCLE_LENGTH);
         GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + 2, sun, HALO_COLOR);
@@ -68,7 +70,7 @@ public class PepseGameManager extends GameManager {
         float avatarLeftCorr = (float) (Block.SIZE * (Math.floor((windowDimensions.x() / 2) / Block.SIZE)));
         float avatarTopCorr = terrain.groundHeightAt(avatarLeftCorr) - Avatar.AVATAR_HEIGHT;
         Vector2 initialAvatarLocation = new Vector2(avatarLeftCorr, avatarTopCorr);
-        Avatar avatar = Avatar.create(gameObjectCollection, Layer.DEFAULT,
+        avatar = Avatar.create(gameObjectCollection, Layer.DEFAULT,
                 initialAvatarLocation, inputListener, imageReader);
         setCamera(new Camera(
                 avatar,
@@ -76,5 +78,42 @@ public class PepseGameManager extends GameManager {
                 windowController.getWindowDimensions(),
                 windowController.getWindowDimensions()
         ));
+//        currentMiddleX = getCamera().getTopLeftCorner().x();
+        currentMiddleX = avatar.getCenter().x();
+    }
+
+    private void createWorldInRange(int minX, int maxX) {
+        terrain.createInRange(minX, maxX);
+    }
+
+    private void removeWorldInRange(int minX, int maxX) {
+        terrain.removeInRange(minX, maxX);
+    }
+
+    private void updateEndlessWorld() {
+        double movementSize = avatar.getCenter().x() - currentMiddleX;
+        int movementSizeNorm = 0;
+        if (Math.abs(movementSize) > (Terrain.WORLD_BUFFER / 2f)) { // We moved
+            // We moved right
+            if (movementSize > (Terrain.WORLD_BUFFER / 2f)) {
+                movementSizeNorm = (int) (Block.SIZE * (Math.floor(movementSize / Block.SIZE)));
+                createWorldInRange((int) worldEndRight, (int) worldEndRight + movementSizeNorm);
+                removeWorldInRange((int) worldEndLeft, (int) worldEndLeft  + movementSizeNorm);
+            // We moved left
+            } else if (movementSize < -(Terrain.WORLD_BUFFER / 2f)) {
+                movementSizeNorm = (int) (Block.SIZE * (Math.ceil(movementSize / Block.SIZE)));
+                createWorldInRange((int) worldEndLeft + movementSizeNorm, (int) worldEndLeft);
+                removeWorldInRange((int) worldEndRight + movementSizeNorm, (int) worldEndRight);
+            }
+            worldEndLeft = worldEndLeft + movementSizeNorm;
+            worldEndRight = worldEndRight + movementSizeNorm;
+            currentMiddleX = avatar.getCenter().x();
+        }
+    }
+
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        updateEndlessWorld();
     }
 }

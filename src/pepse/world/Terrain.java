@@ -8,13 +8,14 @@ import pepse.util.ColorSupplier;
 import pepse.util.NoiseGenerator;
 
 import java.awt.Color;
+import java.util.HashMap;
 
 
 public class Terrain {
     /**
      * needs to be added to every value of ground. this way, ground will always be covered by 20+
      */
-    private static final int TERRAIN_DEPTH = 20;
+    private static final int TERRAIN_DEPTH = 18;
     private final float groundHeightAtX0;
     private final int seed;
     private GameObjectCollection gameObjects;
@@ -25,7 +26,8 @@ public class Terrain {
     private static final float GROUND_START_HEIGHT = (float) 2 / 3;
     private static final int GROUND_SPREAD = 15;
     private static final int GROUND_SHARPNESS = 6 * Block.SIZE;
-    public static final int WORLD_BUFFER = 5 * Block.SIZE;
+    public static final int WORLD_BUFFER = 6 * Block.SIZE;
+    private HashMap<Integer, Block[]> blockMap;
 
     public Terrain(GameObjectCollection gameObjects,
                    int groundLayer,
@@ -35,6 +37,7 @@ public class Terrain {
         this.groundLayer = groundLayer;
         this.groundHeightAtX0 = windowDimensions.y() * GROUND_START_HEIGHT;
         this.seed = seed;
+        blockMap = new HashMap<>();
 
         createInRange(-WORLD_BUFFER, (int) windowDimensions.x() + WORLD_BUFFER);
     }
@@ -43,9 +46,12 @@ public class Terrain {
         int minXFixed = (int) (Block.SIZE * (Math.floor((double) minX / Block.SIZE)));
         int maxXFixed = (int) (Block.SIZE * (Math.ceil((double) maxX / Block.SIZE)));
 
-        for (int i = minXFixed; i < maxXFixed; i+=Block.SIZE) {
-            float currentX = i;
+        for (int currentX = minXFixed; currentX < maxXFixed; currentX+=Block.SIZE) {
             float topY = groundHeightAt(currentX);
+            if (blockMap.containsKey(currentX)) {  // Don't run again on x if blocks already exists
+                continue;
+            }
+            Block[] blocksList = new Block[TERRAIN_DEPTH];
             for (int j = 0; j < TERRAIN_DEPTH; j++) {
                 Renderable blockRender = new RectangleRenderable(
                         ColorSupplier.approximateColor(BASE_GROUND_COLOR));
@@ -59,8 +65,28 @@ public class Terrain {
                 } else {
                     gameObjects.addGameObject(block, groundLayer - 1);
                 }
+                blocksList[j] = block;
                 block.setTag(TAG_NAME);
             }
+            blockMap.put(currentX, blocksList);
+        }
+    }
+
+    public void removeInRange(int minX, int maxX) {
+        int minXFixed = (int) (Block.SIZE * (Math.floor((double) minX / Block.SIZE)));
+        int maxXFixed = (int) (Block.SIZE * (Math.ceil((double) maxX / Block.SIZE)));
+
+        for (int currentX = minXFixed; currentX < maxXFixed; currentX+=Block.SIZE) {
+            boolean first = true;
+            for (Block block : blockMap.get(currentX)) {
+                if (first) {
+                    gameObjects.removeGameObject(block, groundLayer);
+                    first = false;
+                } else {
+                    gameObjects.removeGameObject(block, groundLayer - 1);
+                }
+            }
+            blockMap.remove(currentX);
         }
     }
 
