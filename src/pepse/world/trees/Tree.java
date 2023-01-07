@@ -101,7 +101,8 @@ public class Tree {
                 continue;
             }
             for (Leaf leaf:leafMap.get((float) currentX)){
-                gameObjects.removeGameObject(leaf);
+                leaf.removeLeaf();
+                gameObjects.removeGameObject(leaf, leaf.LAYER);
             }
         }
     }
@@ -140,13 +141,13 @@ public class Tree {
         // create a square of leaves at size leavesSquareEdge where topBlock.center is the center
         Vector2 topLeftSquare = topBlock.getTopLeftCorner().subtract(new Vector2(leavesSquareEdge,
                 leavesSquareEdge));
+        List<Leaf> leafList = new ArrayList<>();
         for (float i = topLeftSquare.x(); i <= topLeftSquare.x()+leavesSquareEdge*2; i+=Block.SIZE) {
-                leafMap.put(i, new ArrayList<>());
             for (float j = topLeftSquare.y(); j <= topLeftSquare.y() + leavesSquareEdge*2; j+=Block.SIZE) {
                 Leaf leaf = new Leaf(gameObjects, new Vector2(i,j), LEAVES_COLOR, seed);
-//                gameObjects.addGameObject(leaf);
-                leafMap.get(i).add(leaf);
+                leafList.add(leaf);
             }
         }
+        leafMap.put(topBlock.getTopLeftCorner().x(), leafList);
     }
 }
