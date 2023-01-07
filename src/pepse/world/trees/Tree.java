@@ -45,6 +45,13 @@ public class Tree {
         this.groundHeightAt = groundHeightAt;
     }
 
+    private boolean isNextToTree(float x) {
+        int prevX = (int) x - Block.SIZE;
+        int nextX = (int) x - Block.SIZE;
+        return (treeStemMap.containsKey(prevX) && treeStemMap.get(prevX) != null) ||
+                (treeStemMap.containsKey(nextX) && treeStemMap.get(nextX) != null);
+    }
+
     public void createInRange(int minX, int maxX) {
         float randToPlant;
 
@@ -59,14 +66,15 @@ public class Tree {
             // Check if used to exist tree
             if (treeStemMap.containsKey(i)) {
                 if (treeStemMap.get(i) != null) {
-                    plant((float) i, treeStemMap.get(i).length); // TODO: change
+                    plant((float) i, treeStemMap.get(i).length);
                 }
             } else {
                 Block[] stemBlocks = null;
-                randToPlant = rand.nextFloat(0, 1);
-                if (randToPlant < 0.1) {
-                    stemBlocks = plant((float) i, GET_RAND_SIZE);
-//                    i += Block.SIZE; // Don't plant two tree near each other
+                if (!isNextToTree(i)) {
+                    randToPlant = rand.nextFloat(0, 1);
+                    if (randToPlant < 0.1) {
+                        stemBlocks = plant((float) i, GET_RAND_SIZE);
+                    }
                 }
                 treeStemMap.put(i, stemBlocks);
             }
@@ -93,8 +101,7 @@ public class Tree {
                 continue;
             }
             for (Leaf leaf:leafMap.get((float) currentX)){
-                leaf.removeLeaf();
-                gameObjects.removeGameObject(leaf, leaf.LAYER);
+                gameObjects.removeGameObject(leaf);
             }
         }
     }
