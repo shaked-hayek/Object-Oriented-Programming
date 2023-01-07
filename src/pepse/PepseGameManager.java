@@ -4,7 +4,6 @@ import danogl.GameManager;
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
-import danogl.components.Transition;
 import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
@@ -31,7 +30,11 @@ public class PepseGameManager extends GameManager {
     private UserInputListener inputListener;
     private GameObjectCollection gameObjectCollection;
     private static final int CYCLE_LENGTH = 30;
+    private static final int SEED = 0;
     private static final Color HALO_COLOR = new Color(255, 255,0, 20);
+    private static float currentMiddleX;
+    private static float worldEndRight;
+    private static float worldEndLeft;
 
     public static void main(String[] args) {
         new PepseGameManager().run();
@@ -47,17 +50,19 @@ public class PepseGameManager extends GameManager {
         this.windowDimensions = windowController.getWindowDimensions();
         this.inputListener = inputListener;
         this.gameObjectCollection = gameObjects();
+        worldEndRight = windowDimensions.x() + Terrain.WORLD_BUFFER;
+        worldEndLeft = -Terrain.WORLD_BUFFER;
 
         // Create world
         GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
-        Terrain terrain = new Terrain(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions, 0);
+        Terrain terrain = new Terrain(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions, SEED);
         GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, CYCLE_LENGTH);
         GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + 1, windowDimensions,CYCLE_LENGTH);
         GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + 2, sun, HALO_COLOR);
         sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
         Tree tree = new Tree(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions,
                 terrain::groundHeightAt);
-        tree.createInRange(0, (int)windowDimensions.x());
+        tree.createInRange(-Terrain.WORLD_BUFFER, (int)windowDimensions.x() + Terrain.WORLD_BUFFER);
 
         // Create avatar
         float avatarLeftCorr = (float) (Block.SIZE * (Math.floor((windowDimensions.x() / 2) / Block.SIZE)));

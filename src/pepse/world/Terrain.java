@@ -24,18 +24,18 @@ public class Terrain {
     private static final float GROUND_START_HEIGHT = (float) 2 / 3;
     private static final int GROUND_SPREAD = 15;
     private static final int GROUND_SHARPNESS = 6 * Block.SIZE;
+    public static final int WORLD_BUFFER = 5 * Block.SIZE;
 
     public Terrain(GameObjectCollection gameObjects,
                    int groundLayer,
                    Vector2 windowDimensions,
                    int seed) {
-
         this.gameObjects = gameObjects;
         this.groundLayer = groundLayer;
         this.groundHeightAtX0 = windowDimensions.y() * GROUND_START_HEIGHT;
         this.seed = seed;
 
-        createInRange(0, (int) windowDimensions.x());
+        createInRange(-WORLD_BUFFER, (int) windowDimensions.x() + WORLD_BUFFER);
     }
 
     public void createInRange(int minX, int maxX) {
