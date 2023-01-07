@@ -45,6 +45,13 @@ public class Tree {
         this.groundHeightAt = groundHeightAt;
     }
 
+    private boolean isNextToTree(float x) {
+        int prevX = (int) x - Block.SIZE;
+        int nextX = (int) x - Block.SIZE;
+        return (treeStemMap.containsKey(prevX) && treeStemMap.get(prevX) != null) ||
+                (treeStemMap.containsKey(nextX) && treeStemMap.get(nextX) != null);
+    }
+
     public void createInRange(int minX, int maxX) {
         float randToPlant;
 
@@ -63,10 +70,11 @@ public class Tree {
                 }
             } else {
                 Block[] stemBlocks = null;
-                randToPlant = rand.nextFloat(0, 1);
-                if (randToPlant < 0.1) {
-                    stemBlocks = plant((float) i, GET_RAND_SIZE);
-//                    i += Block.SIZE; // Don't plant two tree near each other
+                if (!isNextToTree(i)) {
+                    randToPlant = rand.nextFloat(0, 1);
+                    if (randToPlant < 0.1) {
+                        stemBlocks = plant((float) i, GET_RAND_SIZE);
+                    }
                 }
                 treeStemMap.put(i, stemBlocks);
             }
