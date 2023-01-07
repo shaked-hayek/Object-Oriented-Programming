@@ -119,7 +119,7 @@ public class Avatar extends GameObject {
             if (energy < INIT_ENERGY) {
                 energy += ENERGY_CHANGE;
             }
-        } else {
+        } else if (isFlying) {
             if (energy > MIN_ENERGY) {
                 energy -= ENERGY_CHANGE;
             }
