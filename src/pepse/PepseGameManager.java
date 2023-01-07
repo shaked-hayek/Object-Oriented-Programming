@@ -30,7 +30,7 @@ public class PepseGameManager extends GameManager {
     private UserInputListener inputListener;
     private GameObjectCollection gameObjectCollection;
     private static final int CYCLE_LENGTH = 30;
-    private static final int SEED = 0;
+    private static final int SEED = 2;
     private static final Color HALO_COLOR = new Color(255, 255,0, 20);
     private static float currentMiddleX;
     private static float worldEndRight;
