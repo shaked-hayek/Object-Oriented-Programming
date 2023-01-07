@@ -81,8 +81,7 @@ public class PepseGameManager extends GameManager {
         currentMiddleX = avatar.getCenter().x();
         blocksSideFromAvatar = (int) Math.floor(terrain.getWidthInBlocks() / 2f);
 
-        EnergyText energyText = new EnergyText(new Vector2(40, 40), new Vector2(40, 40));
-        energyText.setTopLeftCorner(Vector2.ZERO);
+        EnergyText energyText = new EnergyText(new Vector2(10, 10), new Vector2(40, 40));
         this.gameObjects().addGameObject(energyText, Layer.BACKGROUND + 1);
 
     }
