@@ -91,8 +91,8 @@ public class Leaf extends Block {
         widthTransition = new Transition<>(
                 this,
                 this::setDimensions,
-                new Vector2(getDimensions().mult(0.8f)),
-                new Vector2(getDimensions().mult(1.1f)),
+                getDimensions().mult(0.8f),
+                getDimensions().mult(1.1f),
                 Transition.LINEAR_INTERPOLATOR_VECTOR,
                 CYCLE_LENGTH,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
