@@ -46,12 +46,18 @@ public class Terrain {
             float currentX = i;
             float topY = groundHeightAt(currentX);
             for (int j = 0; j < TERRAIN_DEPTH; j++) {
-                Renderable blockRender = new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR));
+                Renderable blockRender = new RectangleRenderable(
+                        ColorSupplier.approximateColor(BASE_GROUND_COLOR));
                 Block block = new Block(
                         new Vector2(currentX, topY + j * Block.SIZE),
                         blockRender
                 );
-                gameObjects.addGameObject(block, groundLayer);
+                // Put only 2 top blocks in groundLayer
+                if (j <= 1) {
+                    gameObjects.addGameObject(block, groundLayer);
+                } else {
+                    gameObjects.addGameObject(block, groundLayer - 1);
+                }
                 block.setTag(TAG_NAME);
             }
         }
