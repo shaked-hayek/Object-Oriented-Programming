@@ -1,13 +1,11 @@
 package pepse.world.trees;
 
 import danogl.collisions.GameObjectCollection;
-import danogl.collisions.Layer;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
 import pepse.world.Block;
-import pepse.world.Terrain;
 
 import java.awt.*;
 import java.util.Random;
@@ -18,7 +16,8 @@ public class Tree {
     public static Color STEM_COLOR =  new Color(100, 50, 20);
     public static Color LEAVES_COLOR =  new Color(50, 200, 30);
     public final float STEM_MIN_SIZE = Block.SIZE;
-    public static final Random rand = new Random();
+    public final Random rand;
+    private final int seed;
     private GameObjectCollection gameObjects;
     private int layer;
     private Vector2 windowDimensions;
@@ -27,10 +26,12 @@ public class Tree {
     public Tree(GameObjectCollection gameObjects,
                 int layer,
                 Vector2 windowDimensions,
-                Function<Float, Float> groundHeightAt){
+                Function<Float, Float> groundHeightAt, int seed){
         this.gameObjects = gameObjects;
         this.layer = layer;
         this.windowDimensions = windowDimensions;
+        this.seed = seed;
+        this.rand = new Random(seed);
 
         this.groundHeightAt = groundHeightAt;
     }
@@ -90,7 +91,7 @@ public class Tree {
                 leavesSquareEdge));
         for (float i = topLeftSquare.x(); i <= topLeftSquare.x()+leavesSquareEdge*2; i+=Block.SIZE) {
             for (float j = topLeftSquare.y(); j <= topLeftSquare.y() + leavesSquareEdge*2; j+=Block.SIZE) {
-                Leaf leaf = new Leaf(gameObjects, new Vector2(i,j), LEAVES_COLOR);
+                Leaf leaf = new Leaf(gameObjects, new Vector2(i,j), LEAVES_COLOR, seed);
                 gameObjects.addGameObject(leaf);
 
 

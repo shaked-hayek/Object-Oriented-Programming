@@ -61,7 +61,7 @@ public class PepseGameManager extends GameManager {
         GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + 2, sun, HALO_COLOR);
         sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
         Tree tree = new Tree(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions,
-                terrain::groundHeightAt);
+                terrain::groundHeightAt, SEED);
         tree.createInRange(-Terrain.WORLD_BUFFER, (int)windowDimensions.x() + Terrain.WORLD_BUFFER);
 
         // Create avatar

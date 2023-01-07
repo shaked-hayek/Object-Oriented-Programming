@@ -19,10 +19,12 @@ import java.util.Random;
 public class Leaf extends Block {
     private static final String LEAF_TAG = "leaf";
     private static final int CYCLE_LENGTH = 5;
+    private static final Float ANGLE = 8f;
     private final Random rand;
     private final GameObjectCollection gameObjects;
     private final Vector2 topLeftCorner;
-//    private final int fadeOutTime;
+    private final int seed;
+    //    private final int fadeOutTime;
     private Transition<Float> angleTransition;
     private Transition<Vector2> widthTransition;
     private ScheduledTask scheduledMoveTask;
@@ -31,12 +33,13 @@ public class Leaf extends Block {
 
     public Leaf(GameObjectCollection gameObjects,
                 Vector2 topLeftCorner,
-                Color color){
+                Color color, int seed){
 
         super(topLeftCorner,new RectangleRenderable(ColorSupplier.approximateColor(color)));
 
         this.gameObjects = gameObjects;
         this.topLeftCorner = topLeftCorner;
+        this.seed = seed;
         this.rand = new Random();
 //        leaf.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         physics().setMass(0);
@@ -63,8 +66,8 @@ public class Leaf extends Block {
         this.angleTransition = new Transition<>(
                 this,
                 this.renderer()::setRenderableAngle,
-                10f,
-                -10f,
+                ANGLE,
+                -ANGLE,
                 Transition.LINEAR_INTERPOLATOR_FLOAT,
                 CYCLE_LENGTH,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
