@@ -1,11 +1,13 @@
 package pepse.world.trees;
 
 import danogl.GameObject;
+import danogl.collisions.Collision;
 import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
 import danogl.components.ScheduledTask;
 import danogl.components.Transition;
 import danogl.gui.rendering.RectangleRenderable;
+import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
 import pepse.world.Block;
@@ -15,28 +17,34 @@ import java.awt.*;
 import java.util.Objects;
 import java.util.Random;
 
-//
+
 public class Leaf extends Block {
     private static final String LEAF_TAG = "leaf";
     private static final int CYCLE_LENGTH = 5;
+    private static final Float ANGLE = 8f;
     private final Random rand;
     private final GameObjectCollection gameObjects;
     private final Vector2 topLeftCorner;
-//    private final int fadeOutTime;
+    private final int seed;
+    private final Color color;
+    //    private final int fadeOutTime;
     private Transition<Float> angleTransition;
     private Transition<Vector2> widthTransition;
     private ScheduledTask scheduledMoveTask;
     private ScheduledTask scheduledFallTask;
     private Transition<Float> fallTransition;
+    private ScheduledTask scheduledBornTask;
 
     public Leaf(GameObjectCollection gameObjects,
                 Vector2 topLeftCorner,
-                Color color){
+                Color color, int seed){
 
         super(topLeftCorner,new RectangleRenderable(ColorSupplier.approximateColor(color)));
 
         this.gameObjects = gameObjects;
         this.topLeftCorner = topLeftCorner;
+        this.color = color;
+        this.seed = seed;
         this.rand = new Random();
 //        leaf.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         physics().setMass(0);
@@ -58,13 +66,23 @@ public class Leaf extends Block {
         return Objects.equals(other.getTag(), Terrain.TAG_NAME);
     }
 
+    @Override
+    public void onCollisionEnter(GameObject other, Collision collision) {
+        super.onCollisionEnter(other, collision);
+//        removeComponent(this.fallTransition);
+//        fallTransition = null;
+        setVelocity(Vector2.ZERO);
+
+
+    }
+
     void moveTransition(){
 
         this.angleTransition = new Transition<>(
                 this,
                 this.renderer()::setRenderableAngle,
-                10f,
-                -10f,
+                ANGLE,
+                -ANGLE,
                 Transition.LINEAR_INTERPOLATOR_FLOAT,
                 CYCLE_LENGTH,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
@@ -73,8 +91,8 @@ public class Leaf extends Block {
         widthTransition = new Transition<>(
                 this,
                 this::setDimensions,
-                new Vector2(getDimensions().mult(0.8f)),
-                new Vector2(getDimensions().mult(1.1f)),
+                getDimensions().mult(0.8f),
+                getDimensions().mult(1.1f),
                 Transition.LINEAR_INTERPOLATOR_VECTOR,
                 CYCLE_LENGTH,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
@@ -85,25 +103,38 @@ public class Leaf extends Block {
         float waitTimeMove = (rand.nextInt(300))/(float)100;
         float waitTimeFall = (rand.nextInt(20000))/(float)100;
         scheduledMoveTask = new ScheduledTask(this, waitTimeMove, false, this::moveTransition);
-        scheduledFallTask = new ScheduledTask(this, waitTimeFall, true, this::fallTransition);
+        scheduledFallTask = new ScheduledTask(this, waitTimeFall, false, this::fallTransition);
+
+//        float waitTimeBornAgain = (rand.nextInt(2000))/(float)100;
+//        scheduledBornTask = new ScheduledTask(this, waitTimeBornAgain, false, this::bornAgain);
 
     }
 
     void fallTransition() {
 
+        removeComponent(angleTransition);
+        removeComponent(widthTransition);
+
+
+        int fadeOutTime = rand.nextInt(30);
+        int bornAgainTime = rand.nextInt(20);
+
+        this.renderer().fadeOut(fadeOutTime, ()-> new ScheduledTask(
+                this,
+                bornAgainTime,
+                false,
+                this::bornAgain));
         this.transform().setVelocityY(60);
 
-        int fadeOutTime = rand.nextInt(120);
 
-        this.fallTransition = new Transition<>(
-                this,
-                this.renderer()::fadeOut,
-                10f,
-                -10f,
-                Transition.LINEAR_INTERPOLATOR_FLOAT,
-                fadeOutTime,
-                Transition.TransitionType.TRANSITION_ONCE,
-                null);
+    }
+
+    void bornAgain(){
+        setTopLeftCorner(topLeftCorner);
+
+        this.transform().setVelocity(Vector2.ZERO);
+        renderer().setOpaqueness(1f);
+        scheduledTransitionTask();
     }
 
 }
