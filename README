@@ -2,7 +2,7 @@ shaked.hayek
 shirlevy
 
 
-## UML explanation
+## UML explanation ##
 At the beginning we assumed all classes of objects (except leaves maybe) will be used by the GameManager. As
 well, we saw that the ground and leaves would are using Block - so we assumed both will extend it. We thought
 the Tree should extend Leaf at some way as well.  Also, we didn't exactly understand when we'll use Utils and
@@ -17,7 +17,7 @@ After we worked on the project for a while, we understood we could use the objec
 This way we made sure each class has it's own clear responsibility, as well as created order in the project.
 
 
-## Endless world
+## Endless world ##
 In order to make the world endless and have a minimum of calculations to do, we chose to have only few blocks
 in each direction beyond the screen shown - a buffer. When the avatar moves a distance larger than half the
 buffer, we create the world on one side, and remove it on the other side, such that each side will have the
@@ -33,7 +33,7 @@ To deal with the leaves we had a separate hash map that maps x coordinate to lis
 of the leaves block is determined by the size of the stem, we can recreate it easily.
 
 
-## Tree choices
+## Tree choices ##
 
 Tree:
 * We needed to know what height to make each tree. That is, what is the height of the ground at a certain
@@ -68,9 +68,7 @@ before). we create it's transitions again.
 not necessary (as in - the avatar is far from them in the world so they are not seen).
 
 
-
-
-## Design choices
+## Design choices ##
 * Avatar's energy reduction - We felt that subtracting energy only when the flying keys are pressed seemed 
 less optimal. We wanted to reduce energy as long as the avatar is in the sky and not jumping - because this
 is the time he is actually flying. So we decided to regard flying time as all time after the flying keys were
@@ -89,7 +87,7 @@ logical and smooth. For example, having different animation for jumping up and j
 locations.
 
 
-## BONUS
+## BONUS ##
 * We created the avatar as a penguin, and added different animations for flying, jumping, walking and 
 standing.
 * Because the avatar is a penguin, we made the ground in a snow color.
