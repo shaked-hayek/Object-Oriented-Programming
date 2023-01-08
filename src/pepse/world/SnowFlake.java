@@ -53,9 +53,7 @@ public class SnowFlake extends Block{
      */
     @Override
     public boolean shouldCollideWith(GameObject other) {
-//        return Objects.equals(other.getTag(), Terrain.GROUND_TAG);
-        return Objects.equals(other.getTag(), Terrain.GROUND_TAG) ||
-                Objects.equals(other.getTag(), Tree.TREE_TAG);
+        return Objects.equals(other.getTag(), Terrain.GROUND_TAG);
     }
 
     /**
