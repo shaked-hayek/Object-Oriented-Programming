@@ -29,6 +29,9 @@ public class PepseGameManager extends GameManager {
     private static final float MAX_RAND_SNOW = 10;
     private static final float THRESHOLD_SNOW = 0.15f;
     private static final float INIT_Y_SNOW = -400;
+    private static final float TWO_PARTS = 2;
+    private static final int ADD_1 = 1;
+    private static final int ADD_2 = 2;
     private ImageReader imageReader;
     private SoundReader soundReader;
     private WindowController windowController;
@@ -119,7 +122,8 @@ public class PepseGameManager extends GameManager {
      * creates an avatar - shaped as penguin
      */
     private void createAvatar() {
-        float avatarLeftCorr = (float) (Block.SIZE * (Math.floor((windowDimensions.x() / 2) / Block.SIZE)));
+        float avatarLeftCorr =
+                (float) (Block.SIZE * (Math.floor((windowDimensions.x() / TWO_PARTS) / Block.SIZE)));
         float avatarTopCorr = terrain.groundHeightAt(avatarLeftCorr) - Avatar.AVATAR_HEIGHT;
         Vector2 initialAvatarLocation = new Vector2(avatarLeftCorr, avatarTopCorr);
         avatar = Avatar.create(gameObjectCollection, AVATAR_LAYER,
@@ -142,8 +146,9 @@ public class PepseGameManager extends GameManager {
         GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
         terrain = new Terrain(gameObjectCollection, TERRAIN_BASE_LAYER, windowDimensions, SEED);
         GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, CYCLE_LENGTH);
-        GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + 1, windowDimensions,CYCLE_LENGTH);
-        GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + 2, sun, HALO_COLOR);
+        GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + ADD_1, windowDimensions,
+                CYCLE_LENGTH);
+        GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + ADD_2, sun, HALO_COLOR);
         sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
         tree = new Tree(gameObjectCollection, TREE_LAYER, LEAF_LAYER, windowDimensions,
                 terrain::groundHeightAt, SEED);
