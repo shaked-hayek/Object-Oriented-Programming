@@ -33,6 +33,9 @@ pressed and avatar didn't collide with anything and energy is still not 0.
 * Utils - We chose to create a utils class to hold functions we used a few times in different places in the
 project, in order to minimize length of code in the classes, and have a constant method to calculate the
 world data.
+* In order to minimize the amount of calculations in each frame, we put the top level of blocks in
+terrain in a different layer than the rest of the blocks. We made the layer of the top level the only layer
+that we need to calculate collisions on. This way there were less collision calculations.
 * Leaf and SnowFlake - We chose to have separate classes for leaf and snowflake, because they had attributes
 that are unique to them.
 * Animation - We worked on having the right animation for each state of the avatar and making the game feel

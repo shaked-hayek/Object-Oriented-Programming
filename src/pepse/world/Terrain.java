@@ -87,12 +87,7 @@ public class Terrain {
                         new Vector2(currentX, topY + j * Block.SIZE),
                         blockRender
                 );
-                // Put only the top block in groundLayer
-                if (j == 0) {
-                    gameObjects.addGameObject(block, groundLayer);
-                } else {
-                    gameObjects.addGameObject(block, groundLayer - 1);
-                }
+                gameObjects.addGameObject(block, chooseBlockLayer(j));
                 blocksList[j] = block;
                 block.setTag(GROUND_TAG);
             }
@@ -110,19 +105,29 @@ public class Terrain {
         int maxXFixed = Utils.getFixedMax(maxX);
 
         for (int currentX = minXFixed; currentX < maxXFixed; currentX+=Block.SIZE) {
-            boolean first = true;
             if (!blockMap.containsKey(currentX)) {
                 continue;
             }
+            int j = 0;
             for (Block block : blockMap.get(currentX)) {
-                if (first) {
-                    gameObjects.removeGameObject(block, groundLayer);
-                    first = false;
-                } else {
-                    gameObjects.removeGameObject(block, groundLayer - 1);
-                }
+                gameObjects.removeGameObject(block, chooseBlockLayer(j));
+                j++;
             }
             blockMap.remove(currentX);
+        }
+    }
+
+    /**
+     * According to the height of block, decide what layer it should be.
+     * We chose to Put only the top block in groundLayer.
+     * @param blockHeightInCol  The place of block in column
+     * @return  layer number
+     */
+    private int chooseBlockLayer(int blockHeightInCol) {
+        if (blockHeightInCol == 0) {
+            return groundLayer;
+        } else {
+            return groundLayer - 1;
         }
     }
 
