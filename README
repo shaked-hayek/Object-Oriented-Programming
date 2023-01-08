@@ -21,6 +21,10 @@ of the leaves block is determined by the size of the stem, we can recreate it ea
 
 ## Tree choices
 
+* We needed to know what height to make each tree. That is, what is the height of the ground at a certain
+x coordinate. We chose to pass as argument to Tree class the function for calculating the height of the
+ground, that is a static function in Terrain class. That way Tree class has all the info it need for creating
+trees and doesn't have access to other unnecessary information.
 * We chose not to have two trees one after the other, so that the view will look good, and also not have a
 tree right in the middle of the screen when we start, so that there won't be a tree in the place that we
 create the avatar.
