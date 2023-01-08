@@ -24,28 +24,28 @@ public class Leaf extends Block {
     private final Random rand;
     private final GameObjectCollection gameObjects;
     private final Vector2 topLeftCorner;
-    private int layer;
-    private final int seed;
     private final Color color;
     public final int LAYER = Layer.DEFAULT;
-    //    private final int fadeOutTime;
     private Transition<Float> angleTransition;
     private Transition<Vector2> widthTransition;
-    private ScheduledTask scheduledMoveTask;
-    private ScheduledTask scheduledFallTask;
     private Transition<Float> fallTransition;
     private ScheduledTask scheduledBornTask;
 
+    /**
+     *
+     * @param gameObjects the collection of all game objects currently in the game
+     * @param topLeftCorner the top left corner of the position of the leaf object
+     * @param color of the leaf
+     */
     public Leaf(GameObjectCollection gameObjects,
                 Vector2 topLeftCorner,
-                Color color, int seed){
+                Color color){
 
         super(topLeftCorner,new RectangleRenderable(ColorSupplier.approximateColor(color)));
 
         this.gameObjects = gameObjects;
         this.topLeftCorner = topLeftCorner;
         this.color = color;
-        this.seed = seed;
         this.rand = new Random();
         physics().setMass(0);
         this.setTag(LEAF_TAG);
@@ -64,6 +64,11 @@ public class Leaf extends Block {
         return Objects.equals(other.getTag(), Terrain.GROUND_TAG);
     }
 
+    /**
+     *
+     * @param other the object that the snowflake collided with
+     * @param collision the collision parameters
+     */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
@@ -72,12 +77,20 @@ public class Leaf extends Block {
         transform().setVelocity(Vector2.ZERO);
     }
 
+    /**
+     *
+     * @param other the object that the snowflake collided with
+     * @param collision the collision parameters
+     */
     @Override
     public void onCollisionStay(GameObject other, Collision collision) {
         super.onCollisionStay(other, collision);
         transform().setVelocity(Vector2.ZERO);
     }
 
+    /**
+     * adding moving angle and changing width transition
+     */
     void moveTransition(){
 
         this.angleTransition = new Transition<>(
@@ -101,23 +114,29 @@ public class Leaf extends Block {
                 null);
     }
 
+    /**
+     * schedule all transition tasks
+     */
     void scheduledTransitionTask(){
         float waitTimeMove = (rand.nextInt(300))/(float)100;
         float waitTimeFall = (rand.nextInt(20000))/(float)100;
-        scheduledMoveTask = new ScheduledTask(this, waitTimeMove, false, this::moveTransition);
-        scheduledFallTask = new ScheduledTask(this, waitTimeFall, false, this::fallTransition);
+        ScheduledTask scheduledMoveTask = new ScheduledTask(this, waitTimeMove, false, this::moveTransition);
+        ScheduledTask scheduledFallTask = new ScheduledTask(this, waitTimeFall, false, this::fallTransition);
 
 //        float waitTimeBornAgain = (rand.nextInt(2000))/(float)100;
 //        scheduledBornTask = new ScheduledTask(this, waitTimeBornAgain, false, this::bornAgain);
 
     }
 
+    /**
+     * add falling leaf transition
+     */
     void fallTransition() {
         removeComponent(angleTransition);
         removeComponent(widthTransition);
 
         int fadeOutTime = rand.nextInt(30);
-        int bornAgainTime = rand.nextInt(20);
+        int bornAgainTime = rand.nextInt(4,20);
 
         this.renderer().fadeOut(fadeOutTime, ()-> new ScheduledTask(
                 this,

@@ -57,7 +57,7 @@ public class SnowFlake extends Block{
     /**
      *
      * @param other the object that the snowflake collided with
-     * @param collision
+     * @param collision the collision parameters
      */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {

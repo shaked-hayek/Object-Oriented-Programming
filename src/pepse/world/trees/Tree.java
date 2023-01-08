@@ -140,7 +140,7 @@ public class Tree {
         List<Leaf> leafList = new ArrayList<>();
         for (float i = topLeftSquare.x(); i <= topLeftSquare.x()+leavesSquareEdge*2; i+=Block.SIZE) {
             for (float j = topLeftSquare.y(); j <= topLeftSquare.y() + leavesSquareEdge*2; j+=Block.SIZE) {
-                Leaf leaf = new Leaf(gameObjects, new Vector2(i,j), LEAVES_COLOR, seed);
+                Leaf leaf = new Leaf(gameObjects, new Vector2(i,j), LEAVES_COLOR);
                 gameObjects.addGameObject(leaf, leaf.LAYER);
                 leafList.add(leaf);
             }
