@@ -26,6 +26,14 @@ public class Tree {
     private final HashMap<Integer, Block[]> treeStemMap;
     private final Map<Float, List<Leaf>> leafMap;
 
+    /**
+     * constructor
+     * @param gameObjects the collection of all game objects currently in the game
+     * @param layer of tree
+     * @param windowDimensions of game
+     * @param groundHeightAt function that gets x-coordinate and returns the height of the ground at x
+     * @param seed of game, for random
+     */
     public Tree(GameObjectCollection gameObjects,
                 int layer,
                 Vector2 windowDimensions,
@@ -42,6 +50,11 @@ public class Tree {
         this.groundHeightAt = groundHeightAt;
     }
 
+    /**
+     *
+     * @param x coordinate
+     * @return true if x coordinate is near a tree, false otherwise
+     */
     private boolean isNextToTree(float x) {
         int prevX = (int) x - Block.SIZE;
         int nextX = (int) x - Block.SIZE;
@@ -49,6 +62,11 @@ public class Tree {
                 (treeStemMap.containsKey(nextX) && treeStemMap.get(nextX) != null);
     }
 
+    /**
+     * creates trees randomly between minX-maxX coordinates
+     * @param minX coordinate
+     * @param maxX coordinate
+     */
     public void createInRange(int minX, int maxX) {
         float randToPlant;
 
@@ -80,6 +98,11 @@ public class Tree {
 
     }
 
+    /**
+     * removes trees between minX-maxX coordinates - and saves in the hashMap
+     * @param minX coordinate
+     * @param maxX coordinate
+     */
     public void RemoveInRange(int minX, int maxX) {
         int minXFixed = Utils.getFixedMin(minX);
         int maxXFixed = Utils.getFixedMax(maxX);
@@ -104,12 +127,24 @@ public class Tree {
         }
     }
 
+    /**
+     * plants a tree in x-coordinate, adding all tree stem blocks to an array
+     * @param x coordinate
+     * @param size of tree
+     * @return an array of blocks of tree stem
+     */
     private Block[] plant(float x, int size) {
         Block[] stemBlocks = plantTreeStem(x, size);
         plantTreeLeaves(stemBlocks[stemBlocks.length - 1]);
         return stemBlocks;
     }
 
+    /**
+     * plants a tree stem in x-coordinate, adding all tree stem blocks to an array
+     * @param x coordinate
+     * @param numBlocks in tree
+     * @return an array of blocks of tree stem
+     */
     private Block[] plantTreeStem(float x, int numBlocks) {
         float stemBottom = groundHeightAt.apply(x);
         if (numBlocks == GET_RAND_SIZE) {
@@ -129,6 +164,10 @@ public class Tree {
         return stemBlocks;
     }
 
+    /**
+     * plants tree leaves for the tree, adding all leaves blocks to a list
+     * @param topBlock of tree - so plant leaves around it
+     */
     private void plantTreeLeaves(Block topBlock){
         int blocksInTree =
                 (int) ((groundHeightAt.apply(topBlock.getTopLeftCorner().x())) - topBlock.getTopLeftCorner().y())
