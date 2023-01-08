@@ -17,7 +17,7 @@ public class SnowFlake extends Block{
     /**
      * snow tag name
      */
-    private static final String SNOW_TAG = "snow";
+    public static final String SNOW_TAG = "snow";
     /**
      * time for the snow to disappear after touching the ground
      */
@@ -42,6 +42,7 @@ public class SnowFlake extends Block{
 
         physics().setMass(0);
         this.gameObjects = gameObjects;
+        this.setTag(SNOW_TAG);
     }
 
     /**

@@ -6,8 +6,16 @@ import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 
 public class Block extends GameObject {
+    /**
+     * size of each block
+     */
     public static final int SIZE = 30;
 
+    /**
+     * constructor
+     * @param topLeftCorner the top left corner of the position of the block object
+     * @param renderable of block object
+     */
     public Block(Vector2 topLeftCorner, Renderable renderable) {
         super(topLeftCorner, Vector2.ONES.mult(SIZE), renderable);
         physics().preventIntersectionsFromDirection(Vector2.ZERO);
