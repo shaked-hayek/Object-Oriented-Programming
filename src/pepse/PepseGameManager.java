@@ -42,6 +42,8 @@ public class PepseGameManager extends GameManager {
     private static final int LEAF_LAYER = Layer.STATIC_OBJECTS + 1;
     private static final int TREE_LAYER = Layer.STATIC_OBJECTS;
     private static final int TERRAIN_BASE_LAYER = Layer.STATIC_OBJECTS - 1;
+    private static final int ENERGY_TEXT_DIST = 10;
+    private static final int ENERGY_TEXT_SIZE = 40;
 
     private static float currentMiddleX;
     private static float worldEndRight;
@@ -86,8 +88,9 @@ public class PepseGameManager extends GameManager {
     }
 
     private void createEnergy() {
-        EnergyText energyText = new EnergyText(new Vector2(10, 10), new Vector2(40, 40));
-        this.gameObjects().addGameObject(energyText, Layer.BACKGROUND + 1);
+        EnergyText energyText = new EnergyText(new Vector2(ENERGY_TEXT_DIST, ENERGY_TEXT_DIST),
+                new Vector2(ENERGY_TEXT_SIZE, ENERGY_TEXT_SIZE));
+        this.gameObjects().addGameObject(energyText, Layer.UI);
     }
 
     private void createAvatar() {
