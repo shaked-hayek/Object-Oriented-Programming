@@ -62,7 +62,7 @@ public class Tree {
             }
             // Check if used to exist tree
             if (treeStemMap.containsKey(i)) {
-                if (treeStemMap.get(i) != null) {
+                if (treeStemMap.get(i) != null && treeStemMap.get(i)[0] == null) {
                     plant((float) i, treeStemMap.get(i).length);
                 }
             } else {
@@ -92,6 +92,7 @@ public class Tree {
             for (Block block : treeStemMap.get(currentX)) {
                 gameObjects.removeGameObject(block, layer);
             }
+            treeStemMap.get(currentX)[0] = null; // Change first block to null to indicate deleted
 
             // remove trees' leaves
             if (!leafMap.containsKey((float) currentX) || leafMap.get((float) currentX) == null) {
