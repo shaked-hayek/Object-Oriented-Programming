@@ -7,9 +7,6 @@ import danogl.collisions.Layer;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
-import pepse.util.Utils;
-import pepse.world.trees.Leaf;
-import pepse.world.trees.Tree;
 
 import java.awt.*;
 import java.util.Objects;
@@ -17,43 +14,51 @@ import java.util.Random;
 
 public class SnowFlake extends Block{
 
+    /**
+     * snow tag name
+     */
     private static final String SNOW_TAG = "snow";
+    /**
+     * time for the snow to disappear after touching the ground
+     */
     private static final float FADE_OUT_TIME = 0.3f ;
+    /**
+     * global game object collection
+     */
     private final GameObjectCollection gameObjects;
-    private final int layer;
-    private final Vector2 windowDimensions;
-    private final int seed;
-    private final Random rand;
-//    private final Color SNOW_COLOR = new Color(200,220,220);
+    /**
+     * speed of snowflake falling down
+     */
+    private static final float SNOW_SPEED = 70;
 
-    private static final float BALL_SPEED = 70;
-//    private final RectangleRenderable renderer;
-
-    public SnowFlake(GameObjectCollection gameObjects, Vector2 windowDimensions, Vector2 topLeftCorner,
-                     int layer, int seed, Color color){
+    /**
+     *
+     * @param gameObjects the collection of all game objects currently in the game
+     * @param topLeftCorner the top left corner of the position of the snowflake object
+     * @param color of the snowflake
+     */
+    public SnowFlake(GameObjectCollection gameObjects, Vector2 topLeftCorner, Color color){
         super(topLeftCorner, new RectangleRenderable(ColorSupplier.approximateColor(color)));
 
         physics().setMass(0);
         this.gameObjects = gameObjects;
-        this.layer = layer;
-        this.windowDimensions = windowDimensions;
-        this.seed = seed;
-        this.rand = new Random();
     }
 
     /**
      *
      * @param other any other object
-     * @return false - so no collision will be made with any obj
+     * @return false - so no collision will be made with any obj except ground
      */
     @Override
     public boolean shouldCollideWith(GameObject other) {
         return Objects.equals(other.getTag(), Terrain.GROUND_TAG);
-//        return Objects.equals(other.getTag(), Terrain.GROUND_TAG) ||
-//                Objects.equals(other.getTag(), Tree.TREE_TAG) ||
-//                Objects.equals(other.getTag(), Leaf.LEAF_TAG);
     }
 
+    /**
+     *
+     * @param other the object that the snowflake collided with
+     * @param collision
+     */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
@@ -61,13 +66,16 @@ public class SnowFlake extends Block{
         this.gameObjects.removeGameObject(this, Layer.STATIC_OBJECTS);
     }
 
+    /**
+     * set random velocity for the snowflake
+     */
     public void setRandomVelocity(){
-        float ballVelX = BALL_SPEED;
+        float ballVelX = SNOW_SPEED;
         Random rand = new Random();
         if (rand.nextBoolean()){
             ballVelX *= -1;
         }
-        this.setVelocity(new Vector2(ballVelX, BALL_SPEED));
+        this.setVelocity(new Vector2(ballVelX, SNOW_SPEED));
     }
 
 }
