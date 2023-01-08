@@ -18,21 +18,94 @@ import java.util.Random;
 
 
 public class Leaf extends Block {
+    /**
+     * Leaf name tag
+     */
     public static final String LEAF_TAG = "leaf";
+    /**
+     * length of moving transition
+     */
     private static final int CYCLE_LENGTH = 5;
+    /**
+     * moving leaf angle
+     */
     private static final Float ANGLE = 8f;
+    /**
+     * minimum leaf dim
+     */
+    private static final float DIM_MIN = 0.8f;
+    /**
+     * maximum leaf dim
+     */
+    private static final float DIM_MAX = 1.1f;
+    /**
+     * wait time for transition - base
+     */
+    private static final float WAIT_TIME_BASE = 100;
+    /**
+     * max time for moving transition
+     */
+    private static final int MOVE_MAX_TIME = 300;
+    /**
+     * max time for falling transition
+     */
+    private static final int FALL_MAX_TIME = 20000;
+    /**
+     * max time for fade out
+     */
+    private static final int FADEOUT_MAX_TIME = 30;
+    /**
+     * min time for a leaf to be born again
+     */
+    private static final int BORN_MIN_TIME = 4;
+    /**
+     * max time for a leaf to be born again
+     */
+    private static final int BORN_MAX_TIME = 20;
+    /**
+     * falling leaf velocity
+     */
+    private static final float FALLING_TREE_VELOCITY = 60;
+    /**
+     * Opaqueness of leaf when being born again
+     */
+    private static final float BORN_OPAQ = 1f;
+    /**
+     * Random object
+     */
     private final Random rand;
+    /**
+     * global game object collection
+     */
     private final GameObjectCollection gameObjects;
+    /**
+     * the top left corner of the position of leaf
+     */
     private final Vector2 topLeftCorner;
+    /**
+     * leaf color
+     */
     private final Color color;
+    /**
+     * leaf layer
+     */
     public final int LAYER = Layer.DEFAULT;
+    /**
+     * moving angle transition
+     */
     private Transition<Float> angleTransition;
+    /**
+     * changing width transition
+     */
     private Transition<Vector2> widthTransition;
+    /**
+     * falling leaf transition
+     */
     private Transition<Float> fallTransition;
-    private ScheduledTask scheduledBornTask;
+
 
     /**
-     *
+     * constructor
      * @param gameObjects the collection of all game objects currently in the game
      * @param topLeftCorner the top left corner of the position of the leaf object
      * @param color of the leaf
@@ -57,7 +130,7 @@ public class Leaf extends Block {
     /**
      *
      * @param other any other object
-     * @return false - so no collision will be made with any obj
+     * @return false - so no collision will be made with any obj except ground
      */
     @Override
     public boolean shouldCollideWith(GameObject other) {
@@ -65,7 +138,7 @@ public class Leaf extends Block {
     }
 
     /**
-     *
+     * leaf stops falling when collided with ground - sets velocity to 0
      * @param other the object that the snowflake collided with
      * @param collision the collision parameters
      */
@@ -78,7 +151,7 @@ public class Leaf extends Block {
     }
 
     /**
-     *
+     * leaf stops falling when collided with ground - sets velocity to 0
      * @param other the object that the snowflake collided with
      * @param collision the collision parameters
      */
@@ -93,6 +166,7 @@ public class Leaf extends Block {
      */
     void moveTransition(){
 
+        //moving angle transition
         this.angleTransition = new Transition<>(
                 this,
                 this.renderer()::setRenderableAngle,
@@ -103,11 +177,12 @@ public class Leaf extends Block {
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
                 null);
 
+        //changing width transition
         widthTransition = new Transition<>(
                 this,
                 this::setDimensions,
-                getDimensions().mult(0.8f),
-                getDimensions().mult(1.1f),
+                getDimensions().mult(DIM_MIN),
+                getDimensions().mult(DIM_MAX),
                 Transition.LINEAR_INTERPOLATOR_VECTOR,
                 CYCLE_LENGTH,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
@@ -118,14 +193,10 @@ public class Leaf extends Block {
      * schedule all transition tasks
      */
     void scheduledTransitionTask(){
-        float waitTimeMove = (rand.nextInt(300))/(float)100;
-        float waitTimeFall = (rand.nextInt(20000))/(float)100;
+        float waitTimeMove = (rand.nextInt(MOVE_MAX_TIME))/WAIT_TIME_BASE;
+        float waitTimeFall = (rand.nextInt(FALL_MAX_TIME))/WAIT_TIME_BASE;
         ScheduledTask scheduledMoveTask = new ScheduledTask(this, waitTimeMove, false, this::moveTransition);
         ScheduledTask scheduledFallTask = new ScheduledTask(this, waitTimeFall, false, this::fallTransition);
-
-//        float waitTimeBornAgain = (rand.nextInt(2000))/(float)100;
-//        scheduledBornTask = new ScheduledTask(this, waitTimeBornAgain, false, this::bornAgain);
-
     }
 
     /**
@@ -135,24 +206,30 @@ public class Leaf extends Block {
         removeComponent(angleTransition);
         removeComponent(widthTransition);
 
-        int fadeOutTime = rand.nextInt(30);
-        int bornAgainTime = rand.nextInt(4,20);
+        int fadeOutTime = rand.nextInt(FADEOUT_MAX_TIME);
+        int bornAgainTime = rand.nextInt(BORN_MIN_TIME,BORN_MAX_TIME);
 
         this.renderer().fadeOut(fadeOutTime, ()-> new ScheduledTask(
                 this,
                 bornAgainTime,
                 false,
                 this::bornAgain));
-        this.transform().setVelocityY(60);
+        this.transform().setVelocityY(FALLING_TREE_VELOCITY);
     }
 
+    /**
+     * creating leaf after it fell from tree
+     */
     void bornAgain(){
         setTopLeftCorner(topLeftCorner);
         this.transform().setVelocity(Vector2.ZERO);
-        renderer().setOpaqueness(1f);
+        renderer().setOpaqueness(BORN_OPAQ);
         scheduledTransitionTask();
     }
 
+    /**
+     * remove all components from tree
+     */
     public void removeLeaf() {
         removeComponent(angleTransition);
         angleTransition = null;

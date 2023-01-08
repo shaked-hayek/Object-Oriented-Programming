@@ -149,7 +149,7 @@ public class PepseGameManager extends GameManager {
         float randToSnow = rand.nextFloat(0, 10);
         if (randToSnow < 0.15) {
             SnowFlake snowFlake = new SnowFlake(gameObjectCollection, new Vector2(i, 10), SNOW_COLOR);
-            snowFlake.setCenter(new Vector2(i, -300));
+            snowFlake.setCenter(new Vector2(i, -400));
             snowFlake.setRandomVelocity();
             gameObjectCollection.addGameObject(snowFlake);
             snowFlake.setTag(SNOW_TAG);

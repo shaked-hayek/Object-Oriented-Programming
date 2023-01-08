@@ -32,7 +32,7 @@ public class SnowFlake extends Block{
     private static final float SNOW_SPEED = 70;
 
     /**
-     *
+     * constructor
      * @param gameObjects the collection of all game objects currently in the game
      * @param topLeftCorner the top left corner of the position of the snowflake object
      * @param color of the snowflake
@@ -55,7 +55,7 @@ public class SnowFlake extends Block{
     }
 
     /**
-     *
+     * snowflake stops falling when collided with ground, and fades out
      * @param other the object that the snowflake collided with
      * @param collision the collision parameters
      */
