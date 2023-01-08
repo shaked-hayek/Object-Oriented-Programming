@@ -12,11 +12,29 @@ import pepse.util.ColorSupplier;
 import java.awt.Color;
 
 public class Sun {
+    /**
+     * size of sun object
+     */
     private static final int SUN_SIZE = 100;
+    /**
+     * finale sun angle going around
+     */
     private static final float FINAL_ANGLE = 360;
+    /**
+     * relative Y location
+     */
     private static final float SUN_Y_RELATIVE_LOCATION = (float) 1.5;
-    private static final String TAG_NAME = "sun";
+    /**
+     * sun tag name
+     */
+    public static final String TAG_NAME = "sun";
 
+    /**
+     *
+     * @param windowDimensions of game
+     * @param angleInSky the angle of sun in sky
+     * @return sun next position
+     */
     private static Vector2 calcSunPosition(Vector2 windowDimensions, float angleInSky){
         Vector2 rotatedVector = Vector2.UP.mult(windowDimensions.y() / 2).rotated(angleInSky);
         float x = (rotatedVector.x() * windowDimensions.x() / windowDimensions.y()) +
@@ -25,6 +43,14 @@ public class Sun {
         return new Vector2(x, y);
     }
 
+    /**
+     *
+     * @param gameObjects the collection of all game objects currently in the game
+     * @param layer of sun in the game
+     * @param windowDimensions of game
+     * @param cycleLength of sun going around
+     * @return sun game object
+     */
     public static GameObject create(
             GameObjectCollection gameObjects,
             int layer,
