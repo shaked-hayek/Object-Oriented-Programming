@@ -93,5 +93,7 @@ locations.
 standing.
 * Because the avatar is a penguin, we made the ground in a snow color.
 * We added snowflakes falling randomly from the sky and fades out when touching the ground, just like snow. We
- don't want snowflakes to collide with other object to not confuse the player too much.
-* We added an energy text bar, with different colors for different energy values.
+ don't want snowflakes to collide with other object to not confuse the player too much. We create snowflakes
+ falling from random coordinates as the game updates.
+* We added an energy text bar, with different colors for different energy values. The text bar is a game
+object that is in a set place, updating as the game goes.
