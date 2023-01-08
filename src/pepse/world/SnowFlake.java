@@ -7,6 +7,8 @@ import danogl.collisions.Layer;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
+import pepse.world.trees.Leaf;
+import pepse.world.trees.Tree;
 
 import java.awt.*;
 import java.util.Objects;
@@ -52,7 +54,9 @@ public class SnowFlake extends Block{
      */
     @Override
     public boolean shouldCollideWith(GameObject other) {
-        return Objects.equals(other.getTag(), Terrain.GROUND_TAG);
+//        return Objects.equals(other.getTag(), Terrain.GROUND_TAG);
+        return Objects.equals(other.getTag(), Terrain.GROUND_TAG) ||
+                Objects.equals(other.getTag(), Tree.TREE_TAG);
     }
 
     /**

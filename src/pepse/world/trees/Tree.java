@@ -17,6 +17,7 @@ public class Tree {
     public static final Color STEM_COLOR = new Color(100, 50, 20);
     public static final Color LEAVES_COLOR = new Color(50, 200, 30);
     public static final int GET_RAND_SIZE = -1;
+    private static final float THRESHOLD_TREE = 0.1f;
     public final Random rand;
     private final int seed;
     private final GameObjectCollection gameObjects;
@@ -87,7 +88,7 @@ public class Tree {
                 Block[] stemBlocks = null;
                 if (!isNextToTree(i)) {
                     randToPlant = rand.nextFloat(0, 1);
-                    if (randToPlant < 0.1) {
+                    if (randToPlant < THRESHOLD_TREE) {
                         stemBlocks = plant((float) i, GET_RAND_SIZE);
                     }
                 }
