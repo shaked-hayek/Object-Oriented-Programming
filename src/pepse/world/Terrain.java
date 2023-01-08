@@ -12,25 +12,34 @@ import java.awt.Color;
 import java.util.HashMap;
 
 
+/**
+ * Class that create and control the Terrain in the world
+ */
 public class Terrain {
-    /**
-     * needs to be added to every value of ground. this way, ground will always be covered by 20+
-     */
-    private static final int TERRAIN_DEPTH = 18;
-    private final float groundHeightAtX0;
-    private final int seed;
-    private final int widthInBlocks;
-    private GameObjectCollection gameObjects;
-    private final int groundLayer;
+    /** Ground tag name */
     public static final String GROUND_TAG = "ground";
-//    private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
+    /** Size of world to build in addition to screen size */
+    public static final int WORLD_BUFFER = 6 * Block.SIZE;
+
+    private static final int TERRAIN_DEPTH = 20;
     private static final Color BASE_GROUND_COLOR = new Color(206, 222, 227);
     private static final float GROUND_START_HEIGHT = (float) 3 / 4;
     private static final int GROUND_SPREAD = 15;
     private static final int GROUND_SHARPNESS = 6 * Block.SIZE;
-    public static final int WORLD_BUFFER = 6 * Block.SIZE;
+    private final float groundHeightAtX0;
+    private final int seed;
+    private final int widthInBlocks;
+    private final int groundLayer;
+    private GameObjectCollection gameObjects;
     private HashMap<Integer, Block[]> blockMap;
 
+    /**
+     * Constructor.
+     * @param gameObjects       Game object collection
+     * @param groundLayer       The layer to put all ground blocks
+     * @param windowDimensions  Size of the window
+     * @param seed              Random seed
+     */
     public Terrain(GameObjectCollection gameObjects,
                    int groundLayer,
                    Vector2 windowDimensions,
@@ -44,14 +53,23 @@ public class Terrain {
         widthInBlocks = (int) (
                 Math.abs(Math.floor((double) -WORLD_BUFFER / Block.SIZE)) +
                 Math.abs(Math.ceil((double) (windowDimensions.x() + WORLD_BUFFER) / Block.SIZE))
-            ) + 1; // For getting uneven number of blocks
+            ) + 1; // Added 1 in order to get uneven number of blocks
         createInRange(-WORLD_BUFFER, (int) windowDimensions.x() + WORLD_BUFFER + Block.SIZE);
     }
 
+    /**
+     * The width in blocks of the terrain.
+     * @return width as int
+     */
     public int getWidthInBlocks() {
         return widthInBlocks;
     }
 
+    /**
+     * Create ground blocks in given range.
+     * @param minX  start range
+     * @param maxX  end range
+     */
     public void createInRange(int minX, int maxX) {
         int minXFixed = Utils.getFixedMin(minX);
         int maxXFixed = Utils.getFixedMax(maxX);
@@ -82,6 +100,11 @@ public class Terrain {
         }
     }
 
+    /**
+     * Remove ground blocks in given range.
+     * @param minX  start range
+     * @param maxX  end range
+     */
     public void removeInRange(int minX, int maxX) {
         int minXFixed = Utils.getFixedMin(minX);
         int maxXFixed = Utils.getFixedMax(maxX);
@@ -103,6 +126,11 @@ public class Terrain {
         }
     }
 
+    /**
+     * Get the ground's height at place x, by noise generator.
+     * @param x the place
+     * @return  ground's height
+     */
     public float groundHeightAt(float x) {
         NoiseGenerator noiseGenerator = new NoiseGenerator(seed);
         float y = (float) noiseGenerator.noise(x / GROUND_SPREAD);
