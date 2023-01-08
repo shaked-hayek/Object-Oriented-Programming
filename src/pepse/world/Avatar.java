@@ -13,9 +13,14 @@ import java.awt.event.KeyEvent;
 import java.util.Objects;
 
 
+/**
+ * Avatar creation class.
+ */
 public class Avatar extends GameObject {
-    public static final float AVATAR_HEIGHT = 34;
-    public static final float AVATAR_WIDTH = 30;
+    /** Avatar width */
+    public static final float AVATAR_WIDTH = 34;
+    /** Avatar height */
+    public static final float AVATAR_HEIGHT = 30;
     private static final float INIT_ENERGY = 100;
     private static final float MIN_ENERGY = 0;
     private static final double ENERGY_CHANGE = 0.5;
@@ -42,12 +47,21 @@ public class Avatar extends GameObject {
     private static double energy;
     private static boolean isFlying = false;
 
+    /**
+     * Constructor.
+     * @param topLeftCorner ignored
+     * @param dimensions    ignored
+     * @param renderable    ignored
+     */
     public Avatar(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable) {
         super(topLeftCorner, dimensions, renderable);
         energy = INIT_ENERGY;
         transform().setAccelerationY(ACCELERATION_Y);
     }
 
+    /**
+     * Create the avatar's animations.
+     */
     private static void createAnimations() {
         animationStanding = imageReader.readImage(AVATAR_IMG_FOLDER + AVATAR_STAND, true);
         animationWalking = new AnimationRenderable(new Renderable[] {
@@ -62,6 +76,15 @@ public class Avatar extends GameObject {
         }, ANIMATION_TIME);
     }
 
+    /**
+     * Create the avatar game object.
+     * @param gameObjects       Game object collection
+     * @param layer             The avatar layer
+     * @param topLeftCorner     Avatar top left corner
+     * @param inputListener     Game input listener
+     * @param imageReader       Game image reader
+     * @return  The avatar game object.
+     */
     public static Avatar create(GameObjectCollection gameObjects,
                                 int layer,
                                 Vector2 topLeftCorner,
@@ -73,7 +96,7 @@ public class Avatar extends GameObject {
 
         Avatar avatar = new Avatar(
                 topLeftCorner,
-                new Vector2(AVATAR_HEIGHT, AVATAR_WIDTH),
+                new Vector2(AVATAR_WIDTH, AVATAR_HEIGHT),
                 animationStanding);
         avatar.physics().preventIntersectionsFromDirection(Vector2.ZERO);
         gameObjects.addGameObject(avatar, layer);
@@ -81,6 +104,9 @@ public class Avatar extends GameObject {
         return avatar;
     }
 
+    /**
+     * Update avatar's horizontal movement if keys were pressed.
+     */
     private void horizontalMovement() {
         transform().setVelocityX(0);
         // Move left
@@ -95,6 +121,9 @@ public class Avatar extends GameObject {
         }
     }
 
+    /**
+     * Update avatar's jumping if keys were pressed.
+     */
     private void jump() {
         if (inputListener.isKeyPressed(KeyEvent.VK_SPACE) && getVelocity().y() == 0) {
             transform().setVelocityX(0);
@@ -102,6 +131,9 @@ public class Avatar extends GameObject {
         }
     }
 
+    /**
+     * Update avatar's flying if keys were pressed.
+     */
     private void fly() {
         if (inputListener.isKeyPressed(KeyEvent.VK_SPACE) &&
                 inputListener.isKeyPressed(KeyEvent.VK_SHIFT) &&
@@ -111,6 +143,9 @@ public class Avatar extends GameObject {
         }
     }
 
+    /**
+     * Update avatar's energy levels according to his actions.
+     */
     private void updateEnergy() {
         if (energy == MIN_ENERGY) {
             isFlying = false;
@@ -126,6 +161,9 @@ public class Avatar extends GameObject {
         }
     }
 
+    /**
+     * Change animation according to avatar actions.
+     */
     private void updateAnimation() {
         if (getVelocity().x() != 0 && getVelocity().y() == 0) {
             renderer().setRenderable(animationWalking);
@@ -140,6 +178,10 @@ public class Avatar extends GameObject {
         }
     }
 
+    /**
+     * Update avatar's moves and animations.
+     * @param deltaTime time interval for update.
+     */
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
@@ -150,6 +192,10 @@ public class Avatar extends GameObject {
         updateAnimation();
     }
 
+    /**
+     * On collision set as not flying, and set Y velocity to 0.
+     * @param other Collided object
+     */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
@@ -159,6 +205,9 @@ public class Avatar extends GameObject {
         }
     }
 
+    /**
+     * @return Energy level
+     */
     public static double getEnergy() {
         return energy;
     }
