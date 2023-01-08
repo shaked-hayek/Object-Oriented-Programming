@@ -22,6 +22,8 @@ import java.util.Random;
 
 
 public class PepseGameManager extends GameManager {
+    private static final String GAME_NAME = "Pepse";
+    private static final Vector2 GAME_RES = new Vector2(1600, 900);
     private static final String SNOW_TAG = "snow";
     private static final float BUFFER_BASE = 2f;
     private static final float AVATAR_MULT_FACTOR = 0.5f;
@@ -56,7 +58,16 @@ public class PepseGameManager extends GameManager {
     private SnowFlake snowFlake;
 
     public static void main(String[] args) {
-        new PepseGameManager().run();
+        new PepseGameManager(GAME_NAME, GAME_RES).run();
+    }
+
+    /**
+     * This is the constructor of a pepse, which calls its super (GameManager)'s constructor.
+     * @param windowTitle the game's title
+     * @param windowDimensions the game's dimensions
+     */
+    public PepseGameManager(String windowTitle, Vector2 windowDimensions) {
+        super(windowTitle, windowDimensions);
     }
 
     @Override
