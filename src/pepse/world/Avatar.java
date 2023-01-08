@@ -20,8 +20,8 @@ public class Avatar extends GameObject {
     private static final float MIN_ENERGY = 0;
     private static final double ENERGY_CHANGE = 0.5;
     private static final int VELOCITY_X = 200;
-    private static final int VELOCITY_Y = 200;
-    private static final int ACCELERATION_Y = 200;
+    private static final int VELOCITY_Y = 300;
+    private static final int ACCELERATION_Y = 300;
     private static final float ANIMATION_TIME = .5f;
     private static final String AVATAR_IMG_FOLDER = "assets/";
     private static final String AVATAR_STAND = "avatar_stand.png";
