@@ -23,6 +23,11 @@ import java.util.Random;
 
 public class PepseGameManager extends GameManager {
     private static final String SNOW_TAG = "snow";
+    private static final float BUFFER_BASE = 2f;
+    private static final float AVATAR_MULT_FACTOR = 0.5f;
+    private static final float MAX_RAND_SNOW = 10;
+    private static final float THRESHOLD_SNOW = 0.15f;
+    private static final float INIT_Y_SNOW = -400;
     private ImageReader imageReader;
     private SoundReader soundReader;
     private WindowController windowController;
@@ -86,12 +91,12 @@ public class PepseGameManager extends GameManager {
                 initialAvatarLocation, inputListener, imageReader);
         setCamera(new Camera(
                 avatar,
-                windowController.getWindowDimensions().mult(0.5f).subtract(initialAvatarLocation),
+                windowController.getWindowDimensions().mult(AVATAR_MULT_FACTOR).subtract(initialAvatarLocation),
                 windowController.getWindowDimensions(),
                 windowController.getWindowDimensions()
         ));
         currentMiddleX = avatar.getCenter().x();
-        blocksSideFromAvatar = (int) Math.floor(terrain.getWidthInBlocks() / 2f);
+        blocksSideFromAvatar = (int) Math.floor(terrain.getWidthInBlocks() / BUFFER_BASE);
 
     }
 
@@ -121,9 +126,9 @@ public class PepseGameManager extends GameManager {
     private void updateEndlessWorld() {
         double movementSize = avatar.getCenter().x() - currentMiddleX;
         int distToAdd = 0;
-        if (Math.abs(movementSize) > (Terrain.WORLD_BUFFER / 2f)) { // We moved
+        if (Math.abs(movementSize) > (Terrain.WORLD_BUFFER / BUFFER_BASE)) { // We moved
             // We moved right
-            if (movementSize > (Terrain.WORLD_BUFFER / 2f)) {
+            if (movementSize > (Terrain.WORLD_BUFFER / BUFFER_BASE)) {
                 int numBlocksRight = (int) (Math.floor((worldEndRight - avatar.getCenter().x()) / Block.SIZE));
                 distToAdd = (blocksSideFromAvatar - numBlocksRight) * Block.SIZE;
                 createWorldInRange((int) worldEndRight, (int) worldEndRight + distToAdd);
@@ -131,7 +136,7 @@ public class PepseGameManager extends GameManager {
                 worldEndLeft = worldEndLeft + distToAdd;
                 worldEndRight = worldEndRight + distToAdd;
                 // We moved left
-            } else if (movementSize < -(Terrain.WORLD_BUFFER / 2f)) {
+            } else if (movementSize < -(Terrain.WORLD_BUFFER / BUFFER_BASE)) {
                 int numBlocksLeft = (int) (Math.floor((avatar.getCenter().x() - worldEndLeft) / Block.SIZE));
                 distToAdd = (blocksSideFromAvatar - numBlocksLeft) * Block.SIZE;
                 createWorldInRange((int) worldEndLeft - distToAdd, (int) worldEndLeft);
@@ -146,13 +151,13 @@ public class PepseGameManager extends GameManager {
     void updateSnow(){
 
         int i=rand.nextInt((int) worldEndLeft, (int) worldEndRight);
-        float randToSnow = rand.nextFloat(0, 10);
-        if (randToSnow < 0.15) {
-            SnowFlake snowFlake = new SnowFlake(gameObjectCollection, new Vector2(i, 10), SNOW_COLOR);
-            snowFlake.setCenter(new Vector2(i, -400));
+        float randToSnow = rand.nextFloat(0, MAX_RAND_SNOW);
+        if (randToSnow < THRESHOLD_SNOW) {
+            SnowFlake snowFlake = new SnowFlake(gameObjectCollection, new Vector2(i, 0), SNOW_COLOR);
+            snowFlake.setCenter(new Vector2(i, INIT_Y_SNOW));
             snowFlake.setRandomVelocity();
             gameObjectCollection.addGameObject(snowFlake);
-            snowFlake.setTag(SNOW_TAG);
+//            snowFlake.setTag(SNOW_TAG);
         }
     }
 
