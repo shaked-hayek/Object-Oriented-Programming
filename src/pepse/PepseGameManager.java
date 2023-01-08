@@ -97,7 +97,6 @@ public class PepseGameManager extends GameManager {
         worldEndRight = windowDimensions.x() + Terrain.WORLD_BUFFER;
         worldEndLeft = -Terrain.WORLD_BUFFER;
 
-
         // Create world
         createWorld();
 

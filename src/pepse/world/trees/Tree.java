@@ -84,7 +84,8 @@ public class Tree {
             // Check if used to exist tree
             if (treeStemMap.containsKey(i)) {
                 if (treeStemMap.get(i) != null && treeStemMap.get(i)[0] == null) {
-                    plant((float) i, treeStemMap.get(i).length);
+                    Block[] stemBlocks = plant((float) i, treeStemMap.get(i).length);
+                    treeStemMap.put(i, stemBlocks);
                 }
             } else {
                 Block[] stemBlocks = null;
