@@ -196,8 +196,10 @@ public class Leaf extends Block {
     void scheduledTransitionTask(){
         float waitTimeMove = (rand.nextInt(MOVE_MAX_TIME))/WAIT_TIME_BASE;
         float waitTimeFall = (rand.nextInt(FALL_MAX_TIME))/WAIT_TIME_BASE;
-        ScheduledTask scheduledMoveTask = new ScheduledTask(this, waitTimeMove, false, this::moveTransition);
-        ScheduledTask scheduledFallTask = new ScheduledTask(this, waitTimeFall, false, this::fallTransition);
+        ScheduledTask scheduledMoveTask = new ScheduledTask(
+                this, waitTimeMove, false, this::moveTransition);
+        ScheduledTask scheduledFallTask = new ScheduledTask(
+                this, waitTimeFall, false, this::fallTransition);
     }
 
     /**

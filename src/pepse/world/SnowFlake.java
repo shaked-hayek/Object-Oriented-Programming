@@ -7,7 +7,6 @@ import danogl.collisions.Layer;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
-import pepse.world.trees.Leaf;
 import pepse.world.trees.Tree;
 
 import java.awt.*;

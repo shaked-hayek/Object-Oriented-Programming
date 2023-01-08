@@ -4,6 +4,7 @@ import java.util.Random;
 
 /**
  * Code from https://gist.github.com/alksily/7a85a1898e65c936f861ee93516e397d
+ * (Not written by us)
  */
 public class NoiseGenerator {
     private double seed;

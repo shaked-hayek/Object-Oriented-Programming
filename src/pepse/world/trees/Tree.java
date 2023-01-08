@@ -77,7 +77,8 @@ public class Tree {
 
         for (int i = minXFixed; i <= maxXFixed; i += Block.SIZE) {
             // Don't plant tree in the middle
-            if (i < windowDimensions.x() / BASE + Block.SIZE && i > windowDimensions.x() / BASE - Block.SIZE) {
+            if (i < windowDimensions.x() / BASE + Block.SIZE &&
+                    i > windowDimensions.x() / BASE - Block.SIZE) {
                 continue;
             }
             // Check if used to exist tree
@@ -170,17 +171,17 @@ public class Tree {
      * @param topBlock of tree - so plant leaves around it
      */
     private void plantTreeLeaves(Block topBlock){
-        int blocksInTree =
-                (int) ((groundHeightAt.apply(topBlock.getTopLeftCorner().x())) - topBlock.getTopLeftCorner().y())
-                        /Block.SIZE;
-        int leavesSquareEdge = Math.max(blocksInTree/BASE_TREE, 1) * Block.SIZE;
+        int blocksInTree = (int) ((groundHeightAt.apply(topBlock.getTopLeftCorner().x())) -
+                        topBlock.getTopLeftCorner().y()) / Block.SIZE;
+        int leavesSquareEdge = Math.max(blocksInTree / BASE_TREE, 1) * Block.SIZE;
 
         // create a square of leaves at size leavesSquareEdge where topBlock.center is the center
         Vector2 topLeftSquare = topBlock.getTopLeftCorner().subtract(new Vector2(leavesSquareEdge,
                 leavesSquareEdge));
         List<Leaf> leafList = new ArrayList<>();
-        for (float i = topLeftSquare.x(); i <= topLeftSquare.x()+leavesSquareEdge*BASE; i+=Block.SIZE) {
-            for (float j = topLeftSquare.y(); j <= topLeftSquare.y() + leavesSquareEdge*BASE; j+=Block.SIZE) {
+        for (float i = topLeftSquare.x(); i <= topLeftSquare.x() + leavesSquareEdge * BASE; i += Block.SIZE) {
+            for (float j = topLeftSquare.y(); j <= topLeftSquare.y() + leavesSquareEdge * BASE;
+                 j += Block.SIZE) {
                 Leaf leaf = new Leaf(gameObjects, new Vector2(i,j), LEAVES_COLOR, leafLayer);
                 gameObjects.addGameObject(leaf, leafLayer);
                 leafList.add(leaf);
