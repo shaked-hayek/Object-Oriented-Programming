@@ -71,14 +71,6 @@ public class PepseGameManager extends GameManager {
         //create energy text box
         createEnergy();
 
-
-//
-//        this.snowFlake = new SnowFlake(gameObjectCollection, windowDimensions, Vector2.ZERO,
-//                Layer.STATIC_OBJECTS, SEED, SNOW_COLOR);
-//        this.snowFlake.createInRange(-Terrain.WORLD_BUFFER, (int) windowDimensions.x() + Terrain.WORLD_BUFFER);
-
-
-
     }
 
     private void createEnergy() {
