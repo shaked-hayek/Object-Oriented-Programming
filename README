@@ -47,7 +47,8 @@ create the avatar.
 * We ensured a tree can't be tall as the screen goes, but only 3/4 of it at most.
 * We created the leaves as a square (as described in the instructions) such that the bottom of the leaves
 square is about 1/4 of the stem size from the top, and every edge is about 1/2 the stem size. Minimum size of
-leaves will be edges of 2.
+leaves will be edges of 2. We did it so trees will not take all of the screen, and would have good real
+proportions.
 * At every point of the game, when we get to new ground (that the avatar hasn't visited before), we get a
 random number for every x-coordinate, and so, in a chance of 10% we plant a tree in random size as described,
 and create it's leaves accordingly.
