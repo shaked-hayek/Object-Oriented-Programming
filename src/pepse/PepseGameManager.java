@@ -63,17 +63,30 @@ public class PepseGameManager extends GameManager {
         worldEndLeft = -Terrain.WORLD_BUFFER;
 
         // Create world
-        GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
-        terrain = new Terrain(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions, SEED);
-        GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, CYCLE_LENGTH);
-        GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + 1, windowDimensions,CYCLE_LENGTH);
-        GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + 2, sun, HALO_COLOR);
-        sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
-        tree = new Tree(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions,
-                terrain::groundHeightAt, SEED);
-        tree.createInRange(-Terrain.WORLD_BUFFER, (int) windowDimensions.x() + Terrain.WORLD_BUFFER);
+        createWorld();
 
         // Create avatar
+        createAvatar();
+
+        //create energy text box
+        createEnergy();
+
+
+//
+//        this.snowFlake = new SnowFlake(gameObjectCollection, windowDimensions, Vector2.ZERO,
+//                Layer.STATIC_OBJECTS, SEED, SNOW_COLOR);
+//        this.snowFlake.createInRange(-Terrain.WORLD_BUFFER, (int) windowDimensions.x() + Terrain.WORLD_BUFFER);
+
+
+
+    }
+
+    private void createEnergy() {
+        EnergyText energyText = new EnergyText(new Vector2(10, 10), new Vector2(40, 40));
+        this.gameObjects().addGameObject(energyText, Layer.BACKGROUND + 1);
+    }
+
+    private void createAvatar() {
         float avatarLeftCorr = (float) (Block.SIZE * (Math.floor((windowDimensions.x() / 2) / Block.SIZE)));
         float avatarTopCorr = terrain.groundHeightAt(avatarLeftCorr) - Avatar.AVATAR_HEIGHT;
         Vector2 initialAvatarLocation = new Vector2(avatarLeftCorr, avatarTopCorr);
@@ -88,15 +101,18 @@ public class PepseGameManager extends GameManager {
         currentMiddleX = avatar.getCenter().x();
         blocksSideFromAvatar = (int) Math.floor(terrain.getWidthInBlocks() / 2f);
 
-        EnergyText energyText = new EnergyText(new Vector2(10, 10), new Vector2(40, 40));
-        this.gameObjects().addGameObject(energyText, Layer.BACKGROUND + 1);
+    }
 
-//
-//        this.snowFlake = new SnowFlake(gameObjectCollection, windowDimensions, Vector2.ZERO,
-//                Layer.STATIC_OBJECTS, SEED, SNOW_COLOR);
-//        this.snowFlake.createInRange(-Terrain.WORLD_BUFFER, (int) windowDimensions.x() + Terrain.WORLD_BUFFER);
-
-
+    private void createWorld() {
+        GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
+        terrain = new Terrain(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions, SEED);
+        GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, CYCLE_LENGTH);
+        GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + 1, windowDimensions,CYCLE_LENGTH);
+        GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + 2, sun, HALO_COLOR);
+        sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
+        tree = new Tree(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions,
+                terrain::groundHeightAt, SEED);
+        tree.createInRange(-Terrain.WORLD_BUFFER, (int) windowDimensions.x() + Terrain.WORLD_BUFFER);
 
     }
 
