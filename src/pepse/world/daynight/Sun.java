@@ -23,11 +23,13 @@ public class Sun {
     /**
      * relative Y location
      */
-    private static final float SUN_Y_RELATIVE_LOCATION = (float) 1.5;
+    private static final float SUN_Y_RELATIVE_LOCATION = 1.5f;
     /**
      * sun tag name
      */
     public static final String TAG_NAME = "sun";
+    private static final Float INIT_VAL = 0f;
+    private static final float BASE = 2;
 
     /**
      *
@@ -36,9 +38,9 @@ public class Sun {
      * @return sun next position
      */
     private static Vector2 calcSunPosition(Vector2 windowDimensions, float angleInSky){
-        Vector2 rotatedVector = Vector2.UP.mult(windowDimensions.y() / 2).rotated(angleInSky);
+        Vector2 rotatedVector = Vector2.UP.mult(windowDimensions.y() / BASE).rotated(angleInSky);
         float x = (rotatedVector.x() * windowDimensions.x() / windowDimensions.y()) +
-                (windowDimensions.x() / 2);
+                (windowDimensions.x() / BASE);
         float y = rotatedVector.y() + windowDimensions.y() / SUN_Y_RELATIVE_LOCATION;
         return new Vector2(x, y);
     }
@@ -68,10 +70,10 @@ public class Sun {
         Transition<Float> transition = new Transition<>(
                 sun,
                 angle -> sun.setCenter(calcSunPosition(windowDimensions, angle)),
-                (float) 0,
+                INIT_VAL,
                 FINAL_ANGLE,
                 Transition.LINEAR_INTERPOLATOR_FLOAT,
-                cycleLength * 2,
+                cycleLength * BASE,
                 Transition.TransitionType.TRANSITION_LOOP,
                 null);
         return sun;

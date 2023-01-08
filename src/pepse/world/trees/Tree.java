@@ -23,7 +23,7 @@ public class Tree {
     public final Random rand;
     private final GameObjectCollection gameObjects;
     private final int layer;
-    private int leafLayer;
+    private final int leafLayer;
     private final Vector2 windowDimensions;
     private final Function<Float, Float> groundHeightAt;
     private final HashMap<Integer, Block[]> treeStemMap;

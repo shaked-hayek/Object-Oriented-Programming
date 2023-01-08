@@ -20,6 +20,7 @@ public class Night {
      * night name tag
      */
     public static final String TAG_NAME = "night";
+    private static final Float INIT_VAL = 0f;
 
     /**
      * creates an object of night in the game
@@ -41,7 +42,7 @@ public class Night {
         Transition<Float> transition = new Transition<>(
                 night,
                 night.renderer()::setOpaqueness,
-                0f,
+                INIT_VAL,
                 MIDNIGHT_OPACITY,
                 Transition.CUBIC_INTERPOLATOR_FLOAT,
                 cycleLength,
