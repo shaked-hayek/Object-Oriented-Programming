@@ -149,7 +149,7 @@ public class PepseGameManager extends GameManager {
         GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + ADD_1, windowDimensions,
                 CYCLE_LENGTH);
         GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + ADD_2, sun, HALO_COLOR);
-        sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
+        sunHalo.addComponent(deltaTime-> sunHalo.setCenter(sun.getCenter()));
         tree = new Tree(gameObjectCollection, TREE_LAYER, LEAF_LAYER, windowDimensions,
                 terrain::groundHeightAt, SEED);
         tree.createInRange(-Terrain.WORLD_BUFFER, (int) windowDimensions.x() + Terrain.WORLD_BUFFER);
