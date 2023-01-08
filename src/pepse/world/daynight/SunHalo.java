@@ -10,9 +10,23 @@ import danogl.util.Vector2;
 import java.awt.Color;
 
 public class SunHalo {
+    /**
+     * sun halo name tag
+     */
     private static final String TAG_NAME = "sun halo";
+    /**
+     * size of sun halo
+     */
     private static final int HALO_SIZE = 70;
 
+    /**
+     *
+     * @param gameObjects the collection of all game objects currently in the game
+     * @param layer of sun halo in the game
+     * @param sun the sun game object in game
+     * @param color of sun halo
+     * @return aun halo game object
+     */
     public static GameObject create(
             GameObjectCollection gameObjects,
             int layer,
