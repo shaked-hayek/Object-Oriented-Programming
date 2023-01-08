@@ -89,7 +89,7 @@ locations.
 
 
 ## BONUS ##
-* We created the avatar as a penguin, and added different animations for flying, jumping, walking and 
+* We created the avatar as a penguin, and added different animations for flying, jumping, walking, falling and
 standing.
 * Because the avatar is a penguin, we made the ground in a snow color.
 * We added snowflakes falling randomly from the sky and fades out when touching the ground, just like snow. We
