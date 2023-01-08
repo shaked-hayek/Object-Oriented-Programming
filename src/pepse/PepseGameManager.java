@@ -24,12 +24,14 @@ import java.util.Random;
 public class PepseGameManager extends GameManager {
     private static final String GAME_NAME = "Pepse";
     private static final Vector2 GAME_RES = new Vector2(1600, 900);
-    private static final String SNOW_TAG = "snow";
     private static final float BUFFER_BASE = 2f;
     private static final float AVATAR_MULT_FACTOR = 0.5f;
     private static final float MAX_RAND_SNOW = 10;
     private static final float THRESHOLD_SNOW = 0.15f;
     private static final float INIT_Y_SNOW = -400;
+    private static final float TWO_PARTS = 2;
+    private static final int ADD_1 = 1;
+    private static final int ADD_2 = 2;
     private ImageReader imageReader;
     private SoundReader soundReader;
     private WindowController windowController;
@@ -55,8 +57,11 @@ public class PepseGameManager extends GameManager {
     private Tree tree;
     private int blocksSideFromAvatar;
     private Random rand;
-    private SnowFlake snowFlake;
 
+    /**
+     * runs the game
+     * @param args arguments
+     */
     public static void main(String[] args) {
         new PepseGameManager(GAME_NAME, GAME_RES).run();
     }
@@ -70,6 +75,14 @@ public class PepseGameManager extends GameManager {
         super(windowTitle, windowDimensions);
     }
 
+    /**
+     * initializes the game
+     * @param imageReader Contains a single method: readImage, which reads an image from disk.
+     * @param soundReader Contains a single method: readSound, which reads a wav file from disk.
+     * @param inputListener Contains a single method: isKeyPressed, which returns whether
+     *                       a given key is currently pressed by the user or not.
+     * @param windowController Contains an array of helpful, self-explanatory methods concerning the window.
+     */
     @Override
     public void initializeGame(ImageReader imageReader, SoundReader soundReader,
                                UserInputListener inputListener, WindowController windowController) {
@@ -87,8 +100,6 @@ public class PepseGameManager extends GameManager {
 
         // Create world
         createWorld();
-        gameObjects().layers().shouldLayersCollide(TERRAIN_BASE_LAYER, LEAF_LAYER, true);
-        gameObjects().layers().shouldLayersCollide(TERRAIN_BASE_LAYER, AVATAR_LAYER, true);
 
         // Create avatar
         createAvatar();
@@ -98,14 +109,21 @@ public class PepseGameManager extends GameManager {
 
     }
 
+    /**
+     * creates bar representing the energy left
+     */
     private void createEnergy() {
         EnergyText energyText = new EnergyText(new Vector2(ENERGY_TEXT_DIST, ENERGY_TEXT_DIST),
                 new Vector2(ENERGY_TEXT_SIZE, ENERGY_TEXT_SIZE));
         this.gameObjects().addGameObject(energyText, Layer.UI);
     }
 
+    /**
+     * creates an avatar - shaped as penguin
+     */
     private void createAvatar() {
-        float avatarLeftCorr = (float) (Block.SIZE * (Math.floor((windowDimensions.x() / 2) / Block.SIZE)));
+        float avatarLeftCorr =
+                (float) (Block.SIZE * (Math.floor((windowDimensions.x() / TWO_PARTS) / Block.SIZE)));
         float avatarTopCorr = terrain.groundHeightAt(avatarLeftCorr) - Avatar.AVATAR_HEIGHT;
         Vector2 initialAvatarLocation = new Vector2(avatarLeftCorr, avatarTopCorr);
         avatar = Avatar.create(gameObjectCollection, AVATAR_LAYER,
@@ -121,33 +139,53 @@ public class PepseGameManager extends GameManager {
 
     }
 
+    /**
+     * creates the game world.
+     */
     private void createWorld() {
         GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
         terrain = new Terrain(gameObjectCollection, TERRAIN_BASE_LAYER, windowDimensions, SEED);
         GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, CYCLE_LENGTH);
-        GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + 1, windowDimensions,CYCLE_LENGTH);
-        GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + 2, sun, HALO_COLOR);
-        sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
+        GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + ADD_1, windowDimensions,
+                CYCLE_LENGTH);
+        GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + ADD_2, sun, HALO_COLOR);
+        sunHalo.addComponent(deltaTime-> sunHalo.setCenter(sun.getCenter()));
         tree = new Tree(gameObjectCollection, TREE_LAYER, LEAF_LAYER, windowDimensions,
                 terrain::groundHeightAt, SEED);
         tree.createInRange(-Terrain.WORLD_BUFFER, (int) windowDimensions.x() + Terrain.WORLD_BUFFER);
 
+        gameObjects().layers().shouldLayersCollide(TERRAIN_BASE_LAYER, LEAF_LAYER, true);
+        gameObjects().layers().shouldLayersCollide(TERRAIN_BASE_LAYER, AVATAR_LAYER, true);
+
     }
 
+    /**
+     * creates world (ground and trees), between the range of minX&maxX coordinates
+     * @param minX coordinate
+     * @param maxX coordinate
+     */
     private void createWorldInRange(int minX, int maxX) {
         terrain.createInRange(minX, maxX);
         tree.createInRange(minX, maxX);
     }
 
+    /**
+     * removes world (ground and trees), between the range of minX&maxX coordinates
+     * @param minX coordinate
+     * @param maxX coordinate
+     */
     private void removeWorldInRange(int minX, int maxX) {
         terrain.removeInRange(minX, maxX);
         tree.RemoveInRange(minX, maxX);
     }
 
+    /**
+     * updates world on the screen (as avatar moves)
+     */
     private void updateEndlessWorld() {
         double movementSize = avatar.getCenter().x() - currentMiddleX;
         int distToAdd = 0;
-        if (Math.abs(movementSize) > (Terrain.WORLD_BUFFER / BUFFER_BASE)) { // We moved
+        if (Math.abs(movementSize) > (Terrain.WORLD_BUFFER / BUFFER_BASE)) {
             // We moved right
             if (movementSize > (Terrain.WORLD_BUFFER / BUFFER_BASE)) {
                 int numBlocksRight = (int) (Math.floor((worldEndRight - avatar.getCenter().x()) / Block.SIZE));
@@ -167,8 +205,12 @@ public class PepseGameManager extends GameManager {
             }
             currentMiddleX = avatar.getCenter().x();
         }
+        // else - no move so no need to update
     }
 
+    /**
+     * creates more random snowflakes as a part of the game update
+     */
     void updateSnow(){
         int i = Utils.randIntInRange(rand, (int) worldEndLeft, (int) worldEndRight);
         float randToSnow = Utils.randFloatInRange(rand, 0, MAX_RAND_SNOW);
@@ -177,10 +219,13 @@ public class PepseGameManager extends GameManager {
             snowFlake.setCenter(new Vector2(i, INIT_Y_SNOW));
             snowFlake.setRandomVelocity();
             gameObjectCollection.addGameObject(snowFlake);
-//            snowFlake.setTag(SNOW_TAG);
         }
     }
 
+    /**
+     * updates the game features
+     * @param deltaTime The time, in seconds
+     */
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);

@@ -18,6 +18,8 @@ public class Tree {
     public static final Color LEAVES_COLOR = new Color(50, 200, 30);
     public static final int GET_RAND_SIZE = -1;
     private static final float THRESHOLD_TREE = 0.1f;
+    private static final int BASE_TREE = 4;
+    private static final int BASE = 2;
     public final Random rand;
     private final GameObjectCollection gameObjects;
     private final int layer;
@@ -75,7 +77,7 @@ public class Tree {
 
         for (int i = minXFixed; i <= maxXFixed; i += Block.SIZE) {
             // Don't plant tree in the middle
-            if (i < windowDimensions.x() / 2 + Block.SIZE && i > windowDimensions.x() / 2 - Block.SIZE) {
+            if (i < windowDimensions.x() / BASE + Block.SIZE && i > windowDimensions.x() / BASE - Block.SIZE) {
                 continue;
             }
             // Check if used to exist tree
@@ -147,7 +149,7 @@ public class Tree {
         float stemBottom = groundHeightAt.apply(x);
         if (numBlocks == GET_RAND_SIZE) {
             float stemTop = Utils.randFloatInRange(rand,
-                    windowDimensions.y() / 4, stemBottom - Block.SIZE * 4);
+                    windowDimensions.y() / BASE_TREE, stemBottom - Block.SIZE * BASE_TREE);
             numBlocks = Utils.blocksInDist(stemTop, stemBottom);
         }
         Block[] stemBlocks = new Block[numBlocks];
@@ -171,14 +173,14 @@ public class Tree {
         int blocksInTree =
                 (int) ((groundHeightAt.apply(topBlock.getTopLeftCorner().x())) - topBlock.getTopLeftCorner().y())
                         /Block.SIZE;
-        int leavesSquareEdge = Math.max(blocksInTree/4, 1) * Block.SIZE;
+        int leavesSquareEdge = Math.max(blocksInTree/BASE_TREE, 1) * Block.SIZE;
 
         // create a square of leaves at size leavesSquareEdge where topBlock.center is the center
         Vector2 topLeftSquare = topBlock.getTopLeftCorner().subtract(new Vector2(leavesSquareEdge,
                 leavesSquareEdge));
         List<Leaf> leafList = new ArrayList<>();
-        for (float i = topLeftSquare.x(); i <= topLeftSquare.x()+leavesSquareEdge*2; i+=Block.SIZE) {
-            for (float j = topLeftSquare.y(); j <= topLeftSquare.y() + leavesSquareEdge*2; j+=Block.SIZE) {
+        for (float i = topLeftSquare.x(); i <= topLeftSquare.x()+leavesSquareEdge*BASE; i+=Block.SIZE) {
+            for (float j = topLeftSquare.y(); j <= topLeftSquare.y() + leavesSquareEdge*BASE; j+=Block.SIZE) {
                 Leaf leaf = new Leaf(gameObjects, new Vector2(i,j), LEAVES_COLOR, leafLayer);
                 gameObjects.addGameObject(leaf, leafLayer);
                 leafList.add(leaf);
