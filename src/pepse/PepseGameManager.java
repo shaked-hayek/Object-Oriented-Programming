@@ -39,9 +39,9 @@ public class PepseGameManager extends GameManager {
     private static final Color HALO_COLOR = new Color(255, 255, 0, 20);
     private final Color SNOW_COLOR = new Color(200,220,220);
     private static final int AVATAR_LAYER = Layer.DEFAULT;
-    private static final int LEAF_LAYER = Layer.DEFAULT;
+    private static final int LEAF_LAYER = Layer.STATIC_OBJECTS + 1;
     private static final int TREE_LAYER = Layer.STATIC_OBJECTS;
-    private static final int TERRAIN_BASE_LAYER = Layer.STATIC_OBJECTS;
+    private static final int TERRAIN_BASE_LAYER = Layer.STATIC_OBJECTS - 1;
 
     private static float currentMiddleX;
     private static float worldEndRight;
@@ -71,8 +71,11 @@ public class PepseGameManager extends GameManager {
         worldEndRight = windowDimensions.x() + Terrain.WORLD_BUFFER;
         worldEndLeft = -Terrain.WORLD_BUFFER;
 
+
         // Create world
         createWorld();
+        gameObjects().layers().shouldLayersCollide(TERRAIN_BASE_LAYER, LEAF_LAYER, true);
+        gameObjects().layers().shouldLayersCollide(TERRAIN_BASE_LAYER, AVATAR_LAYER, true);
 
         // Create avatar
         createAvatar();
