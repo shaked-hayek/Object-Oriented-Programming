@@ -4,16 +4,16 @@ shirlevy
 
 ## UML explanation ##
 At the beginning we assumed all classes of objects (except leaves maybe) will be used by the GameManager. As
-well, we saw that the ground and leaves would are using Block - so we assumed both will extend it. We thought
+well, we saw that the ground and leaves would be using Block - so we assumed both will extend it. We thought
 the Tree should extend Leaf at some way as well.  Also, we didn't exactly understand when we'll use Utils and
 ColorSupplier.
 
-After we worked on the project for a while, we understood we could use the object a little different from what
- we thought. We created Leaf and Snowflake as extensions for Block - this game object fits and is useful in
- these cases. Tree is not extending Leaf as we though but it's using Leaf - this way both of them has their
- own responsibility and less depending on one another (when it's not necessary). PepseGameManager
- extends GameManager, and is using almost all GameObjects: Night, Sun, SunHalo, Sky, Tree, Avatar, SnowFlake
- and EnergyText. Tree uses Leaf (which is not called from Manager).
+After we worked on the project for a while, we understood we could use the object a little different from
+what we thought. We created Leaf and Snowflake as extensions for Block - this game object fits and is useful
+in these cases. Tree is not extending Leaf as we though but it's using Leaf - this way both of them has their
+own responsibility and less depending on one another (when it's not necessary). PepseGameManager extends
+GameManager, and is using almost all GameObjects: Night, Sun, SunHalo, Sky, Tree, Avatar, SnowFlake and
+EnergyText. Tree uses Leaf (which is not called from Manager).
 This way we made sure each class has it's own clear responsibility, as well as created order in the project.
 
 
