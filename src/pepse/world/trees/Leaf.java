@@ -7,14 +7,12 @@ import danogl.collisions.Layer;
 import danogl.components.ScheduledTask;
 import danogl.components.Transition;
 import danogl.gui.rendering.RectangleRenderable;
-import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
 import pepse.world.Block;
 import pepse.world.Terrain;
 
-import java.awt.*;
-import java.util.Objects;
+import java.awt.Color;
 import java.util.Random;
 
 
@@ -27,7 +25,7 @@ public class Leaf extends Block {
     private final Vector2 topLeftCorner;
     private final int seed;
     private final Color color;
-    public final int LAYER = Layer.STATIC_OBJECTS+5;
+    public final int LAYER = Layer.DEFAULT;
     //    private final int fadeOutTime;
     private Transition<Float> angleTransition;
     private Transition<Vector2> widthTransition;
@@ -49,7 +47,6 @@ public class Leaf extends Block {
         this.rand = new Random();
 //        leaf.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         physics().setMass(0);
-        gameObjects.addGameObject(this, LAYER);
         this.setTag(LEAF_TAG);
 
         //add movement to leaves at different time
@@ -64,7 +61,7 @@ public class Leaf extends Block {
      */
     @Override
     public boolean shouldCollideWith(GameObject other) {
-        return Objects.equals(other.getTag(), Terrain.TAG_NAME);
+        return other.getTag().equals(Terrain.TAG_NAME);
     }
 
     @Override

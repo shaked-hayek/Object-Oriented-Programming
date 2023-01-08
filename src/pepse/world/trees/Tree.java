@@ -102,7 +102,6 @@ public class Tree {
             }
             for (Leaf leaf:leafMap.get((float) currentX)){
                 leaf.removeLeaf();
-                gameObjects.removeGameObject(leaf, leaf.LAYER);
             }
         }
     }
@@ -145,6 +144,7 @@ public class Tree {
         for (float i = topLeftSquare.x(); i <= topLeftSquare.x()+leavesSquareEdge*2; i+=Block.SIZE) {
             for (float j = topLeftSquare.y(); j <= topLeftSquare.y() + leavesSquareEdge*2; j+=Block.SIZE) {
                 Leaf leaf = new Leaf(gameObjects, new Vector2(i,j), LEAVES_COLOR, seed);
+                gameObjects.addGameObject(leaf, leaf.LAYER);
                 leafList.add(leaf);
             }
         }
