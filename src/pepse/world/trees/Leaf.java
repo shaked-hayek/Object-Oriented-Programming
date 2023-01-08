@@ -147,8 +147,6 @@ public class Leaf extends Block {
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-//        removeComponent(this.fallTransition);
-//        fallTransition = null;
         transform().setVelocity(Vector2.ZERO);
     }
 

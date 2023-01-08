@@ -1,7 +1,10 @@
 shaked.hayek
 shirlevy
 
+
 ## UML explanation
+
+
 
 
 ## Endless world
@@ -19,8 +22,10 @@ exist in map, we create tree randomly and add it to the map.
 To deal with the leaves we had a separate hash map that maps x coordinate to list of leaves. Because the size
 of the leaves block is determined by the size of the stem, we can recreate it easily.
 
+
 ## Tree choices
 
+Tree:
 * We needed to know what height to make each tree. That is, what is the height of the ground at a certain
 x coordinate. We chose to pass as argument to Tree class the function for calculating the height of the
 ground, that is a static function in Terrain class. That way Tree class has all the info it need for creating
@@ -28,6 +33,32 @@ trees and doesn't have access to other unnecessary information.
 * We chose not to have two trees one after the other, so that the view will look good, and also not have a
 tree right in the middle of the screen when we start, so that there won't be a tree in the place that we
 create the avatar.
+* We chose to plant trees at size of at least 4 blocks (otherwise it looks more like a bush).
+* We ensured a tree can't be tall as the screen goes, but only 3/4 of it at most.
+* We created the leaves as a square (as described in the instructions) such that the bottom of the leaves
+square is about 1/4 of the stem size from the top, and every edge is about 1/2 the stem size. Minimum size of
+leaves will be edges of 2.
+* At every point of the game, when we get to new ground (that the avatar hasn't visited before), we get a
+random number for every x-coordinate, and so, in a chance of 10% we plant a tree in random size as described,
+and create it's leaves accordingly.
+
+Leaf:
+* We created moving transitions (moving angle, changing width) in one function, and used it in same delay time
+ - we did that so the leaves will move almost together to get the filling of wind (it felt more realistic than
+  leaves going in opposing directions).
+* We created the falling leaf transition - as it fades out, a time for it to be born again is declared and it
+falls down to the ground (and disappears).
+* All delay times for transitions are decided at scheduledTransitionTask() function, called straight from the
+constructor - so every leaf will have it's life circle right when it's created.
+* We made sure a leaf can only collide with ground - and not any other object. On collision, the leaf stops
+moving (and soon disappears).
+* When a leaf is born again - we add it to the game again to the same spot on the tree (not faded-out as
+before). we create it's transitions again.
+* We added removeLeaf() that is public and used from Tree - it removes all components from leaf when they are
+not necessary (as in - the avatar is far from them in the world so they are not seen).
+
+
+
 
 ## Design choices
 * Avatar's energy reduction - We felt that subtracting energy only when the flying keys are pressed seemed 
@@ -47,9 +78,11 @@ logical and smooth. For example, having different animation for jumping up and j
 * We chose to have all of the layers managed by the game manager to have good control about objects'
 locations.
 
+
 ## BONUS
 * We created the avatar as a penguin, and added different animations for flying, jumping, walking and 
 standing.
 * Because the avatar is a penguin, we made the ground in a snow color.
-* We added snowflakes falling randomly from the sky and fades out when touching the ground, just like snow.
+* We added snowflakes falling randomly from the sky and fades out when touching the ground, just like snow. We
+ don't want snowflakes to collide with other object to not confuse the player too much.
 * We added an energy text bar, with different colors for different energy values.
