@@ -44,7 +44,7 @@ public class Sun {
     }
 
     /**
-     *
+     * creates an object of sun in the game
      * @param gameObjects the collection of all game objects currently in the game
      * @param layer of sun in the game
      * @param windowDimensions of game

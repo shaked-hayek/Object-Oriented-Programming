@@ -20,12 +20,12 @@ public class SunHalo {
     private static final int HALO_SIZE = 70;
 
     /**
-     *
+     * creates an object of sun halo in the game
      * @param gameObjects the collection of all game objects currently in the game
      * @param layer of sun halo in the game
      * @param sun the sun game object in game
      * @param color of sun halo
-     * @return aun halo game object
+     * @return sun halo game object
      */
     public static GameObject create(
             GameObjectCollection gameObjects,

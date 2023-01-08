@@ -8,9 +8,22 @@ import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 
 public class Sky {
+    /**
+     * sky color
+     */
     private static final Color BASIC_SKY_COLOR = Color.decode("#80C6E5");
-    private static final String TAG_NAME = "sky";
+    /**
+     * sky name tag
+     */
+    public static final String TAG_NAME = "sky";
 
+    /**
+     * creates an object of sky in the game
+     * @param gameObjects the collection of all game objects currently in the game
+     * @param windowDimensions of game
+     * @param skyLayer in the game
+     * @return a sky game object
+     */
     public static GameObject create(GameObjectCollection gameObjects,
                                     Vector2 windowDimensions, int skyLayer) {
         GameObject sky = new GameObject(
