@@ -154,7 +154,7 @@ public class Avatar extends GameObject {
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
         isFlying = false;
-        if (Objects.equals(other.getTag(), Terrain.TAG_NAME)) {
+        if (Objects.equals(other.getTag(), Terrain.GROUND_TAG)) {
             transform().setVelocityY(0);
         }
     }

@@ -22,7 +22,7 @@ public class Terrain {
     private final int widthInBlocks;
     private GameObjectCollection gameObjects;
     private final int groundLayer;
-    public static final String TAG_NAME = "ground";
+    public static final String GROUND_TAG = "ground";
 //    private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
     private static final Color BASE_GROUND_COLOR = new Color(206, 222, 227);
     private static final float GROUND_START_HEIGHT = (float) 3 / 4;
@@ -76,7 +76,7 @@ public class Terrain {
                     gameObjects.addGameObject(block, groundLayer - 1);
                 }
                 blocksList[j] = block;
-                block.setTag(TAG_NAME);
+                block.setTag(GROUND_TAG);
             }
             blockMap.put(currentX, blocksList);
         }

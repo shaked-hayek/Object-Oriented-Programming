@@ -7,7 +7,6 @@ import danogl.collisions.Layer;
 import danogl.components.ScheduledTask;
 import danogl.components.Transition;
 import danogl.gui.rendering.RectangleRenderable;
-import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
 import pepse.world.Block;
@@ -19,15 +18,15 @@ import java.util.Random;
 
 
 public class Leaf extends Block {
-    private static final String LEAF_TAG = "leaf";
+    public static final String LEAF_TAG = "leaf";
     private static final int CYCLE_LENGTH = 5;
     private static final Float ANGLE = 8f;
     private final Random rand;
     private final GameObjectCollection gameObjects;
     private final Vector2 topLeftCorner;
+    private int layer;
     private final int seed;
     private final Color color;
-    public final int LAYER = Layer.STATIC_OBJECTS+5;
     //    private final int fadeOutTime;
     private Transition<Float> angleTransition;
     private Transition<Vector2> widthTransition;
@@ -38,18 +37,19 @@ public class Leaf extends Block {
 
     public Leaf(GameObjectCollection gameObjects,
                 Vector2 topLeftCorner,
-                Color color, int seed){
+                Color color, int layer, int seed){
 
         super(topLeftCorner,new RectangleRenderable(ColorSupplier.approximateColor(color)));
 
         this.gameObjects = gameObjects;
         this.topLeftCorner = topLeftCorner;
         this.color = color;
+        this.layer = layer;
         this.seed = seed;
         this.rand = new Random();
-//        leaf.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         physics().setMass(0);
-        gameObjects.addGameObject(this, LAYER);
+//        gameObjects.addGameObject(this, layer);
+//        gameObjects.addGameObject(this);
         this.setTag(LEAF_TAG);
 
         //add movement to leaves at different time
@@ -64,7 +64,7 @@ public class Leaf extends Block {
      */
     @Override
     public boolean shouldCollideWith(GameObject other) {
-        return Objects.equals(other.getTag(), Terrain.TAG_NAME);
+        return Objects.equals(other.getTag(), Terrain.GROUND_TAG);
     }
 
     @Override
@@ -72,9 +72,13 @@ public class Leaf extends Block {
         super.onCollisionEnter(other, collision);
 //        removeComponent(this.fallTransition);
 //        fallTransition = null;
-        setVelocity(Vector2.ZERO);
+        transform().setVelocity(Vector2.ZERO);
+    }
 
-
+    @Override
+    public void onCollisionStay(GameObject other, Collision collision) {
+        super.onCollisionStay(other, collision);
+        transform().setVelocity(Vector2.ZERO);
     }
 
     void moveTransition(){
@@ -132,19 +136,22 @@ public class Leaf extends Block {
 
     void bornAgain(){
         setTopLeftCorner(topLeftCorner);
-
         this.transform().setVelocity(Vector2.ZERO);
         renderer().setOpaqueness(1f);
         scheduledTransitionTask();
     }
 
-    public void removeLeaf() {
-        removeComponent(angleTransition);
-        angleTransition = null;
-        removeComponent(widthTransition);
-        widthTransition = null;
-        removeComponent(fallTransition);
-        fallTransition = null;
-        gameObjects.removeGameObject(this, LAYER);
+//    public void removeLeaf() {
+//        removeComponent(angleTransition);
+//        angleTransition = null;
+//        removeComponent(widthTransition);
+//        widthTransition = null;
+//        removeComponent(fallTransition);
+//        fallTransition = null;
+//        gameObjects.removeGameObject(this, layer);
+//    }
+
+    public int getLayer() {
+        return layer;
     }
 }
