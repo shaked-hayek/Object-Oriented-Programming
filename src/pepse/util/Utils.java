@@ -2,6 +2,8 @@ package pepse.util;
 
 import pepse.world.Block;
 
+import java.util.Random;
+
 public class Utils {
     /**
      *
@@ -29,5 +31,17 @@ public class Utils {
      */
     public static int blocksInDist(float min, float max) {
         return (int) Math.floor(Math.abs(max - min) / Block.SIZE);
+    }
+
+    /**
+     * Get random number between 2 values.
+     * @param rand  Random object
+     * @param start of range
+     * @param end   of range
+     * @return  random int in range
+     */
+    public static int randIntInRange(Random rand, int start, int end) {
+        return start + rand.nextInt(end - start);
+
     }
 }

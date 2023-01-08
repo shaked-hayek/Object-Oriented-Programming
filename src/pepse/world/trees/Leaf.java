@@ -9,6 +9,7 @@ import danogl.components.Transition;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
+import pepse.util.Utils;
 import pepse.world.Block;
 import pepse.world.Terrain;
 
@@ -207,7 +208,7 @@ public class Leaf extends Block {
         removeComponent(widthTransition);
 
         int fadeOutTime = rand.nextInt(FADEOUT_MAX_TIME);
-        int bornAgainTime = rand.nextInt(BORN_MIN_TIME,BORN_MAX_TIME);
+        int bornAgainTime = Utils.randIntInRange(rand, BORN_MIN_TIME, BORN_MAX_TIME);
 
         this.renderer().fadeOut(fadeOutTime, ()-> new ScheduledTask(
                 this,
