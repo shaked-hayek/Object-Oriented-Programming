@@ -10,6 +10,7 @@ import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
 import danogl.gui.rendering.Camera;
 import danogl.util.Vector2;
+import pepse.util.Utils;
 import pepse.world.*;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
@@ -17,9 +18,11 @@ import pepse.world.daynight.SunHalo;
 import pepse.world.trees.Tree;
 
 import java.awt.Color;
+import java.util.Random;
 
 
 public class PepseGameManager extends GameManager {
+    private static final String SNOW_TAG = "snow";
     private ImageReader imageReader;
     private SoundReader soundReader;
     private WindowController windowController;
@@ -29,6 +32,8 @@ public class PepseGameManager extends GameManager {
     private static final int CYCLE_LENGTH = 30;
     private static final int SEED = 2;
     private static final Color HALO_COLOR = new Color(255, 255, 0, 20);
+    private final Color SNOW_COLOR = new Color(200,220,220);
+
     private static float currentMiddleX;
     private static float worldEndRight;
     private static float worldEndLeft;
@@ -36,6 +41,8 @@ public class PepseGameManager extends GameManager {
     private Avatar avatar;
     private Tree tree;
     private int blocksSideFromAvatar;
+    private Random rand;
+    private SnowFlake snowFlake;
 
     public static void main(String[] args) {
         new PepseGameManager().run();
@@ -51,6 +58,7 @@ public class PepseGameManager extends GameManager {
         this.windowDimensions = windowController.getWindowDimensions();
         this.inputListener = inputListener;
         this.gameObjectCollection = gameObjects();
+        this.rand = new Random(SEED);
         worldEndRight = windowDimensions.x() + Terrain.WORLD_BUFFER;
         worldEndLeft = -Terrain.WORLD_BUFFER;
 
@@ -82,6 +90,13 @@ public class PepseGameManager extends GameManager {
 
         EnergyText energyText = new EnergyText(new Vector2(10, 10), new Vector2(40, 40));
         this.gameObjects().addGameObject(energyText, Layer.BACKGROUND + 1);
+
+//
+//        this.snowFlake = new SnowFlake(gameObjectCollection, windowDimensions, Vector2.ZERO,
+//                Layer.STATIC_OBJECTS, SEED, SNOW_COLOR);
+//        this.snowFlake.createInRange(-Terrain.WORLD_BUFFER, (int) windowDimensions.x() + Terrain.WORLD_BUFFER);
+
+
 
     }
 
@@ -120,9 +135,24 @@ public class PepseGameManager extends GameManager {
         }
     }
 
+    void updateSnow(){
+
+        int i=rand.nextInt((int) worldEndLeft, (int) worldEndRight);
+        float randToSnow = rand.nextFloat(0, 10);
+        if (randToSnow < 0.1) {
+            SnowFlake snowFlake = new SnowFlake(gameObjectCollection, windowDimensions, new Vector2(i, 10),
+                    Layer.STATIC_OBJECTS, SEED, SNOW_COLOR);
+            snowFlake.setCenter(new Vector2(i, -300));
+            snowFlake.setRandomVelocity();
+            gameObjectCollection.addGameObject(snowFlake);
+            snowFlake.setTag(SNOW_TAG);
+        }
+    }
+
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
         updateEndlessWorld();
+        updateSnow();
     }
 }

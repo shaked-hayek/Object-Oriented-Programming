@@ -9,14 +9,11 @@ import pepse.util.Utils;
 import pepse.world.Block;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Function;
 
 public class Tree {
-    private static final String TREE_TAG = "tree stem";
+    public static final String TREE_TAG = "tree stem";
     public static final Color STEM_COLOR = new Color(100, 50, 20);
     public static final Color LEAVES_COLOR = new Color(50, 200, 30);
     public static final int GET_RAND_SIZE = -1;
@@ -26,8 +23,8 @@ public class Tree {
     private final int layer;
     private final Vector2 windowDimensions;
     private final Function<Float, Float> groundHeightAt;
-    private HashMap<Integer, Block[]> treeStemMap;
-    private HashMap<Float, List<Leaf>> leafMap;
+    private final HashMap<Integer, Block[]> treeStemMap;
+    private final Map<Float, List<Leaf>> leafMap;
 
     public Tree(GameObjectCollection gameObjects,
                 int layer,
@@ -39,7 +36,7 @@ public class Tree {
         this.seed = seed;
         this.rand = new Random(seed);
         treeStemMap = new HashMap<>();
-        leafMap = new HashMap<>();
+        leafMap = new TreeMap<>();
 
 
         this.groundHeightAt = groundHeightAt;

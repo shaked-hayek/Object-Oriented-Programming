@@ -13,16 +13,18 @@ import pepse.world.Block;
 import pepse.world.Terrain;
 
 import java.awt.Color;
+import java.util.Objects;
 import java.util.Random;
 
 
 public class Leaf extends Block {
-    private static final String LEAF_TAG = "leaf";
+    public static final String LEAF_TAG = "leaf";
     private static final int CYCLE_LENGTH = 5;
     private static final Float ANGLE = 8f;
     private final Random rand;
     private final GameObjectCollection gameObjects;
     private final Vector2 topLeftCorner;
+    private int layer;
     private final int seed;
     private final Color color;
     public final int LAYER = Layer.DEFAULT;
@@ -45,13 +47,11 @@ public class Leaf extends Block {
         this.color = color;
         this.seed = seed;
         this.rand = new Random();
-//        leaf.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         physics().setMass(0);
         this.setTag(LEAF_TAG);
 
         //add movement to leaves at different time
         scheduledTransitionTask();
-
     }
 
     /**
@@ -61,7 +61,7 @@ public class Leaf extends Block {
      */
     @Override
     public boolean shouldCollideWith(GameObject other) {
-        return other.getTag().equals(Terrain.TAG_NAME);
+        return Objects.equals(other.getTag(), Terrain.GROUND_TAG);
     }
 
     @Override
@@ -69,9 +69,13 @@ public class Leaf extends Block {
         super.onCollisionEnter(other, collision);
 //        removeComponent(this.fallTransition);
 //        fallTransition = null;
-        setVelocity(Vector2.ZERO);
+        transform().setVelocity(Vector2.ZERO);
+    }
 
-
+    @Override
+    public void onCollisionStay(GameObject other, Collision collision) {
+        super.onCollisionStay(other, collision);
+        transform().setVelocity(Vector2.ZERO);
     }
 
     void moveTransition(){
@@ -109,10 +113,8 @@ public class Leaf extends Block {
     }
 
     void fallTransition() {
-
         removeComponent(angleTransition);
         removeComponent(widthTransition);
-
 
         int fadeOutTime = rand.nextInt(30);
         int bornAgainTime = rand.nextInt(20);
@@ -123,13 +125,10 @@ public class Leaf extends Block {
                 false,
                 this::bornAgain));
         this.transform().setVelocityY(60);
-
-
     }
 
     void bornAgain(){
         setTopLeftCorner(topLeftCorner);
-
         this.transform().setVelocity(Vector2.ZERO);
         renderer().setOpaqueness(1f);
         scheduledTransitionTask();
