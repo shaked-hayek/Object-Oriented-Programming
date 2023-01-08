@@ -21,6 +21,7 @@ public class Tree {
     public final Random rand;
     private final GameObjectCollection gameObjects;
     private final int layer;
+    private int leafLayer;
     private final Vector2 windowDimensions;
     private final Function<Float, Float> groundHeightAt;
     private final HashMap<Integer, Block[]> treeStemMap;
@@ -35,11 +36,12 @@ public class Tree {
      * @param seed of game, for random
      */
     public Tree(GameObjectCollection gameObjects,
-                int layer,
+                int layer, int leafLayer,
                 Vector2 windowDimensions,
                 Function<Float, Float> groundHeightAt, int seed) {
         this.gameObjects = gameObjects;
         this.layer = layer;
+        this.leafLayer = leafLayer;
         this.windowDimensions = windowDimensions;
         this.rand = new Random(seed);
         treeStemMap = new HashMap<>();
@@ -177,8 +179,8 @@ public class Tree {
         List<Leaf> leafList = new ArrayList<>();
         for (float i = topLeftSquare.x(); i <= topLeftSquare.x()+leavesSquareEdge*2; i+=Block.SIZE) {
             for (float j = topLeftSquare.y(); j <= topLeftSquare.y() + leavesSquareEdge*2; j+=Block.SIZE) {
-                Leaf leaf = new Leaf(gameObjects, new Vector2(i,j), LEAVES_COLOR);
-                gameObjects.addGameObject(leaf, leaf.LAYER);
+                Leaf leaf = new Leaf(gameObjects, new Vector2(i,j), LEAVES_COLOR, leafLayer);
+                gameObjects.addGameObject(leaf, leafLayer);
                 leafList.add(leaf);
             }
         }

@@ -38,6 +38,10 @@ public class PepseGameManager extends GameManager {
     private static final int SEED = 2;
     private static final Color HALO_COLOR = new Color(255, 255, 0, 20);
     private final Color SNOW_COLOR = new Color(200,220,220);
+    private static final int AVATAR_LAYER = Layer.DEFAULT;
+    private static final int LEAF_LAYER = Layer.DEFAULT;
+    private static final int TREE_LAYER = Layer.STATIC_OBJECTS;
+    private static final int TERRAIN_BASE_LAYER = Layer.STATIC_OBJECTS;
 
     private static float currentMiddleX;
     private static float worldEndRight;
@@ -87,7 +91,7 @@ public class PepseGameManager extends GameManager {
         float avatarLeftCorr = (float) (Block.SIZE * (Math.floor((windowDimensions.x() / 2) / Block.SIZE)));
         float avatarTopCorr = terrain.groundHeightAt(avatarLeftCorr) - Avatar.AVATAR_HEIGHT;
         Vector2 initialAvatarLocation = new Vector2(avatarLeftCorr, avatarTopCorr);
-        avatar = Avatar.create(gameObjectCollection, Layer.DEFAULT,
+        avatar = Avatar.create(gameObjectCollection, AVATAR_LAYER,
                 initialAvatarLocation, inputListener, imageReader);
         setCamera(new Camera(
                 avatar,
@@ -102,12 +106,12 @@ public class PepseGameManager extends GameManager {
 
     private void createWorld() {
         GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
-        terrain = new Terrain(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions, SEED);
+        terrain = new Terrain(gameObjectCollection, TERRAIN_BASE_LAYER, windowDimensions, SEED);
         GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, CYCLE_LENGTH);
         GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + 1, windowDimensions,CYCLE_LENGTH);
         GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + 2, sun, HALO_COLOR);
         sunHalo.addComponent(deltaTime-> {sunHalo.setCenter(sun.getCenter());});
-        tree = new Tree(gameObjectCollection, Layer.STATIC_OBJECTS, windowDimensions,
+        tree = new Tree(gameObjectCollection, TREE_LAYER, LEAF_LAYER, windowDimensions,
                 terrain::groundHeightAt, SEED);
         tree.createInRange(-Terrain.WORLD_BUFFER, (int) windowDimensions.x() + Terrain.WORLD_BUFFER);
 

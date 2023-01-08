@@ -90,7 +90,7 @@ public class Leaf extends Block {
     /**
      * leaf layer
      */
-    public final int LAYER = Layer.DEFAULT;
+    private final int layer;
     /**
      * moving angle transition
      */
@@ -113,13 +113,14 @@ public class Leaf extends Block {
      */
     public Leaf(GameObjectCollection gameObjects,
                 Vector2 topLeftCorner,
-                Color color){
+                Color color, int layer){
 
         super(topLeftCorner,new RectangleRenderable(ColorSupplier.approximateColor(color)));
 
         this.gameObjects = gameObjects;
         this.topLeftCorner = topLeftCorner;
         this.color = color;
+        this.layer = layer;
         this.rand = new Random();
         physics().setMass(0);
         this.setTag(LEAF_TAG);
@@ -237,6 +238,6 @@ public class Leaf extends Block {
         widthTransition = null;
         removeComponent(fallTransition);
         fallTransition = null;
-        gameObjects.removeGameObject(this, LAYER);
+        gameObjects.removeGameObject(this, layer);
     }
 }
