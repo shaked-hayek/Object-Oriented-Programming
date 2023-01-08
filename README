@@ -32,7 +32,7 @@ is the time he is actually flying. So we decided to regard flying time as all ti
 pressed and avatar didn't collide with anything and energy is still not 0.
 * Utils - We chose to create a utils class to hold functions we used a few times in different places in the
 project, in order to minimize length of code in the classes, and have a constant method to calculate the
-world data.
+world data - encapsulation.
 * In order to minimize the amount of calculations in each frame, we put the top level of blocks in
 terrain in a different layer than the rest of the blocks. We made the layer of the top level the only layer
 that we need to calculate collisions on. This way there were less collision calculations.
