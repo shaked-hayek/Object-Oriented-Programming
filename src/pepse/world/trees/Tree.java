@@ -19,7 +19,6 @@ public class Tree {
     public static final int GET_RAND_SIZE = -1;
     private static final float THRESHOLD_TREE = 0.1f;
     public final Random rand;
-    private final int seed;
     private final GameObjectCollection gameObjects;
     private final int layer;
     private final Vector2 windowDimensions;
@@ -42,17 +41,15 @@ public class Tree {
         this.gameObjects = gameObjects;
         this.layer = layer;
         this.windowDimensions = windowDimensions;
-        this.seed = seed;
         this.rand = new Random(seed);
         treeStemMap = new HashMap<>();
         leafMap = new TreeMap<>();
-
 
         this.groundHeightAt = groundHeightAt;
     }
 
     /**
-     *
+     *  Checks if coordinate x is next to a tree.
      * @param x coordinate
      * @return true if x coordinate is near a tree, false otherwise
      */
@@ -94,13 +91,11 @@ public class Tree {
                 }
                 treeStemMap.put(i, stemBlocks);
             }
-
         }
-
     }
 
     /**
-     * removes trees between minX-maxX coordinates - and saves in the hashMap
+     * Removes trees between minX-maxX coordinates - and saves in the hashMap
      * @param minX coordinate
      * @param maxX coordinate
      */

@@ -166,7 +166,6 @@ public class Leaf extends Block {
      * adding moving angle and changing width transition
      */
     void moveTransition(){
-
         //moving angle transition
         this.angleTransition = new Transition<>(
                 this,
