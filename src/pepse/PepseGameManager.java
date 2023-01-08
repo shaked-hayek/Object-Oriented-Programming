@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class PepseGameManager extends GameManager {
     private static final String GAME_NAME = "Pepse";
-    private static final Vector2 GAME_RES = new Vector2(1600, 900);
+    private static final Vector2 GAME_RES = new Vector2(1280, 720);
     private static final float BUFFER_BASE = 2f;
     private static final float AVATAR_MULT_FACTOR = 0.5f;
     private static final float MAX_RAND_SNOW = 10;
