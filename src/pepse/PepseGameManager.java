@@ -149,9 +149,8 @@ public class PepseGameManager extends GameManager {
     }
 
     void updateSnow(){
-
-        int i=rand.nextInt((int) worldEndLeft, (int) worldEndRight);
-        float randToSnow = rand.nextFloat(0, MAX_RAND_SNOW);
+        int i = Utils.randIntInRange(rand, (int) worldEndLeft, (int) worldEndRight);
+        float randToSnow = Utils.randFloatInRange(rand, 0, MAX_RAND_SNOW);
         if (randToSnow < THRESHOLD_SNOW) {
             SnowFlake snowFlake = new SnowFlake(gameObjectCollection, new Vector2(i, 0), SNOW_COLOR);
             snowFlake.setCenter(new Vector2(i, INIT_Y_SNOW));

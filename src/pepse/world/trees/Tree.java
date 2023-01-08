@@ -87,7 +87,7 @@ public class Tree {
             } else {
                 Block[] stemBlocks = null;
                 if (!isNextToTree(i)) {
-                    randToPlant = rand.nextFloat(0, 1);
+                    randToPlant = rand.nextFloat();
                     if (randToPlant < THRESHOLD_TREE) {
                         stemBlocks = plant((float) i, GET_RAND_SIZE);
                     }
@@ -149,7 +149,8 @@ public class Tree {
     private Block[] plantTreeStem(float x, int numBlocks) {
         float stemBottom = groundHeightAt.apply(x);
         if (numBlocks == GET_RAND_SIZE) {
-            float stemTop = rand.nextFloat(windowDimensions.y() / 4, stemBottom - Block.SIZE * 4);
+            float stemTop = Utils.randFloatInRange(rand,
+                    windowDimensions.y() / 4, stemBottom - Block.SIZE * 4);
             numBlocks = Utils.blocksInDist(stemTop, stemBottom);
         }
         Block[] stemBlocks = new Block[numBlocks];

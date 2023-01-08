@@ -42,6 +42,16 @@ public class Utils {
      */
     public static int randIntInRange(Random rand, int start, int end) {
         return start + rand.nextInt(end - start);
+    }
 
+    /**
+     * Get random float between 2 values.
+     * @param rand  Random object
+     * @param start of range
+     * @param end   of range
+     * @return  random int in range
+     */
+    public static float randFloatInRange(Random rand, float start, float end) {
+        return start + (rand.nextFloat() * (end - start));
     }
 }
