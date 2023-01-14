@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class PepseGameManager extends GameManager {
     private static final String GAME_NAME = "Pepse";
-    private static final Vector2 GAME_RES = new Vector2(1280, 720);
+    private static final Vector2 GAME_RES = new Vector2(1000, 600);
     private static final float BUFFER_BASE = 2f;
     private static final float AVATAR_MULT_FACTOR = 0.5f;
     private static final float MAX_RAND_SNOW = 10;
@@ -31,7 +31,7 @@ public class PepseGameManager extends GameManager {
     private static final float INIT_Y_SNOW = -400;
     private static final float TWO_PARTS = 2;
     private static final int ADD_1 = 1;
-    private static final int ADD_2 = 2;
+
     private ImageReader imageReader;
     private SoundReader soundReader;
     private WindowController windowController;
@@ -42,6 +42,8 @@ public class PepseGameManager extends GameManager {
     private static final int SEED = 2;
     private static final Color HALO_COLOR = new Color(255, 255, 0, 20);
     private final Color SNOW_COLOR = new Color(200,220,220);
+    private static final int SUN_HALO_LAYER = Layer.BACKGROUND + 2;
+    private static final int SUN_LAYER = Layer.BACKGROUND + 1;
     private static final int AVATAR_LAYER = Layer.DEFAULT;
     private static final int LEAF_LAYER = Layer.STATIC_OBJECTS + 1;
     private static final int TREE_LAYER = Layer.STATIC_OBJECTS;
@@ -145,9 +147,9 @@ public class PepseGameManager extends GameManager {
         GameObject sky = Sky.create(gameObjectCollection, windowDimensions, Layer.BACKGROUND);
         terrain = new Terrain(gameObjectCollection, TERRAIN_BASE_LAYER, windowDimensions, SEED);
         GameObject night = Night.create(gameObjectCollection, Layer.FOREGROUND, windowDimensions, CYCLE_LENGTH);
-        GameObject sun = Sun.create(gameObjectCollection,Layer.BACKGROUND + ADD_1, windowDimensions,
+        GameObject sun = Sun.create(gameObjectCollection,SUN_LAYER, windowDimensions,
                 CYCLE_LENGTH);
-        GameObject sunHalo = SunHalo.create(gameObjectCollection,Layer.BACKGROUND + ADD_2, sun, HALO_COLOR);
+        GameObject sunHalo = SunHalo.create(gameObjectCollection,SUN_HALO_LAYER, sun, HALO_COLOR);
         sunHalo.addComponent(deltaTime-> sunHalo.setCenter(sun.getCenter()));
         tree = new Tree(gameObjectCollection, TREE_LAYER, LEAF_LAYER, windowDimensions,
                 terrain::groundHeightAt, SEED);
