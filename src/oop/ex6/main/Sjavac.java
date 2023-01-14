@@ -42,7 +42,7 @@ public class Sjavac {
                     new LineValidator().validate(line);
                 } catch (invalidLineEndException e) {
                     System.out.println(INVALID_CODE);
-                    System.err.printf(ERROR_CODE + LINE_END_ERR_MSG + LINE_CODE, lineIndex);
+                    System.err.printf(e + LINE_CODE, lineIndex);
                     System.out.println();
                     return;
                 }
