@@ -10,7 +10,7 @@ public class Variable {
     private Function<String, Boolean> isValidTypeFunc;
     private boolean isInitialized = false;
 
-    private static final String NAME_REGEX = "([a-zA-Z_]+[a-zA-Z0-9_]*)";
+    private static final String NAME_REGEX = "([a-zA-Z]+[a-zA-Z0-9_]*|_+[a-zA-Z0-9_]+)";
     private static final String DECLARATION_REGEX = "\\s*" + NAME_REGEX + "\\s*";
     private static final String INITIALIZATION_REGEX = "\\s*" + NAME_REGEX + "\\s*=\\s*(\\S+)\\s*";
 
