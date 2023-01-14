@@ -42,7 +42,7 @@ public class VarTypeFactory {
         return m.matches();
     }
 
-    public String returnTypeRegex() {
+    public static String getTypeRegex() {
         return "[" + String.join("|", TYPES) + "]";
     }
 }

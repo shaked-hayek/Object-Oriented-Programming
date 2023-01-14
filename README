@@ -2,3 +2,13 @@
 
 We chose to print the error with the name of the Exception class to make it easier for users
 to find the error
+
+
+
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+TO DO LIST:
+- use hashMaps for vars
+- var without type - legal
+- var with value as var

@@ -26,19 +26,14 @@ public class Variable {
 
         if (initMatcher.matches()) {
             name = initMatcher.group(1);
-            checkVar(initMatcher.group(2), initMatcher);
+            if (!isValidTypeFunc.apply(initMatcher.group(2))) {
+                throw new ValueTypeMismatchException();
+            }
             isInitialized = true;
         } else if (declarationMatcher.matches()) {
             name = declarationMatcher.group(1);
         } else {
             throw new InvalidVarDeclarationException();
-        }
-    }
-
-    private void checkVar(String var, Matcher initMatcher) throws ValueTypeMismatchException {
-        // TODO - check hash
-        if (!isValidTypeFunc.apply(initMatcher.group(2))) {
-            throw new ValueTypeMismatchException();
         }
     }
 
@@ -48,5 +43,9 @@ public class Variable {
 
     public boolean isInitialized() {
         return isInitialized;
+    }
+
+    public String getName() {
+        return name;
     }
 }
