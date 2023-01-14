@@ -5,17 +5,19 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Sjavac {
+    private static final int VALID_ARG_NUM = 2;
     private static final String VALID_CODE = "0";
     private static final String INVALID_CODE = "1";
     private static final String IO_ERROR_CODE = "2";
     private static final String ERROR_CODE = "ERROR: ";
 
-    private static final String IO_ERR_MSG = "File not found.";
+    private static final String IO_ERR_MSG = "File not found";
+    private static final String ARG_ERR_MSG = "Wrong number of arguments entered";
 
     public static void main(String[] args) {
-        if (args.length <= 1) {
+        if (args.length != VALID_ARG_NUM) {
             System.out.println(IO_ERROR_CODE);
-            System.err.println(ERROR_CODE + IO_ERR_MSG);
+            System.err.println(ERROR_CODE + ARG_ERR_MSG);
             return;
         }
         // Load file
