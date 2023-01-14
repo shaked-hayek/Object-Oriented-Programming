@@ -4,8 +4,7 @@ public class invalidVarTypeException extends Throwable {
     private static final String ERROR_MSG = "Invalid var type";
 
     @Override
-    public String toString() {
-        String s = getClass().getName();
-        return s + ": " + ERROR_MSG;
+    public String getMessage() {
+        return ERROR_MSG;
     }
 }

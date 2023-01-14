@@ -1,1 +1,4 @@
-# ex6-oop
+
+
+We chose to print the error with the name of the Exception class to make it easier for users
+to find the error
