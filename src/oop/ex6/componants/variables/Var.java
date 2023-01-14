@@ -1,4 +1,4 @@
-package oop.ex6.variables;
+package oop.ex6.componants.variables;
 
 public interface Var {
 
