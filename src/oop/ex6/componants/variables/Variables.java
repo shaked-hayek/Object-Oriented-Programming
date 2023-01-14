@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 public class Variables {
     private static final String FINAL_REGEX = "\\s*final\\s+";
-    private static final String TYPE_REGEX = "\\s*([[a-z][A-Z]]+)\\s+(.*)";
+    private static final String TYPE_REGEX = "\\s*([a-zA-Z]+)\\s+(.*)";
     private static boolean isFinal;
 
 
