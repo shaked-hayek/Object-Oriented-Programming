@@ -9,25 +9,23 @@ public class LineValidator {
 
     private static final String VALID_END_REGEX = ".*[;|}|{]\\s*";
     private static final String VAR_LINE_END = ".*;\\s*";
+    private static final String SCOPE_OPEN_LINE_END = ".*{\\s*";
 
     public void validate(String line)
             throws InvalidLineEndException, InvalidVarTypeException, ValueTypeMismatchException, InvalidVarDeclarationException {
-        if (!isEndValid(line)){
+        if (!isRegexMatches(line, VALID_END_REGEX)){
             throw new InvalidLineEndException();
         }
-        if (isVarEnd(line)) {
+        if (isRegexMatches(line, VAR_LINE_END)) {
+            line = line.replaceAll(";", "");
             new Variables(line);
+        } else if (isRegexMatches(line, SCOPE_OPEN_LINE_END)) {
+            //TODO
         }
     }
 
-    private static boolean isEndValid(String line){
-        Pattern p = Pattern.compile(VALID_END_REGEX);
-        Matcher m = p.matcher(line);
-        return m.matches();
-    }
-
-    private static boolean isVarEnd(String line){
-        Pattern p = Pattern.compile(VAR_LINE_END);
+    private static boolean isRegexMatches(String line, String pattern) {
+        Pattern p = Pattern.compile(pattern);
         Matcher m = p.matcher(line);
         return m.matches();
     }

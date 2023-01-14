@@ -12,7 +12,6 @@ public class Variables {
 
     public Variables(String line)
             throws InvalidVarTypeException, InvalidVarDeclarationException, ValueTypeMismatchException {
-        line = line.replaceAll(";", "");
         // Check final
         isFinal = isFinal(line);
         if (isFinal) {
