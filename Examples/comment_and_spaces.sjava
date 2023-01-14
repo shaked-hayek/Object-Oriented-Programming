@@ -1,10 +1,10 @@
 
 
-\\
-\\
-\\
-\\
-\\             HELLO
+//
+//
+//
+//
+//             HELLO
 final   int a    = 7   ;
         int a    = 7   ;
    final     int a,b    = 7   ;
@@ -24,4 +24,4 @@ final   int a    = 7   ;
         char qweq4324_   = 't'   ;
         char qweq4324_   = '?'   ;
         char a_='Z',b;
-\\   a=9;
+//   a=9;

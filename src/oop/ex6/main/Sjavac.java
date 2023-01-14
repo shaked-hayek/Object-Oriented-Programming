@@ -22,7 +22,7 @@ public class Sjavac {
 
     private static final String IO_ERR_MSG = "File not found";
     private static final String ARG_ERR_MSG = "Wrong number of arguments entered";
-    private static final String COMMENT_REGEX = "^[\\\\]{2}.*";
+    private static final String COMMENT_REGEX = "^[/]{2}.*";
     private static final String SPACE_REGEX = "\\s*";
 
     public static void main(String[] args) {
