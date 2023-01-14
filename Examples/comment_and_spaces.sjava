@@ -1,13 +1,20 @@
 
 
-
-
-
 \\
 \\
 \\
 \\
 \\             HELLO
-asdad
-fdchgfhj`           {
-nbvmnv,{}
+final   int a    = 7   ;
+        int a    = 7   ;
+        int a,b    = 7   ;
+        int a,     b    = 57   ;
+        int a=8,     b    = 57   ;
+        boolean a=57   ;
+        boolean a=true   ;
+        double a=-.6   ;
+        double a=+7.  ;
+        String var__   ="true"   ;
+        String _   = "t4564634ds'''rue"   ;
+        char qweq4324_   = 't'   ;
+        char qweq4324_   = '?'   ;

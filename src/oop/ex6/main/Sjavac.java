@@ -1,7 +1,10 @@
 package oop.ex6.main;
 
 import oop.ex6.componants.LineValidator;
-import oop.ex6.componants.invalidLineEndException;
+import oop.ex6.componants.InvalidLineEndException;
+import oop.ex6.componants.variables.InvalidVarDeclarationException;
+import oop.ex6.componants.variables.InvalidVarTypeException;
+import oop.ex6.componants.variables.ValueTypeMismatchException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -39,10 +42,9 @@ public class Sjavac {
                 }
                 try {
                     new LineValidator().validate(line);
-                } catch (invalidLineEndException e) {
-                    System.out.println(INVALID_CODE);
-                    System.err.printf(e + LINE_CODE, lineIndex);
-                    System.out.println();
+                } catch (InvalidLineEndException | InvalidVarTypeException | ValueTypeMismatchException |
+                         InvalidVarDeclarationException e) {
+                    printError(e, lineIndex);
                     return;
                 }
             }
@@ -67,5 +69,11 @@ public class Sjavac {
         Pattern p = Pattern.compile(COMMENT_REGEX);
         Matcher m = p.matcher(line);
         return m.matches();
+    }
+
+    private static void printError(Exception e, int lineIndex) {
+        System.out.println(INVALID_CODE);
+        System.err.printf(e + LINE_CODE, lineIndex);
+        System.out.println();
     }
 }

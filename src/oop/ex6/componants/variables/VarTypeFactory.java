@@ -1,9 +1,5 @@
 package oop.ex6.componants.variables;
 
-import oop.ex6.componants.VarType;
-
-import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,7 +13,7 @@ public class VarTypeFactory {
     private static final String BOOLEAN_REGEX = "true|false|" + INT_REGEX + "|" + DOUBLE_REGEX;
 
 
-    public Function<String, Boolean> getValValidationFunc(String type) throws invalidVarTypeException {
+    public static Function<String, Boolean> getValValidationFunc(String type) throws InvalidVarTypeException {
         switch (type) {
             case "int":
                 return val -> validValueToType(INT_REGEX, val);
@@ -30,11 +26,11 @@ public class VarTypeFactory {
             case "char":
                 return val -> validValueToType(CHAR_REGEX, val);
             default:
-                throw new invalidVarTypeException();
+                throw new InvalidVarTypeException();
         }
     }
 
-    boolean validValueToType(String regex, String val) {
+    private static boolean validValueToType(String regex, String val) {
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(val);
         return m.matches();

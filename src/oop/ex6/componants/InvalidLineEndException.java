@@ -1,6 +1,6 @@
 package oop.ex6.componants;
 
-public class invalidLineEndException extends Throwable {
+public class InvalidLineEndException extends Exception {
     private static final String ERROR_MSG = "Line ends with wrong char";
 
     @Override
