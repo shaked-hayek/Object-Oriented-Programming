@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class LineValidator {
 
-    private static final String VALID_END_REGEX = ".*[;|}|{]$";
+    private static final String VALID_END_REGEX = ".*[;|}|{]\\s*";
 
     public void validate(String line) throws invalidLineEndException {
         if (!isEndValid(line)){
