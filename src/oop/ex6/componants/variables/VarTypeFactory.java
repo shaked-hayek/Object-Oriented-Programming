@@ -11,19 +11,25 @@ public class VarTypeFactory {
     private static final String STRING_REGEX = "[\"][^\"]*[\"]";
     private static final String CHAR_REGEX = "['].[']";
     private static final String BOOLEAN_REGEX = "true|false|" + INT_REGEX + "|" + DOUBLE_REGEX;
+    private static final String INT = "int";
+    private static final String DOUBLE = "double";
+    private static final String STRING = "String";
+    private static final String BOOLEAN = "boolean";
+    private static final String CHAR = "char";
+    private static final String[] TYPES = {INT, DOUBLE, STRING, BOOLEAN, CHAR};
 
 
     public static Function<String, Boolean> getValValidationFunc(String type) throws InvalidVarTypeException {
         switch (type) {
-            case "int":
+            case INT:
                 return val -> validValueToType(INT_REGEX, val);
-            case "double":
+            case DOUBLE:
                 return val -> validValueToType(DOUBLE_REGEX, val);
-            case "String":
+            case STRING:
                 return val -> validValueToType(STRING_REGEX, val);
-            case "boolean":
+            case BOOLEAN:
                 return val -> validValueToType(BOOLEAN_REGEX, val);
-            case "char":
+            case CHAR:
                 return val -> validValueToType(CHAR_REGEX, val);
             default:
                 throw new InvalidVarTypeException();
@@ -34,5 +40,9 @@ public class VarTypeFactory {
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(val);
         return m.matches();
+    }
+
+    public String returnTypeRegex() {
+        return "[" + String.join("|", TYPES) + "]";
     }
 }
