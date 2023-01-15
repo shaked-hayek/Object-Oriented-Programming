@@ -19,6 +19,10 @@ public class Variable {
         this.isValidTypeFunc = isValidTypeFunc;
         this.isFinal = isFinal;
 
+        create(declaration);
+    }
+
+    public void create(String declaration) throws ValueTypeMismatchException, InvalidVarDeclarationException {
         Pattern declarationPattern = Pattern.compile(DECLARATION_REGEX);
         Pattern initPattern = Pattern.compile(INITIALIZATION_REGEX);
         Matcher declarationMatcher = declarationPattern.matcher(declaration);
@@ -36,6 +40,7 @@ public class Variable {
             throw new InvalidVarDeclarationException();
         }
     }
+
 
     public boolean isFinal() {
         return isFinal;

@@ -1,5 +1,7 @@
 package oop.ex6.componants.variables;
 
+import oop.ex6.componants.VarType;
+
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,6 +33,23 @@ public class VarTypeFactory {
                 return val -> validValueToType(BOOLEAN_REGEX, val);
             case CHAR:
                 return val -> validValueToType(CHAR_REGEX, val);
+            default:
+                throw new InvalidVarTypeException();
+        }
+    }
+
+    public static VarType getType(String type) throws InvalidVarTypeException {
+        switch (type) {
+            case INT:
+                return VarType.INT;
+            case DOUBLE:
+                return VarType.DOUBLE;
+            case STRING:
+                return VarType.STRING;
+            case BOOLEAN:
+                return VarType.BOOLEAN;
+            case CHAR:
+                return VarType.CHAR;
             default:
                 throw new InvalidVarTypeException();
         }
