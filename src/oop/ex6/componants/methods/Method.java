@@ -48,7 +48,9 @@ public class Method extends Scope {
                     Variable var = new Variable(
                             VarTypeFactory.getType(m.group(1)), varName, parentScope, isVarFinal);
                     var.setInitializedTrue();
-                    addVarToScopeMap(var);
+                    if (!addVarToScopeMap(var)) {
+                        throw new MethodDeclarationException();
+                    }
                     paramsList.add(varType);
                 } else {
                     throw new MethodDeclarationException();

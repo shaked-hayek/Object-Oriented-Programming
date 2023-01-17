@@ -6,7 +6,7 @@
 //
 //             HELLO
 final   int a    = 7     ;
-        int c    = 7   ;
+        int ggg    = 7   ;
    final     int r,t    = 7   ;
    final     int u  ;
         int vvv,     vvv0    = 57   ;
@@ -24,7 +24,7 @@ final   int a    = 7     ;
         char qweq4324_   = 't'   ;
         char qweq43246   = '?'   ;
         char a_g='Z',by;
-        int b = 3 - 5;
+        int b =7;
    a=b;
 
    b = a;

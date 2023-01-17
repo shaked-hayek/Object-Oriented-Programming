@@ -1,6 +1,6 @@
 
 int a = 8;
 
-void foo (final int a, boolean f) {
+void foo (final int a, boolean b) {
     int b = a;
 }

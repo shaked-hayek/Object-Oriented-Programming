@@ -30,4 +30,8 @@ public class Scope {
         }
         return parentScope.getVarFromMap(varName);
     }
+
+    public Variable isVarInScope(String varName){
+        return variableHashMap.getOrDefault(varName, null);
+    }
 }
