@@ -1,3 +1,7 @@
 
         double _ =+7.  ;
         double 6_ =7  ;
+
+        int a=8;
+        double b = 8;
+        a=b;

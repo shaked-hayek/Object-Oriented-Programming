@@ -24,4 +24,7 @@ final   int a    = 7   ;
         char qweq4324_   = 't'   ;
         char qweq43246   = '?'   ;
         char a_g='Z',by;
-//   a=9;
+        int b;
+   a=9;
+
+   b = a;

@@ -62,6 +62,6 @@ public class VarTypeFactory {
     }
 
     public static String getTypeRegex() {
-        return "[" + String.join("|", TYPES) + "]";
+        return "(" + String.join("|", TYPES) + ")";
     }
 }

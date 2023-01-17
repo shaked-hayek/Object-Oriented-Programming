@@ -38,16 +38,22 @@ public class Variable {
         if (initMatcher.matches()) {
             name = initMatcher.group(1);
             String value = initMatcher.group(2);
-            if (!isValidTypeFunc.apply(value)) {
-                checkValueInScope(value);
-                throw new ValueTypeMismatchException();
-            }
-            isInitialized = true;
+            checkAssigment(value);
         } else if (declarationMatcher.matches()) {
             name = declarationMatcher.group(1);
         } else {
             throw new VarNameInitializedException();
         }
+    }
+
+    public boolean checkAssigment(String value) throws ValueTypeMismatchException {
+        if (!isValidTypeFunc.apply(value)) {
+            if (!checkValueInScope(value)) {
+                throw new ValueTypeMismatchException();
+            }
+        }
+        isInitialized = true;
+        return true;
     }
 
     private boolean checkValueInScope(String value) {
