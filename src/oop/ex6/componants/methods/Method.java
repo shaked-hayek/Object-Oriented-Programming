@@ -34,13 +34,19 @@ public class Method extends Scope {
         String[] vars = m.group(2).split(",");
         if (!Objects.equals(vars[0], "")) {
             for (String varStr : vars) {
+                boolean isVarFinal = false;
+                if (Variables.isFinal(varStr)) {
+                    isVarFinal = true;
+                    varStr = Variables.stripFinal(varStr);
+                }
+
                 p = Pattern.compile(VAR_REGEX);
                 m = p.matcher(varStr);
                 if (m.matches()) {
                     VarType varType = VarTypeFactory.getType(m.group(1));
                     String varName = m.group(2);
                     Variable var = new Variable(
-                            VarTypeFactory.getType(m.group(1)), varName, parentScope, false);
+                            VarTypeFactory.getType(m.group(1)), varName, parentScope, isVarFinal);
                     var.setInitializedTrue();
                     addVarToScopeMap(var);
                     paramsList.add(varType);

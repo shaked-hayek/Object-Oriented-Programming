@@ -21,7 +21,7 @@ public class Variables {
         isFinal = isFinal(line);
         this.scope = scope;
         if (isFinal) {
-            line = line.replaceAll(FINAL_REGEX, "");
+            line = stripFinal(line);
         }
 
         // Get type
@@ -63,10 +63,14 @@ public class Variables {
 
     }
 
-    private boolean isFinal(String line) {
+    public static boolean isFinal(String line) {
         Pattern p = Pattern.compile(FINAL_REGEX);
         Matcher m = p.matcher(line);
         return m.lookingAt();
+    }
+
+    public static String stripFinal(String line) {
+        return line.replaceAll(FINAL_REGEX, "");
     }
 
     private boolean isInitialization(String line) {
