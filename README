@@ -3,6 +3,8 @@
 We chose to print the error with the name of the Exception class to make it easier for users
 to find the error
 
+Can extent method to also be under different scopes (other than global)
+
 
 
 

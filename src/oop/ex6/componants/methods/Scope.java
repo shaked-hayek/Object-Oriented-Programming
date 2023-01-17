@@ -6,21 +6,28 @@ import java.util.HashMap;
 
 public class Scope {
     private HashMap<String, Variable> variableHashMap;
+    private Scope parentScope;
 
-    Scope(){
+    public Scope(Scope parentScope) {
+        this.parentScope = parentScope;
         variableHashMap = new HashMap<>();
     }
 
-    void addVarToScopeMap(Variable var){
+    public boolean addVarToScopeMap(Variable var){
+        if (variableHashMap.containsKey(var.getName())) {
+            return false;
+        }
         variableHashMap.put(var.getName(), var);
+        return true;
     }
 
-    Variable getVarFromMap(String varName){
-        return variableHashMap.getOrDefault(varName, null);
+    public Variable getVarFromMap(String varName){
+        if (variableHashMap.containsKey(varName)) {
+            return variableHashMap.get(varName);
+        }
+        if (parentScope == null) {
+            return null;
+        }
+        return parentScope.getVarFromMap(varName);
     }
-
-
-
-
-
 }

@@ -21,7 +21,7 @@ public class VarTypeFactory {
     private static final String[] TYPES = {INT, DOUBLE, STRING, BOOLEAN, CHAR};
 
 
-    public static Function<String, Boolean> getValValidationFunc(String type) throws InvalidVarTypeException {
+    public static Function<String, Boolean> getValValidationFunc(VarType type) throws InvalidVarTypeException {
         switch (type) {
             case INT:
                 return val -> validValueToType(INT_REGEX, val);

@@ -1,5 +1,8 @@
 package oop.ex6.componants.variables;
 
+import oop.ex6.componants.VarType;
+import oop.ex6.componants.methods.Scope;
+
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,12 +11,14 @@ public class Variables {
     private static final String FINAL_REGEX = "\\s*final\\s+";
     private static final String TYPE_REGEX = "\\s*([a-zA-Z]+)\\s+(.*)";
     private static boolean isFinal;
+    private Scope scope;
 
 
-    public Variables(String line)
-            throws InvalidVarTypeException, InvalidVarDeclarationException, ValueTypeMismatchException {
+    public Variables(String line, Scope scope)
+            throws InvalidVarTypeException, InvalidVarDeclarationException, ValueTypeMismatchException, VarNameInitializedException {
         // Check final
         isFinal = isFinal(line);
+        this.scope = scope;
         if (isFinal) {
             line = line.replaceAll(FINAL_REGEX, "");
         }
@@ -24,7 +29,7 @@ public class Variables {
         if (!m.lookingAt()) {
             throw new InvalidVarTypeException();
         }
-        Function<String, Boolean> isValidTypeFunc = VarTypeFactory.getValValidationFunc(m.group(1));
+        VarType type = VarTypeFactory.getType(m.group(1));
         String restOfLine = m.group(2);
 
         // Get different vars
@@ -33,7 +38,10 @@ public class Variables {
             throw new InvalidVarDeclarationException();
         }
         for (String var : vars) {
-            new Variable(isValidTypeFunc, var, isFinal); // TODO
+            Variable variable = new Variable(type, var, scope, isFinal);
+            if (!scope.addVarToScopeMap(variable)) {
+                throw new VarNameInitializedException();
+            }
         }
     }
 

@@ -2,9 +2,11 @@ package oop.ex6.main;
 
 import oop.ex6.componants.LineValidator;
 import oop.ex6.componants.InvalidLineEndException;
+import oop.ex6.componants.methods.GlobalScope;
 import oop.ex6.componants.variables.InvalidVarDeclarationException;
 import oop.ex6.componants.variables.InvalidVarTypeException;
 import oop.ex6.componants.variables.ValueTypeMismatchException;
+import oop.ex6.componants.variables.VarNameInitializedException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -32,26 +34,8 @@ public class Sjavac {
             return;
         }
 
-        String line;
-        int lineIndex = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader(args[0]))) {
-            while ((line = br.readLine()) != null) {
-                lineIndex++;
-                if (isComment(line) || isEmptyLine(line)) {
-                    continue;
-                }
-                try {
-                    new LineValidator().validate(line);
-                } catch (InvalidLineEndException | InvalidVarTypeException | ValueTypeMismatchException |
-                         InvalidVarDeclarationException e) {
-                    printError(e, lineIndex);
-                    return;
-                }
-            }
-
-        } catch (IOException e) {
-            System.out.println(IO_ERROR_CODE);
-            System.err.println(IO_ERR_MSG);
+        GlobalScope globalScope = new GlobalScope();
+        if (!firstPass(globalScope, args[0])) {
             return;
         }
 
@@ -75,5 +59,31 @@ public class Sjavac {
         System.out.println(INVALID_CODE);
         System.err.printf(e + LINE_CODE, lineIndex);
         System.out.println();
+    }
+
+    private static boolean firstPass(GlobalScope globalScope, String fileName) {
+        String line;
+        int lineIndex = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            while ((line = br.readLine()) != null) {
+                lineIndex++;
+                if (isComment(line) || isEmptyLine(line)) {
+                    continue;
+                }
+                try {
+                    new LineValidator(globalScope).validate(line);
+                } catch (InvalidLineEndException | InvalidVarTypeException | VarNameInitializedException | ValueTypeMismatchException |
+                         InvalidVarDeclarationException e) {
+                    printError(e, lineIndex);
+                    return false;
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println(IO_ERROR_CODE);
+            System.err.println(IO_ERR_MSG);
+            return false;
+        }
+        return true;
     }
 }

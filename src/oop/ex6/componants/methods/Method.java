@@ -15,12 +15,13 @@ public class Method extends Scope {
     private static final String VAR_REGEX = "(" + VarTypeFactory.getTypeRegex() + ")" + "\\s+" + NAME_REGEX;
     private static final String VARS_REGEX = "\\((.*)\\)";
     private static final String INIT_REGEX = "\\s*" + VOID_REGEX + "\\s*" + NAME_REGEX + "\\s*" + VARS_REGEX;
+    private final String name;
 
     private List<VarType> paramsList;
 
-    Method (String line) throws MethodDeclarationException, InvalidVarTypeException,
-            ValueTypeMismatchException, InvalidVarDeclarationException {
-        super();
+    public Method (Scope parentScope, String line) throws MethodDeclarationException, InvalidVarTypeException,
+            ValueTypeMismatchException, InvalidVarDeclarationException, VarNameInitializedException {
+        super(parentScope);
         paramsList = new ArrayList<>();
 
         Pattern p = Pattern.compile(INIT_REGEX);
@@ -28,7 +29,8 @@ public class Method extends Scope {
         if (!m.matches()){
             throw new MethodDeclarationException();
         }
-        String[] vars = m.group(1).split(",");
+        name = m.group(1);
+        String[] vars = m.group(2).split(",");
         for (String varStr: vars){
             p = Pattern.compile(VAR_REGEX);
             m = p.matcher(varStr);
@@ -36,7 +38,7 @@ public class Method extends Scope {
                 VarType varType = VarTypeFactory.getType(m.group(1));
                 String varName = m.group(2);
                 Variable var = new Variable(
-                        VarTypeFactory.getValValidationFunc(m.group(1)), varName, false);
+                        VarTypeFactory.getType(m.group(1)), varName, parentScope, false);
                 addVarToScopeMap(var);
                 paramsList.add(varType);
             } else {
@@ -46,5 +48,7 @@ public class Method extends Scope {
 
     }
 
-
+    public String getName() {
+        return name;
+    }
 }
