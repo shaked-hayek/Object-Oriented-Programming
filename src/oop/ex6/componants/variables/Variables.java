@@ -16,7 +16,7 @@ public class Variables {
 
 
     public Variables(String line, Scope scope)
-            throws InvalidVarTypeException, InvalidVarDeclarationException, ValueMismatchException, VarNameInitializedException {
+            throws InvalidVarTypeException, InvalidVarDeclarationException, ValueMismatchException, VarNameInitializedException, IllegalFinalVarAssigmentException {
         // Check final
         isFinal = isFinal(line);
         this.scope = scope;
@@ -46,18 +46,27 @@ public class Variables {
                 }
             }
         } else {
-            Pattern p = Pattern.compile(ASSIGMENT_REGEX);
-            Matcher m = p.matcher(line);
-            if (!m.matches()) {
+            String[] vars = line.split(",");
+            if (vars.length < 1) { // No variables
                 throw new InvalidVarDeclarationException();
             }
-            String name = m.group(1);
-            String value = m.group(2);
-            Variable var = scope.getVarFromMap(name);
-            if (var == null) {
-                throw new InvalidVarDeclarationException();
+            for (String varStr : vars) {
+                Pattern p = Pattern.compile(ASSIGMENT_REGEX);
+                Matcher m = p.matcher(varStr);
+                if (!m.matches()) {
+                    throw new InvalidVarDeclarationException();
+                }
+                String name = m.group(1);
+                String value = m.group(2);
+                Variable var = scope.getVarFromMap(name);
+                if (var == null) {
+                    throw new InvalidVarDeclarationException();
+                }
+                if (var.isFinal()) {
+                    throw new IllegalFinalVarAssigmentException();
+                }
+                var.checkAssigment(value);
             }
-            var.checkAssigment(value);
         }
 
 

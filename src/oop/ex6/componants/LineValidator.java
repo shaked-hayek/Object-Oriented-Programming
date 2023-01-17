@@ -26,7 +26,7 @@ public class LineValidator {
 
     public void validate(String line)
             throws InvalidLineEndException, InvalidVarTypeException, ValueMismatchException,
-            InvalidVarDeclarationException, VarNameInitializedException, InvalidEndOfScopeException, MethodDeclarationException {
+            InvalidVarDeclarationException, VarNameInitializedException, InvalidEndOfScopeException, MethodDeclarationException, IllegalFinalVarAssigmentException {
         if (!isRegexMatches(line, VALID_END_REGEX)) {
             throw new InvalidLineEndException();
         }

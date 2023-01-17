@@ -59,7 +59,18 @@ public class Variable {
     private boolean checkValueInScope(String value) {
         Variable var = scope.getVarFromMap(value);
         if (var != null) {
-            return (var.isInitialized()) && (var.getType() == type);
+            return (var.isInitialized()) && (isTypeMatch(var.getType()));
+        }
+        return false;
+    }
+
+    private boolean isTypeMatch(VarType assignedType) {
+        if (type == assignedType) {
+            return true;
+        } else if (type == VarType.DOUBLE && assignedType == VarType.INT) {
+            return true;
+        } else if (type == VarType.BOOLEAN && (assignedType == VarType.INT || assignedType == VarType.DOUBLE)) {
+            return true;
         }
         return false;
     }

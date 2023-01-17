@@ -7,6 +7,8 @@
 //             HELLO
 final   int a    = 7     ;
         int ggg    = 7   ;
+        String g    = "6"   ;
+        g= "6" , ggg=4;
    final     int r,t    = 7   ;
    final     int u  ;
         int vvv,     vvv0    = 57   ;
@@ -25,6 +27,13 @@ final   int a    = 7     ;
         char qweq43246   = '?'   ;
         char a_g='Z',by;
         int b =7;
-   a=b;
+   a_n=b;
 
    b = a;
+
+
+boolean one = true;
+one = b;
+double ttt = 6.8;
+one = ttt;
+ttt = b;
