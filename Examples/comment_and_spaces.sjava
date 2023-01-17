@@ -5,7 +5,7 @@
 //
 //
 //             HELLO
-final   int a    = 7   ;
+final   int a    = 7     ;
         int c    = 7   ;
    final     int r,t    = 7   ;
    final     int u  ;
@@ -20,11 +20,11 @@ final   int a    = 7   ;
         double ___a =+00007.  ;
        String var__   ="true"   ;
        String var__4   ="i$*#"   ;
-        String __   = "t4564634ds'''rue"   ;
+        String __   = "t45646  34dsrue"   ;
         char qweq4324_   = 't'   ;
         char qweq43246   = '?'   ;
         char a_g='Z',by;
-        int b = 3;
+        int b = 3 - 5;
    a=b;
 
    b = a;

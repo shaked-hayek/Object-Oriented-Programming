@@ -16,7 +16,7 @@ public class Variable {
 
     private static final String NAME_REGEX = "([a-zA-Z]+[a-zA-Z0-9_]*|_+[a-zA-Z0-9_]+)";
     private static final String DECLARATION_REGEX = "\\s*" + NAME_REGEX + "\\s*";
-    private static final String INITIALIZATION_REGEX = "\\s*" + NAME_REGEX + "\\s*=\\s*(\\S+)\\s*";
+    private static final String INITIALIZATION_REGEX = "\\s*" + NAME_REGEX + "\\s*=\\s*(.*)";
     private VarType type;
 
     public Variable(VarType type, String declaration, Scope scope, boolean isFinal)
@@ -37,7 +37,7 @@ public class Variable {
 
         if (initMatcher.matches()) {
             name = initMatcher.group(1);
-            String value = initMatcher.group(2);
+            String value = initMatcher.group(2).stripTrailing();
             checkAssigment(value);
         } else if (declarationMatcher.matches()) {
             name = declarationMatcher.group(1);
