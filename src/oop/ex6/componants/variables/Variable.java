@@ -20,7 +20,7 @@ public class Variable {
     private VarType type;
 
     public Variable(VarType type, String declaration, Scope scope, boolean isFinal)
-            throws ValueTypeMismatchException, VarNameInitializedException, InvalidVarTypeException {
+            throws ValueMismatchException, VarNameInitializedException, InvalidVarTypeException {
         this.type = type;
         this.scope = scope;
         this.isFinal = isFinal;
@@ -29,7 +29,7 @@ public class Variable {
         create(declaration);
     }
 
-    public void create(String declaration) throws ValueTypeMismatchException, VarNameInitializedException {
+    public void create(String declaration) throws ValueMismatchException, VarNameInitializedException {
         Pattern declarationPattern = Pattern.compile(DECLARATION_REGEX);
         Pattern initPattern = Pattern.compile(INITIALIZATION_REGEX);
         Matcher declarationMatcher = declarationPattern.matcher(declaration);
@@ -46,10 +46,10 @@ public class Variable {
         }
     }
 
-    public boolean checkAssigment(String value) throws ValueTypeMismatchException {
+    public boolean checkAssigment(String value) throws ValueMismatchException {
         if (!isValidTypeFunc.apply(value)) {
             if (!checkValueInScope(value)) {
-                throw new ValueTypeMismatchException();
+                throw new ValueMismatchException();
             }
         }
         isInitialized = true;
@@ -59,7 +59,7 @@ public class Variable {
     private boolean checkValueInScope(String value) {
         Variable var = scope.getVarFromMap(value);
         if (var != null) {
-            return var.getType() == type;
+            return (var.isInitialized()) && (var.getType() == type);
         }
         return false;
     }

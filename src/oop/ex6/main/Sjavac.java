@@ -5,7 +5,7 @@ import oop.ex6.componants.InvalidLineEndException;
 import oop.ex6.componants.methods.GlobalScope;
 import oop.ex6.componants.variables.InvalidVarDeclarationException;
 import oop.ex6.componants.variables.InvalidVarTypeException;
-import oop.ex6.componants.variables.ValueTypeMismatchException;
+import oop.ex6.componants.variables.ValueMismatchException;
 import oop.ex6.componants.variables.VarNameInitializedException;
 
 import java.io.BufferedReader;
@@ -72,7 +72,8 @@ public class Sjavac {
                 }
                 try {
                     new LineValidator(globalScope).validate(line);
-                } catch (InvalidLineEndException | InvalidVarTypeException | VarNameInitializedException | ValueTypeMismatchException |
+                } catch (InvalidLineEndException | InvalidVarTypeException | VarNameInitializedException |
+                         ValueMismatchException |
                          InvalidVarDeclarationException e) {
                     printError(e, lineIndex);
                     return false;

@@ -3,7 +3,6 @@ package oop.ex6.componants.variables;
 import oop.ex6.componants.VarType;
 import oop.ex6.componants.methods.Scope;
 
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +16,7 @@ public class Variables {
 
 
     public Variables(String line, Scope scope)
-            throws InvalidVarTypeException, InvalidVarDeclarationException, ValueTypeMismatchException, VarNameInitializedException {
+            throws InvalidVarTypeException, InvalidVarDeclarationException, ValueMismatchException, VarNameInitializedException {
         // Check final
         isFinal = isFinal(line);
         this.scope = scope;

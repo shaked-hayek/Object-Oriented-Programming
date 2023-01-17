@@ -18,7 +18,7 @@ public class LineValidator {
     }
 
     public void validate(String line)
-            throws InvalidLineEndException, InvalidVarTypeException, ValueTypeMismatchException,
+            throws InvalidLineEndException, InvalidVarTypeException, ValueMismatchException,
             InvalidVarDeclarationException, VarNameInitializedException {
         if (!isRegexMatches(line, VALID_END_REGEX)){
             throw new InvalidLineEndException();

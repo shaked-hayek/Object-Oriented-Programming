@@ -20,7 +20,7 @@ public class Method extends Scope {
     private List<VarType> paramsList;
 
     public Method (Scope parentScope, String line) throws MethodDeclarationException, InvalidVarTypeException,
-            ValueTypeMismatchException, InvalidVarDeclarationException, VarNameInitializedException {
+            ValueMismatchException, InvalidVarDeclarationException, VarNameInitializedException {
         super(parentScope);
         paramsList = new ArrayList<>();
 
