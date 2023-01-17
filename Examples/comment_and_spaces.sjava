@@ -6,7 +6,7 @@
 //
 //             HELLO
 final   int a    = 7     ;
-        int ggg    = 7   ;
+        int ggg    = 6  ;
         String g    = "6"   ;
         g= "6" , ggg=4;
    final     int r,t    = 7   ;

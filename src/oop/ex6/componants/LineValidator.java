@@ -39,8 +39,10 @@ public class LineValidator {
             line = line.replaceAll("\\{", "");
             if (Method.checkIsMethod(line)) {
                 Method method = new Method(globalScope, line);
-                globalScope.addMethodToScopeMap(method);
-            }
+                if (!globalScope.addMethodToScopeMap(method)) {
+                    throw new MethodDeclarationException();
+                }
+            } // TODO : check else - if and while or throw exception
 
         } else if (isRegexMatches(line, SCOPE_CLOSE_LINE_END)) {
             scopeCloseCounter++;

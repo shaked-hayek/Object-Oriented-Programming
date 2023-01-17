@@ -12,8 +12,12 @@ public class GlobalScope extends Scope {
         methodHashMap = new HashMap<>();
     }
 
-    public void addMethodToScopeMap(Method method){
+    public boolean addMethodToScopeMap(Method method){
+        if (methodHashMap.containsKey(method.getName())) {
+            return false;
+        }
         methodHashMap.put(method.getName(), method);
+        return true;
     }
 
     public Method getMethodFromMap(String methodName){
