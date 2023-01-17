@@ -72,6 +72,10 @@ public class Variable {
         return isFinal;
     }
 
+    public void setInitializedTrue() {
+        isInitialized = true;
+    }
+
     public boolean isInitialized() {
         return isInitialized;
     }

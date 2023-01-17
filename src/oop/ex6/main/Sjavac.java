@@ -1,8 +1,10 @@
 package oop.ex6.main;
 
+import oop.ex6.componants.InvalidEndOfScopeException;
 import oop.ex6.componants.LineValidator;
 import oop.ex6.componants.InvalidLineEndException;
 import oop.ex6.componants.methods.GlobalScope;
+import oop.ex6.componants.methods.MethodDeclarationException;
 import oop.ex6.componants.variables.InvalidVarDeclarationException;
 import oop.ex6.componants.variables.InvalidVarTypeException;
 import oop.ex6.componants.variables.ValueMismatchException;
@@ -64,6 +66,7 @@ public class Sjavac {
     private static boolean firstPass(GlobalScope globalScope, String fileName) {
         String line;
         int lineIndex = 0;
+        LineValidator lv = new LineValidator(globalScope);
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             while ((line = br.readLine()) != null) {
                 lineIndex++;
@@ -71,15 +74,20 @@ public class Sjavac {
                     continue;
                 }
                 try {
-                    new LineValidator(globalScope).validate(line);
+                    lv.validate(line);
                 } catch (InvalidLineEndException | InvalidVarTypeException | VarNameInitializedException |
-                         ValueMismatchException |
-                         InvalidVarDeclarationException e) {
+                         ValueMismatchException | InvalidVarDeclarationException |
+                         InvalidEndOfScopeException | MethodDeclarationException e) {
                     printError(e, lineIndex);
                     return false;
                 }
             }
-
+            try {
+                lv.finalCheck();
+            } catch (InvalidEndOfScopeException e) {
+                printError(e, lineIndex);
+                return false;
+            }
         } catch (IOException e) {
             System.out.println(IO_ERROR_CODE);
             System.err.println(IO_ERR_MSG);
