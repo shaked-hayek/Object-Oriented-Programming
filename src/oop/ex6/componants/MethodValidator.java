@@ -1,6 +1,7 @@
 package oop.ex6.componants;
 
 import oop.ex6.componants.methods.GlobalScope;
+import oop.ex6.componants.methods.IllegalConditionException;
 import oop.ex6.componants.methods.Method;
 import oop.ex6.componants.methods.Scope;
 import oop.ex6.componants.variables.VarTypeFactory;
@@ -9,6 +10,8 @@ import oop.ex6.componants.variables.Variable;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static oop.ex6.componants.methods.Scope.isValidCondition;
 
 public class MethodValidator {
     private static final String PARENTHESES_REGEX = "\\((.*)\\)";
@@ -31,7 +34,7 @@ public class MethodValidator {
 
     public void validate()
             throws IllegalMethodCallException, IllegalVarInMethodCallException, IllegalReturnStatement,
-            InvalidEndOfScopeException {
+            InvalidEndOfScopeException, IllegalConditionException {
         methodLines.remove(0);
         for (String line : methodLines) {
             currentLine++;
@@ -59,6 +62,7 @@ public class MethodValidator {
 
             if (Scope.isValidScopeDeclaration(line)) {
                 // if / while
+                isValidCondition(line, globalScope);
             } else if (isMethodCall(line)) {
                 checkMethodCall(line);
             }

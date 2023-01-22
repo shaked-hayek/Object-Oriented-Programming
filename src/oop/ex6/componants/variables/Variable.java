@@ -20,6 +20,8 @@ public class Variable {
             SPACE_REGEX + NAME_REGEX + SPACE_REGEX);
     private static final Pattern INITIALIZATION_PATTERN = Pattern.compile(
             SPACE_REGEX + NAME_REGEX + "\\s*=\\s*(.*)");
+
+    private static final Pattern NAME_PATTERN = Pattern.compile(NAME_REGEX);
     private VarType type;
 
     public Variable(VarType type, String declaration, Scope scope, boolean isFinal)
@@ -102,5 +104,11 @@ public class Variable {
 
     public String getName() {
         return name;
+    }
+
+    public static boolean isValidName(String varName){
+        Matcher m = NAME_PATTERN.matcher(varName);
+        return m.matches();
+
     }
 }

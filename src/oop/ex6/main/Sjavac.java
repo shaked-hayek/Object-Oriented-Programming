@@ -2,6 +2,7 @@ package oop.ex6.main;
 
 import oop.ex6.componants.*;
 import oop.ex6.componants.methods.GlobalScope;
+import oop.ex6.componants.methods.IllegalConditionException;
 import oop.ex6.componants.methods.MethodDeclarationException;
 import oop.ex6.componants.variables.*;
 
@@ -103,7 +104,7 @@ public class Sjavac {
             try {
                 mv.validate();
             } catch (IllegalMethodCallException | IllegalVarInMethodCallException | IllegalReturnStatement |
-                     InvalidEndOfScopeException e) {
+                     IllegalConditionException | InvalidEndOfScopeException e) {
                 printError(e, lv.getMethodStartLine(methodName) + mv.getCurrentLine());
                 return false;
             }
