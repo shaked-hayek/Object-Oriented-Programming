@@ -57,7 +57,9 @@ public class LineValidator {
                 methodContent.put(method.getName(), new ArrayList<>());
                 currentMethodName = method.getName();
             } else if (Scope.isValidScopeDeclaration(line)) {
-                // if / while declaration is ok
+                if (currentMethodName == null) {
+                    throw new ScopeDeclarationException();
+                }
             } else {
                 throw new ScopeDeclarationException();
             }
