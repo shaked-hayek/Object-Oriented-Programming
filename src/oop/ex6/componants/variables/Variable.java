@@ -25,7 +25,8 @@ public class Variable {
     private VarType type;
 
     public Variable(VarType type, String declaration, Scope scope, boolean isFinal)
-            throws ValueMismatchException, VarNameInitializedException, InvalidVarTypeException {
+            throws ValueMismatchException, VarNameInitializedException, InvalidVarTypeException,
+            IllegalFinalVarAssigmentException {
         this.type = type;
         this.scope = scope;
         this.isFinal = isFinal;
@@ -37,7 +38,8 @@ public class Variable {
         create(declaration);
     }
 
-    public void create(String declaration) throws ValueMismatchException, VarNameInitializedException {
+    public void create(String declaration)
+            throws ValueMismatchException, VarNameInitializedException, IllegalFinalVarAssigmentException {
         Matcher declarationMatcher = DECLARATION_PATTERN.matcher(declaration);
         Matcher initMatcher = INITIALIZATION_PATTERN.matcher(declaration);
 
@@ -46,6 +48,9 @@ public class Variable {
             String value = initMatcher.group(2).stripTrailing();
             checkAssigment(value);
         } else if (declarationMatcher.matches()) {
+            if (isFinal) {
+                throw new IllegalFinalVarAssigmentException();
+            }
             name = declarationMatcher.group(1);
         } else {
             throw new VarNameInitializedException();

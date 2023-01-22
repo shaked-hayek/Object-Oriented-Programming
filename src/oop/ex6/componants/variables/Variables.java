@@ -92,7 +92,7 @@ public class Variables {
      */
     private void varInitialization(String initLine)
             throws InvalidVarTypeException, InvalidVarDeclarationException, VarNameInitializedException,
-            ValueMismatchException {
+            ValueMismatchException, IllegalFinalVarAssigmentException {
         // Get type
         Matcher m = TYPE_PATTERN.matcher(initLine);
         if (!m.lookingAt()) {
@@ -149,6 +149,10 @@ public class Variables {
             throws InvalidVarDeclarationException {
         String[] vars = line.split(",");
         if (vars.length < 1) { // No variables
+            throw new InvalidVarDeclarationException();
+        }
+        int numberOfVars = line.length() - line.replace(",", "").length();
+        if (numberOfVars + 1 != vars.length) {
             throw new InvalidVarDeclarationException();
         }
         return vars;

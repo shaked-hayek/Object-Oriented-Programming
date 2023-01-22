@@ -24,7 +24,7 @@ public class Method extends Scope {
     private List<VarType> paramsList;
 
     public Method (Scope parentScope, String line) throws MethodDeclarationException, InvalidVarTypeException,
-            ValueMismatchException, VarNameInitializedException {
+            ValueMismatchException, VarNameInitializedException, IllegalFinalVarAssigmentException {
         super(parentScope);
         paramsList = new ArrayList<>();
 
