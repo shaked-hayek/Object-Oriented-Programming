@@ -16,7 +16,9 @@ void foo (final int a, boolean b) {
     }
     int b = a;
     foo_two( 't' , 3.8);
-    return;
+  }
+      return;
+
   }
 
 void foo_two(char a, double c){
