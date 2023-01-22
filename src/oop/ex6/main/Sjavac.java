@@ -104,7 +104,10 @@ public class Sjavac {
             try {
                 mv.validate();
             } catch (IllegalMethodCallException | IllegalVarInMethodCallException | IllegalReturnStatement |
-                     IllegalConditionException | InvalidEndOfScopeException e) {
+                     IllegalConditionException | InvalidEndOfScopeException |
+                     IllegalFinalVarAssigmentException | InvalidVarTypeException |
+                     InvalidVarDeclarationException | VarNameInitializedException |
+                     ValueMismatchException e) {
                 printError(e, lv.getMethodStartLine(methodName) + mv.getCurrentLine());
                 return false;
             }

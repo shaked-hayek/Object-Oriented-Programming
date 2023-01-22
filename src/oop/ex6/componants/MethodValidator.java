@@ -4,8 +4,7 @@ import oop.ex6.componants.methods.GlobalScope;
 import oop.ex6.componants.methods.IllegalConditionException;
 import oop.ex6.componants.methods.Method;
 import oop.ex6.componants.methods.Scope;
-import oop.ex6.componants.variables.VarTypeFactory;
-import oop.ex6.componants.variables.Variable;
+import oop.ex6.componants.variables.*;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -34,7 +33,9 @@ public class MethodValidator {
 
     public void validate()
             throws IllegalMethodCallException, IllegalVarInMethodCallException, IllegalReturnStatement,
-            InvalidEndOfScopeException, IllegalConditionException {
+            InvalidEndOfScopeException, IllegalConditionException, IllegalFinalVarAssigmentException,
+            InvalidVarTypeException, InvalidVarDeclarationException, VarNameInitializedException,
+            ValueMismatchException {
         methodLines.remove(0);
         for (String line : methodLines) {
             currentLine++;
@@ -61,8 +62,11 @@ public class MethodValidator {
             } else if (Scope.isValidScopeDeclaration(line)) { // while / if
                 isValidCondition(line, globalScope);
                 currentScope = new Scope(currentScope);
-            } else if (isMethodCall(line)) {
+            } else if (isMethodCall(line)) {    // method call
                 checkMethodCall(line);
+            } else {
+                Variables variables = new Variables(currentScope);
+                variables.processVarsLine(line);
             }
         }
         // If got here there was no return statement

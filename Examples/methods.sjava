@@ -1,27 +1,32 @@
 
 final int a = 8;
 int foo =5;
-    boolean b=3;
 
-void foo (final int a, String b) {
-    int b = a;
+void foo (final int a, String rrr) {
+    int c = a;
+    b = 4;
+    foo_two('c' , b);
     return;
-    foo_two('c' , 3.8);
-    if (a) {
-    if (a || b || -5) {
-        b = 8;
-        int c = 7;
-        while (6) {
-        }
-    }
-    int b = a;
-    foo( 5, "3.8");
-  }
-      return;
 
+    if (a) {
+        if (a || b || -5) {
+            c = 8;
+            String c = "s";
+            while (6) {
+                char d = '8';
+                foo_two('c' , b);
+                return;
+            }
+        }
+        int b = a;
+        foo( 5, "3.8");
+    }
+    return;
   }
 
 void foo_two(char a, double c){
 foo(7, "sdf sdf ds");
 return   ;
 }
+
+double b;
