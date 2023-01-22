@@ -60,7 +60,7 @@ public class MethodValidator {
                 }
                 currentScope = currentScope.getParentScope();
             } else if (Scope.isValidScopeDeclaration(line)) { // while / if
-                isValidCondition(line, globalScope);
+                isValidCondition(line, currentScope);
                 currentScope = new Scope(currentScope);
             } else if (isMethodCall(line)) {    // method call
                 checkMethodCall(line);

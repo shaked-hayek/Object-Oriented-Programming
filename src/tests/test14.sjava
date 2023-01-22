@@ -7,6 +7,6 @@ void foo (int a) {
 }
 
 void foo2(int a, double c){
-    foo(7, 5.8);
+    foo(7);
     return;
 }

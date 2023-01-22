@@ -1,5 +1,5 @@
 double d1 = 0.8;
-double d2 = -d1;
+double d2 = d1;
 double d3 = -.5;
 double d4 = 0000.005;
 double d5 = 4.;
