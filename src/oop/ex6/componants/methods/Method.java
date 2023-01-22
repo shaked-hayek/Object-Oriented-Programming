@@ -24,7 +24,7 @@ public class Method extends Scope {
     private List<VarType> paramsList;
 
     public Method (Scope parentScope, String line) throws MethodDeclarationException, InvalidVarTypeException,
-            ValueMismatchException, InvalidVarDeclarationException, VarNameInitializedException {
+            ValueMismatchException, VarNameInitializedException {
         super(parentScope);
         paramsList = new ArrayList<>();
 
@@ -34,7 +34,7 @@ public class Method extends Scope {
         }
         name = m.group(1);
         String[] vars = m.group(2).split(",");
-        if (!Objects.equals(vars[0], "")) {
+        if (!isNoVars(vars)) {
             for (String varStr : vars) {
                 boolean isVarFinal = false;
                 if (Variables.isFinal(varStr)) {
@@ -58,6 +58,10 @@ public class Method extends Scope {
                 }
             }
         }
+    }
+
+    public static boolean isNoVars(String[] vars) {
+        return Objects.equals(vars[0].strip(), "") && vars.length == 1;
     }
 
     public String getName() {

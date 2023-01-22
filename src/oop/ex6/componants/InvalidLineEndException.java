@@ -1,7 +1,7 @@
 package oop.ex6.componants;
 
 public class InvalidLineEndException extends Exception {
-    private static final String ERROR_MSG = "Line ends with wrong char";
+    private static final String ERROR_MSG = "Line ends with wrong char or invalid structure";
 
     @Override
     public String getMessage() {

@@ -92,6 +92,9 @@ public class MethodValidator {
             throw new IllegalMethodCallException();
         }
         String[] vars = m.group(2).split(",");
+        if (Method.isNoVars(vars)) {
+            vars = new String[]{};
+        }
         if (!checkMethodCallVars(methodCalled, vars)) {
             throw new IllegalVarInMethodCallException();
         }

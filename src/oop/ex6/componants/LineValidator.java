@@ -71,6 +71,8 @@ public class LineValidator {
                 addLineToMethodContent(line);
                 currentMethodName = null;
             }
+        } else {
+            throw new InvalidLineEndException();
         }
         addLineToMethodContent(line);
     }
