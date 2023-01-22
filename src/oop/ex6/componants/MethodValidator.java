@@ -30,7 +30,8 @@ public class MethodValidator {
     }
 
     public void validate()
-            throws IllegalMethodCallException, IllegalVarInMethodCallException, IllegalReturnStatement {
+            throws IllegalMethodCallException, IllegalVarInMethodCallException, IllegalReturnStatement,
+            InvalidEndOfScopeException {
         methodLines.remove(0);
         for (String line : methodLines) {
             currentLine++;
@@ -50,6 +51,9 @@ public class MethodValidator {
             }
 
 //            if (LineValidator.isEndOfScope(line)) {
+//                if (currentScope == globalScope) {
+//                    throw new InvalidEndOfScopeException();
+//                }
 //                currentScope = currentScope.getParentScope();
 //            }
 

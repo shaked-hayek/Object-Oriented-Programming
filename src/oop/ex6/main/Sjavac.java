@@ -102,8 +102,8 @@ public class Sjavac {
             MethodValidator mv = new MethodValidator(globalScope, lv, methodName);
             try {
                 mv.validate();
-            } catch (IllegalMethodCallException | IllegalVarInMethodCallException |
-                     IllegalReturnStatement e) {
+            } catch (IllegalMethodCallException | IllegalVarInMethodCallException | IllegalReturnStatement |
+                     InvalidEndOfScopeException e) {
                 printError(e, lv.getMethodStartLine(methodName) + mv.getCurrentLine());
                 return false;
             }
