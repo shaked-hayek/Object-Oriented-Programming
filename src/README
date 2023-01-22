@@ -1,6 +1,37 @@
 shaked.hayek
 shirlevy
 
+shaked.hayek
+shirlevy
+
+
+#####################################
+############### TESTS ###############
+#####################################
+
+test 1: make sure we skip whitespaces and comments
+test 2: make sure valid declaration and initialization of non-final variables
+test 3: make sure variable names are valid
+test 4: make sure final initialization is valid for all types
+test 5: make sure a function is able to get a final variable
+test 6: make sure double value is valid for boolean variable
+test 7: make sure int value is valid for boolean variable
+test 8: make sure int value is valid for double variable
+test 9: make sure String initialization is valid (with spaces and signs)
+test 10: make sure assignment of declared String and int in same line is valid.
+test 11: make sure all options of double are valid
+test 12: make sure name of variable and function is the same - valid
+test 13: make sure global variable is initialized only after a function where it's used - valid
+test 14: make sure functions calls are valid
+test 15: make sure function recursive calls are valid
+test 16: make sure conditions in if are valid
+test 17: make sure conditions with "||" (or) and "&&" (and)
+test 18: make sure return in function is valid as long as there's return statement in the last line of it
+test 19: make sure while scope inside of if scope many times is valid
+test 20: make sure same variable name for variables in different scopes is valid
+
+
+
 We chose to print the error with the name of the Exception class to make it easier for users
 to find the error
 
