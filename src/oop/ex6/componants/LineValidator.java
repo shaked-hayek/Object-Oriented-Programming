@@ -32,7 +32,8 @@ public class LineValidator {
         }
         if (isRegexMatches(line, VAR_LINE_END)) {
             line = line.replaceAll(";", "");
-            new Variables(line, globalScope);
+            Variables variables = new Variables(globalScope);
+            variables.processVarsLine(line);
 
         } else if (isRegexMatches(line, SCOPE_OPEN_LINE_END)) {
             scopeOpenCounter++;
