@@ -29,7 +29,7 @@ public class MethodValidator {
         this.globalScope = globalScope;
         methodLines = lv.getMethodLines(methodName);
         currentLine = 0;
-        currentScope = globalScope;
+        currentScope = method;
     }
 
     public void validate()
@@ -43,7 +43,7 @@ public class MethodValidator {
             if (isReturn(line)) {
                 if (currentLine == methodLines.size() - 1) {
                     // Check scope is global and next line is end
-                    if ((currentScope != globalScope) ||
+                    if ((currentScope != method) ||
                             (!LineValidator.isEndOfScope(methodLines.get(currentLine)))) {
                         throw new IllegalReturnStatement();
                     } else {
@@ -53,16 +53,14 @@ public class MethodValidator {
                 continue;
             }
 
-//            if (LineValidator.isEndOfScope(line)) {
-//                if (currentScope == globalScope) {
-//                    throw new InvalidEndOfScopeException();
-//                }
-//                currentScope = currentScope.getParentScope();
-//            }
-
-            if (Scope.isValidScopeDeclaration(line)) {
-                // if / while
+            if (LineValidator.isEndOfScope(line)) { // }
+                if (currentScope == method) {
+                    throw new InvalidEndOfScopeException();
+                }
+                currentScope = currentScope.getParentScope();
+            } else if (Scope.isValidScopeDeclaration(line)) { // while / if
                 isValidCondition(line, globalScope);
+                currentScope = new Scope(currentScope);
             } else if (isMethodCall(line)) {
                 checkMethodCall(line);
             }
@@ -108,17 +106,11 @@ public class MethodValidator {
             // Check if var value match type
             if (!VarTypeFactory.getValValidationFunc(paramType).apply(var)) {
                 // Check if value is a variable in this method scope
-                Variable varInScope = method.isVarInScope(var);
-                Variable varInGlobal = globalScope.isVarInScope(var);
-                if (varInScope != null) {
-                    if (!checkVarInMethodCall(varInScope, paramType)) {
-                        return false;
-                    }
-                } else if (varInGlobal != null) {
-                    if (!checkVarInMethodCall(varInGlobal, paramType)) {
-                        return false;
-                    }
-                } else {
+                Variable varInScope = currentScope.isVarInScope(var);
+                if (varInScope == null) {
+                    return false;
+                }
+                if (!checkVarInMethodCall(varInScope, paramType)) {
                     return false;
                 }
             }

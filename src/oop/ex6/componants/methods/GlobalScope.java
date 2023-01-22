@@ -1,5 +1,7 @@
 package oop.ex6.componants.methods;
 
+import oop.ex6.componants.variables.Variable;
+
 import java.util.HashMap;
 import java.util.Set;
 
@@ -25,5 +27,10 @@ public class GlobalScope extends Scope {
 
     public Set<String> getMethods() {
         return methodHashMap.keySet();
+    }
+
+    @Override
+    public Variable isVarInScope(String varName) {
+        return variableHashMap.getOrDefault(varName, null);
     }
 }
