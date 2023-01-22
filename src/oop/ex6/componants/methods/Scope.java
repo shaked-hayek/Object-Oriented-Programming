@@ -1,5 +1,8 @@
 package oop.ex6.componants.methods;
 
+import oop.ex6.componants.VarType;
+import oop.ex6.componants.variables.InvalidVarTypeException;
+import oop.ex6.componants.variables.VarTypeFactory;
 import oop.ex6.componants.variables.Variable;
 
 import java.util.HashMap;
@@ -54,5 +57,24 @@ public class Scope {
         }
         String condition = m.group(2);
         return true; // TODO
+    }
+
+    private boolean isValidSingleCondition(String statement) {
+        // Check if statement is a valid boolean value
+        try {
+            if (VarTypeFactory.getValValidationFunc(VarType.BOOLEAN).apply(statement)) {
+                return true;
+            }
+        } catch (InvalidVarTypeException e) {} // Can't get here
+
+        // Check if statement is an initialized var
+        Variable varInScope = this.isVarInScope(statement);
+        Variable varInParent = parentScope.isVarInScope(statement);
+        if (varInScope != null) {
+            return varInScope.isInitialized();
+        } else if (varInParent != null && varInParent.isInitialized()) {
+            return true;
+        }
+        return false;
     }
 }
