@@ -5,6 +5,7 @@ import oop.ex6.componants.variables.VarTypeFactory;
 import oop.ex6.componants.variables.Variable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +22,8 @@ public class Scope {
 
     private static final Pattern SCOPE_PATTERN = Pattern.compile(SCOPE_REGEX);
     private static final Pattern CONDITION_PATTERN = Pattern.compile(CONDITION_REGEX);
+    private static final List<VarType> CONDITION_TYPE_ALLOWED =
+            List.of(new VarType[]{VarType.INT, VarType.DOUBLE, VarType.BOOLEAN});
 
 
     public Scope(Scope parentScope) {
@@ -84,8 +87,8 @@ public class Scope {
             return true;
         }
 
-        Variable varInParent = parentScope.isVarInScope(statement);
-        if (varInParent != null && varInParent.isInitialized()) {
+        Variable var = parentScope.isVarInScope(statement);
+        if (var != null && var.isInitialized() && CONDITION_TYPE_ALLOWED.contains(var.getType())) {
             return true;
         }
         return false;
