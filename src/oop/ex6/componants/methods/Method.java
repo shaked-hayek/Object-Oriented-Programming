@@ -12,10 +12,13 @@ import java.util.regex.Pattern;
 public class Method extends Scope {
     private static final String NAME_REGEX = "([a-zA-Z]+[a-zA-Z0-9_]*)";
     private static final String VOID_REGEX = "void";
+    private static final Pattern VOID_PATTERN =  Pattern.compile("\\s*" + VOID_REGEX);
 
     private static final String VAR_REGEX = "\\s*" + VarTypeFactory.getTypeRegex() + "\\s+" + NAME_REGEX + "\\s*";
+    private static final Pattern VAR_PATTERN =  Pattern.compile(VAR_REGEX);
     private static final String VARS_REGEX = "\\((.*)\\)";
     private static final String INIT_REGEX = "\\s*" + VOID_REGEX + "\\s*" + NAME_REGEX + "\\s*" + VARS_REGEX + "\\s*";
+    private static final Pattern INIT_PATTERN =  Pattern.compile(INIT_REGEX);
     private final String name;
 
     private List<VarType> paramsList;
@@ -25,8 +28,7 @@ public class Method extends Scope {
         super(parentScope);
         paramsList = new ArrayList<>();
 
-        Pattern p = Pattern.compile(INIT_REGEX);
-        Matcher m = p.matcher(line);
+        Matcher m = INIT_PATTERN.matcher(line);
         if (!m.matches()){
             throw new MethodDeclarationException();
         }
@@ -40,8 +42,7 @@ public class Method extends Scope {
                     varStr = Variables.stripFinal(varStr);
                 }
 
-                p = Pattern.compile(VAR_REGEX);
-                m = p.matcher(varStr);
+                m = VAR_PATTERN.matcher(varStr);
                 if (m.matches()) {
                     VarType varType = VarTypeFactory.getType(m.group(1));
                     String varName = m.group(2);
@@ -64,8 +65,7 @@ public class Method extends Scope {
     }
 
     public static boolean checkIsMethod(String line) {
-        Pattern p = Pattern.compile("\\s*" + VOID_REGEX);
-        Matcher m = p.matcher(line);
+        Matcher m = VOID_PATTERN.matcher(line);
         return m.lookingAt();
     }
 }

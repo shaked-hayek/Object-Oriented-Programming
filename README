@@ -5,12 +5,10 @@ to find the error
 
 Can extent method to also be under different scopes (other than global)
 
-
+We compile regex patterns only once for efficiency.
 
 
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 TO DO LIST:
-- use hashMaps for vars
-- var without type - legal
-- var with value as var
+- different scope vars

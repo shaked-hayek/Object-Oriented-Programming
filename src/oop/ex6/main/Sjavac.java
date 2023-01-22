@@ -24,7 +24,9 @@ public class Sjavac {
     private static final String IO_ERR_MSG = "File not found";
     private static final String ARG_ERR_MSG = "Wrong number of arguments entered";
     private static final String COMMENT_REGEX = "^[/]{2}.*";
+    private static final Pattern COMMENT_PATTERN = Pattern.compile(COMMENT_REGEX);
     private static final String SPACE_REGEX = "\\s*";
+    private static final Pattern SPACE_PATTERN = Pattern.compile(SPACE_REGEX);
 
     public static void main(String[] args) {
         if (args.length != VALID_ARG_NUM) {
@@ -43,14 +45,12 @@ public class Sjavac {
     }
 
     private static boolean isEmptyLine(String line) {
-        Pattern p = Pattern.compile(SPACE_REGEX);
-        Matcher m = p.matcher(line);
+        Matcher m = SPACE_PATTERN.matcher(line);
         return m.matches();
     }
 
     private static boolean isComment(String line) {
-        Pattern p = Pattern.compile(COMMENT_REGEX);
-        Matcher m = p.matcher(line);
+        Matcher m = COMMENT_PATTERN.matcher(line);
         return m.matches();
     }
 

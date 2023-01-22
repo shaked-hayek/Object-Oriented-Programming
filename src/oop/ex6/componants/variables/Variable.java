@@ -15,8 +15,11 @@ public class Variable {
     private boolean isInitialized = false;
 
     private static final String NAME_REGEX = "([a-zA-Z]+[a-zA-Z0-9_]*|_+[a-zA-Z0-9_]+)";
-    private static final String DECLARATION_REGEX = "\\s*" + NAME_REGEX + "\\s*";
-    private static final String INITIALIZATION_REGEX = "\\s*" + NAME_REGEX + "\\s*=\\s*(.*)";
+    private static final String SPACE_REGEX = "\\s*";
+    private static final Pattern DECLARATION_PATTERN = Pattern.compile(
+            SPACE_REGEX + NAME_REGEX + SPACE_REGEX);
+    private static final Pattern INITIALIZATION_PATTERN = Pattern.compile(
+            SPACE_REGEX + NAME_REGEX + "\\s*=\\s*(.*)");
     private VarType type;
 
     public Variable(VarType type, String declaration, Scope scope, boolean isFinal)
@@ -30,10 +33,8 @@ public class Variable {
     }
 
     public void create(String declaration) throws ValueMismatchException, VarNameInitializedException {
-        Pattern declarationPattern = Pattern.compile(DECLARATION_REGEX);
-        Pattern initPattern = Pattern.compile(INITIALIZATION_REGEX);
-        Matcher declarationMatcher = declarationPattern.matcher(declaration);
-        Matcher initMatcher = initPattern.matcher(declaration);
+        Matcher declarationMatcher = DECLARATION_PATTERN.matcher(declaration);
+        Matcher initMatcher = INITIALIZATION_PATTERN.matcher(declaration);
 
         if (initMatcher.matches()) {
             name = initMatcher.group(1);

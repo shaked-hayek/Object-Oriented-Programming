@@ -7,10 +7,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Variables {
-    private static final String FINAL_REGEX = "\\s*final\\s+";
-    private static final String TYPE_REGEX = "\\s*([a-zA-Z]+)\\s+(.*)";
     private static final String NAME_REGEX = "([a-zA-Z]+[a-zA-Z0-9_]*|_+[a-zA-Z0-9_]+)";
-    private static final String ASSIGMENT_REGEX = "\\s*" + NAME_REGEX + "\\s*=\\s*(\\S*)\\s*";
+    private static final String FINAL_REGEX = "\\s*final\\s+";
+    private static final Pattern FINAL_PATTERN = Pattern.compile(FINAL_REGEX);
+    private static final Pattern TYPE_PATTERN = Pattern.compile("\\s*([a-zA-Z]+)\\s+(.*)");
+    private static final Pattern ASSIGMENT_PATTERN = Pattern.compile(
+            "\\s*" + NAME_REGEX + "\\s*=\\s*(\\S*)\\s*");
     private static boolean isFinal;
     private Scope scope;
 
@@ -26,8 +28,7 @@ public class Variables {
 
         // Get type
         if (isInitialization(line)) {
-            Pattern p = Pattern.compile(TYPE_REGEX);
-            Matcher m = p.matcher(line);
+            Matcher m = TYPE_PATTERN.matcher(line);
             if (!m.lookingAt()) {
                 throw new InvalidVarTypeException();
             }
@@ -51,8 +52,7 @@ public class Variables {
                 throw new InvalidVarDeclarationException();
             }
             for (String varStr : vars) {
-                Pattern p = Pattern.compile(ASSIGMENT_REGEX);
-                Matcher m = p.matcher(varStr);
+                Matcher m = ASSIGMENT_PATTERN.matcher(varStr);
                 if (!m.matches()) {
                     throw new InvalidVarDeclarationException();
                 }
@@ -68,13 +68,10 @@ public class Variables {
                 var.checkAssigment(value);
             }
         }
-
-
     }
 
     public static boolean isFinal(String line) {
-        Pattern p = Pattern.compile(FINAL_REGEX);
-        Matcher m = p.matcher(line);
+        Matcher m = FINAL_PATTERN.matcher(line);
         return m.lookingAt();
     }
 
