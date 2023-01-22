@@ -1,10 +1,16 @@
 
 final int a = 8;
 int foo =5;
+
 void foo (final int a, boolean b) {
     int b = a;
     if (a) {
+        b = 8;
+        int c = 7;
+        while (6) {
+        }
     }
+    return;
 }
 
 void foo_two(){

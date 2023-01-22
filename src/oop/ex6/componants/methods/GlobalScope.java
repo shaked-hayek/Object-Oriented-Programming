@@ -1,8 +1,7 @@
 package oop.ex6.componants.methods;
 
-import oop.ex6.componants.variables.Variable;
-
 import java.util.HashMap;
+import java.util.Set;
 
 public class GlobalScope extends Scope {
     private HashMap<String, Method> methodHashMap;
@@ -22,5 +21,9 @@ public class GlobalScope extends Scope {
 
     public Method getMethodFromMap(String methodName){
         return methodHashMap.getOrDefault(methodName, null);
+    }
+
+    public Set<String> getMethods() {
+        return methodHashMap.keySet();
     }
 }

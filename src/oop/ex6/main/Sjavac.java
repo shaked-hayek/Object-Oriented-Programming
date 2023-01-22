@@ -1,9 +1,6 @@
 package oop.ex6.main;
 
-import oop.ex6.componants.InvalidEndOfScopeException;
-import oop.ex6.componants.LineValidator;
-import oop.ex6.componants.InvalidLineEndException;
-import oop.ex6.componants.ScopeDeclarationException;
+import oop.ex6.componants.*;
 import oop.ex6.componants.methods.GlobalScope;
 import oop.ex6.componants.methods.MethodDeclarationException;
 import oop.ex6.componants.variables.*;
@@ -37,9 +34,12 @@ public class Sjavac {
         }
 
         GlobalScope globalScope = new GlobalScope();
-        if (!firstPass(globalScope, args[0])) {
+        LineValidator lv = new LineValidator(globalScope);
+        if (!firstPass(lv, args[0])) {
             return;
         }
+
+        secondPass(globalScope, lv);
 
         System.out.println(VALID_CODE);
 
@@ -61,10 +61,10 @@ public class Sjavac {
         System.out.println();
     }
 
-    private static boolean firstPass(GlobalScope globalScope, String fileName) {
+    private static boolean firstPass(LineValidator lv, String fileName) {
         String line;
         int lineIndex = 0;
-        LineValidator lv = new LineValidator(globalScope);
+
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             while ((line = br.readLine()) != null) {
                 lineIndex++;
@@ -94,4 +94,14 @@ public class Sjavac {
         }
         return true;
     }
+
+
+    private static boolean secondPass(GlobalScope globalScope, LineValidator lv) {
+        for (String methodName : globalScope.getMethods()) {
+            MethodValidator mv = new MethodValidator(globalScope, lv, methodName);
+            mv.validate();
+        }
+        return true;
+    }
+
 }
