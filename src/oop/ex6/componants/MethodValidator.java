@@ -19,7 +19,6 @@ public class MethodValidator {
     private static final Pattern RETURN_PATTERN =  Pattern.compile("\\s*return\\s*");
     private final List<String> methodLines;
     private final Method method;
-    private int currentLine;
     private Scope currentScope;
     private GlobalScope globalScope;
 
@@ -27,7 +26,6 @@ public class MethodValidator {
         method = globalScope.getMethodFromMap(methodName);
         this.globalScope = globalScope;
         methodLines = lv.getMethodLines(methodName);
-        currentLine = 0;
         currentScope = method;
     }
 
@@ -37,6 +35,7 @@ public class MethodValidator {
             InvalidVarTypeException, InvalidVarDeclarationException, VarNameInitializedException,
             ValueMismatchException {
         methodLines.remove(0);
+        int currentLine = 0;
         for (String line : methodLines) {
             currentLine++;
 
@@ -124,9 +123,5 @@ public class MethodValidator {
 
     private boolean checkVarInMethodCall(Variable var, VarType type) {
         return Variable.isTypesMatch(type, var.getType()) && var.isInitialized();
-    }
-
-    public int getCurrentLine() {
-        return currentLine;
     }
 }

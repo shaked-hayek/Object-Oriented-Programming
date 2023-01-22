@@ -19,6 +19,7 @@ public class Sjavac {
     private static final String IO_ERROR_CODE = "2";
     private static final String ERROR_CODE = "ERROR: ";
     private static final String LINE_CODE = " (line %d)";
+    private static final String METHOD_LINE_CODE = " (in method '%s')";
 
     private static final String IO_ERR_MSG = "File not found";
     private static final String ARG_ERR_MSG = "Wrong number of arguments entered";
@@ -57,9 +58,9 @@ public class Sjavac {
         return m.matches();
     }
 
-    private static void printError(Exception e, int lineIndex) {
+    private static void printError(Exception e, String lineMsg) {
         System.out.println(INVALID_CODE);
-        System.err.printf(e + LINE_CODE, lineIndex);
+        System.err.printf(e + lineMsg);
         System.out.println();
     }
 
@@ -79,14 +80,14 @@ public class Sjavac {
                          ValueMismatchException | InvalidVarDeclarationException |
                          InvalidEndOfScopeException | MethodDeclarationException |
                          IllegalFinalVarAssigmentException | ScopeDeclarationException e) {
-                    printError(e, lineIndex);
+                    printError(e, String.format(LINE_CODE, lineIndex));
                     return false;
                 }
             }
             try {
                 lv.finalCheck();
             } catch (InvalidEndOfScopeException e) {
-                printError(e, lineIndex);
+                printError(e, String.format(LINE_CODE, lineIndex));
                 return false;
             }
         } catch (IOException e) {
@@ -108,7 +109,7 @@ public class Sjavac {
                      IllegalFinalVarAssigmentException | InvalidVarTypeException |
                      InvalidVarDeclarationException | VarNameInitializedException |
                      ValueMismatchException e) {
-                printError(e, lv.getMethodStartLine(methodName) + mv.getCurrentLine());
+                printError(e, String.format(METHOD_LINE_CODE, methodName));
                 return false;
             }
         }

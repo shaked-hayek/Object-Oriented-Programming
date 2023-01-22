@@ -19,7 +19,6 @@ public class LineValidator {
     private static final Pattern SCOPE_OPEN_LINE_END = Pattern.compile(".*\\{\\s*");
     private static final Pattern SCOPE_CLOSE_LINE_END = Pattern.compile("\\s*\\}\\s*");
     private HashMap<String, List<String>> methodContent;
-    private HashMap<String, Integer> methodStartLine;
     private int scopeOpenCounter;
     private int scopeCloseCounter;
     private GlobalScope globalScope;
@@ -28,7 +27,6 @@ public class LineValidator {
     public LineValidator(GlobalScope globalScope) {
         this.globalScope = globalScope;
         methodContent = new HashMap<>();
-        methodStartLine = new HashMap<>();
         scopeOpenCounter = 0;
         scopeCloseCounter = 0;
         currentMethodName = null;
@@ -57,7 +55,6 @@ public class LineValidator {
                     throw new MethodDeclarationException();
                 }
                 methodContent.put(method.getName(), new ArrayList<>());
-                methodStartLine.put(method.getName(), lineIndex);
                 currentMethodName = method.getName();
             } else if (Scope.isValidScopeDeclaration(line)) {
                 if (currentMethodName == null) {
@@ -101,9 +98,5 @@ public class LineValidator {
 
     public List<String> getMethodLines(String methodName) {
         return methodContent.get(methodName);
-    }
-
-    public int getMethodStartLine(String methodName) {
-        return methodStartLine.get(methodName);
     }
 }
