@@ -14,10 +14,10 @@ import java.util.regex.Pattern;
 
 public class LineValidator {
 
-    private static final String VALID_END_REGEX = ".*[;|}|{]\\s*";
-    private static final String VAR_LINE_END = ".*;\\s*";
-    private static final String SCOPE_OPEN_LINE_END = ".*\\{\\s*";
-    private static final String SCOPE_CLOSE_LINE_END = ".*\\}\\s*";
+    private static final Pattern VALID_END_REGEX = Pattern.compile(".*[;|}|{]\\s*");
+    private static final Pattern VAR_LINE_END = Pattern.compile(".*;\\s*");
+    private static final Pattern SCOPE_OPEN_LINE_END = Pattern.compile(".*\\{\\s*");
+    private static final Pattern SCOPE_CLOSE_LINE_END = Pattern.compile(".*\\}\\s*");
     private HashMap<String, List<String>> methodContent;
     private HashMap<String, Integer> methodStartLine;
     private int scopeOpenCounter;
@@ -38,17 +38,17 @@ public class LineValidator {
             throws InvalidLineEndException, InvalidVarTypeException, ValueMismatchException,
             InvalidVarDeclarationException, VarNameInitializedException, InvalidEndOfScopeException,
             MethodDeclarationException, IllegalFinalVarAssigmentException, ScopeDeclarationException {
-        if (!isRegexMatches(line, VALID_END_REGEX)) {
+        if (!isRegexMatches(VALID_END_REGEX, line)) {
             throw new InvalidLineEndException();
         }
-        if (isRegexMatches(line, VAR_LINE_END)) {
+        if (isRegexMatches(VAR_LINE_END, line)) {
             line = line.trim().replaceAll(";$","");
             if (currentMethodName == null) {
                 Variables variables = new Variables(globalScope);
                 variables.processVarsLine(line);
             }
 
-        } else if (isRegexMatches(line, SCOPE_OPEN_LINE_END)) {
+        } else if (isRegexMatches(SCOPE_OPEN_LINE_END, line)) {
             scopeOpenCounter++;
             line = line.replaceAll("\\{", "");
             if (Method.checkIsMethod(line)) {
@@ -66,7 +66,7 @@ public class LineValidator {
             } else {
                 throw new ScopeDeclarationException();
             }
-        } else if (isRegexMatches(line, SCOPE_CLOSE_LINE_END)) {
+        } else if (isRegexMatches(SCOPE_CLOSE_LINE_END, line)) {
             scopeCloseCounter++;
             if (scopeCloseCounter > scopeOpenCounter) {
                 throw new InvalidEndOfScopeException();
@@ -90,9 +90,8 @@ public class LineValidator {
         }
     }
 
-    private static boolean isRegexMatches(String line, String pattern) {
-        Pattern p = Pattern.compile(pattern);
-        Matcher m = p.matcher(line);
+    private static boolean isRegexMatches(Pattern pattern, String line) {
+        Matcher m = pattern.matcher(line);
         return m.matches();
     }
 

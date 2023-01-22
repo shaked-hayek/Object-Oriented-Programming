@@ -30,7 +30,8 @@ public class MethodValidator {
         methodLines.remove(0);
         for (String line : methodLines) {
             currentLine++;
-            // TODO
+//            if (isRegexMatches(line, SCOPE_CLOSE_LINE_END))
+
             if (Scope.isValidScopeDeclaration(line)) {
                 // if / while
             } else if (isMethodCall(line)) {
