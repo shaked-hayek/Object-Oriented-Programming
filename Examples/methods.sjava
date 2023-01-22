@@ -3,6 +3,8 @@ final int a = 8;
 int foo =5;
 void foo (final int a, boolean b) {
     int b = a;
+    if (a) {
+    }
 }
 
 void foo_two(){

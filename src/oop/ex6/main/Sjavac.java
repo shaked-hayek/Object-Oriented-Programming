@@ -3,6 +3,7 @@ package oop.ex6.main;
 import oop.ex6.componants.InvalidEndOfScopeException;
 import oop.ex6.componants.LineValidator;
 import oop.ex6.componants.InvalidLineEndException;
+import oop.ex6.componants.ScopeDeclarationException;
 import oop.ex6.componants.methods.GlobalScope;
 import oop.ex6.componants.methods.MethodDeclarationException;
 import oop.ex6.componants.variables.*;
@@ -75,7 +76,7 @@ public class Sjavac {
                 } catch (InvalidLineEndException | InvalidVarTypeException | VarNameInitializedException |
                          ValueMismatchException | InvalidVarDeclarationException |
                          InvalidEndOfScopeException | MethodDeclarationException |
-                         IllegalFinalVarAssigmentException e) {
+                         IllegalFinalVarAssigmentException | ScopeDeclarationException e) {
                     printError(e, lineIndex);
                     return false;
                 }

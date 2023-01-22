@@ -3,6 +3,7 @@ package oop.ex6.componants;
 import oop.ex6.componants.methods.GlobalScope;
 import oop.ex6.componants.methods.Method;
 import oop.ex6.componants.methods.MethodDeclarationException;
+import oop.ex6.componants.methods.Scope;
 import oop.ex6.componants.variables.*;
 
 import java.util.regex.Matcher;
@@ -26,7 +27,8 @@ public class LineValidator {
 
     public void validate(String line)
             throws InvalidLineEndException, InvalidVarTypeException, ValueMismatchException,
-            InvalidVarDeclarationException, VarNameInitializedException, InvalidEndOfScopeException, MethodDeclarationException, IllegalFinalVarAssigmentException {
+            InvalidVarDeclarationException, VarNameInitializedException, InvalidEndOfScopeException,
+            MethodDeclarationException, IllegalFinalVarAssigmentException, ScopeDeclarationException {
         if (!isRegexMatches(line, VALID_END_REGEX)) {
             throw new InvalidLineEndException();
         }
@@ -43,8 +45,11 @@ public class LineValidator {
                 if (!globalScope.addMethodToScopeMap(method)) {
                     throw new MethodDeclarationException();
                 }
-            } // TODO : check else - if and while or throw exception
-
+            } else if (Scope.isValidScopeDeclaration(line)) {
+                return;
+            } else {
+                throw new ScopeDeclarationException();
+            }
         } else if (isRegexMatches(line, SCOPE_CLOSE_LINE_END)) {
             scopeCloseCounter++;
             if (scopeCloseCounter > scopeOpenCounter) {
