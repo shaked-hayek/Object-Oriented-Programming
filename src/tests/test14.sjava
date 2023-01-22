@@ -1,0 +1,12 @@
+
+void foo (int a) {
+    double b = 6;
+    foo2(a , b);
+
+    return;
+}
+
+void foo2(int a, double c){
+    foo(7, 5.8);
+    return;
+}

@@ -1,0 +1,2 @@
+int c = 8;
+boolean b = c;

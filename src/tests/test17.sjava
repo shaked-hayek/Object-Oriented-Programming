@@ -1,0 +1,9 @@
+void foo (int a) {
+    if (a || 5 || true) {
+        int b = 3;
+        if (b && b || false && true) {
+            double c = 8;
+        }
+    }
+   return;
+}

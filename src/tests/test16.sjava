@@ -1,0 +1,9 @@
+void foo (int a) {
+    if (a) {
+        int b = 3;
+        if (b) {
+            double c = 8;
+        }
+    }
+   return;
+}

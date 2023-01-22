@@ -1,0 +1,12 @@
+int d1 = 8;
+
+void foo (final int a) {
+    String d1;
+    if (true) {
+        char d1 = '4';
+        while (false) {
+            boolean d1 = true;
+        }
+    }
+    return;
+}

@@ -1,0 +1,6 @@
+int a = 7;
+int ggg = 6;
+String g = "6";
+g= "6", ggg=4;
+int r,t = 7;
+int u;
