@@ -38,8 +38,9 @@ public class Sjavac {
         if (!firstPass(lv, args[0])) {
             return;
         }
-
-        secondPass(globalScope, lv);
+        if (!secondPass(globalScope, lv)) {
+            return;
+        }
 
         System.out.println(VALID_CODE);
 
@@ -101,7 +102,7 @@ public class Sjavac {
             MethodValidator mv = new MethodValidator(globalScope, lv, methodName);
             try {
                 mv.validate();
-            } catch (IllegalMethodCallException e) {
+            } catch (IllegalMethodCallException | IllegalVarInMethodCallException e) {
                 printError(e, lv.getMethodStartLine(methodName) + mv.getCurrentLine());
                 return false;
             }

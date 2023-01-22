@@ -61,11 +61,9 @@ public class Scope {
 
     private boolean isValidSingleCondition(String statement) {
         // Check if statement is a valid boolean value
-        try {
-            if (VarTypeFactory.getValValidationFunc(VarType.BOOLEAN).apply(statement)) {
-                return true;
-            }
-        } catch (InvalidVarTypeException e) {} // Can't get here
+        if (VarTypeFactory.getValValidationFunc(VarType.BOOLEAN).apply(statement)) {
+            return true;
+        }
 
         // Check if statement is an initialized var
         Variable varInScope = this.isVarInScope(statement);

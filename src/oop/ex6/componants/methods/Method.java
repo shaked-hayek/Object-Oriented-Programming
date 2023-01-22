@@ -69,7 +69,7 @@ public class Method extends Scope {
         return m.lookingAt();
     }
 
-    public boolean methodCall() {
-        return true;
+    public List<VarType> getParamList() {
+        return paramsList;
     }
 }

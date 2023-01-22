@@ -29,6 +29,9 @@ public class Variable {
         this.isFinal = isFinal;
 
         isValidTypeFunc = VarTypeFactory.getValValidationFunc(type);
+        if (isValidTypeFunc == null) {
+            throw new InvalidVarTypeException();
+        }
         create(declaration);
     }
 
@@ -60,23 +63,28 @@ public class Variable {
     private boolean checkValueInScope(String value) {
         Variable var = scope.getVarFromMap(value);
         if (var != null) {
-            return (var.isInitialized()) && (isTypeMatch(var.getType()));
+            return (var.isInitialized()) && (isVarTypeMatch(var.getType()));
         }
         return false;
     }
 
-    private boolean isTypeMatch(VarType assignedType) {
-        if (type == assignedType) {
+    public boolean isVarTypeMatch(VarType assignedType) {
+        return isTypesMatch(type, assignedType);
+    }
+
+    public static boolean isTypesMatch(VarType varType, VarType assignedType) {
+        if (varType == assignedType) {
             return true;
-        } else if (type == VarType.DOUBLE && assignedType == VarType.INT) {
+        } else if (varType == VarType.DOUBLE && assignedType == VarType.INT) {
             return true;
-        } else if (type == VarType.BOOLEAN && (assignedType == VarType.INT || assignedType == VarType.DOUBLE)) {
+        } else if (varType == VarType.BOOLEAN &&
+                (assignedType == VarType.INT || assignedType == VarType.DOUBLE)) {
             return true;
         }
         return false;
     }
 
-    private VarType getType() {
+    public VarType getType() {
         return type;
     }
 
