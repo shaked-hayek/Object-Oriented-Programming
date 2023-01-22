@@ -14,9 +14,11 @@ public class MethodValidator {
     private static final String PARENTHESES_REGEX = "\\((.*)\\)";
     private static final String METHOD_CALL_REGEX = "\\s*(\\S+)\\s*" + PARENTHESES_REGEX + "\\s*";
     private static final Pattern METHOD_CALL_PATTERN =  Pattern.compile(METHOD_CALL_REGEX);
+    private static final Pattern RETURN_PATTERN =  Pattern.compile("\\s*return\\s*");
     private final List<String> methodLines;
     private final Method method;
     private int currentLine;
+    private Scope currentScope;
     private GlobalScope globalScope;
 
     public MethodValidator(GlobalScope globalScope, LineValidator lv, String methodName) {
@@ -24,13 +26,32 @@ public class MethodValidator {
         this.globalScope = globalScope;
         methodLines = lv.getMethodLines(methodName);
         currentLine = 0;
+        currentScope = globalScope;
     }
 
-    public void validate() throws IllegalMethodCallException, IllegalVarInMethodCallException {
+    public void validate()
+            throws IllegalMethodCallException, IllegalVarInMethodCallException, IllegalReturnStatement {
         methodLines.remove(0);
         for (String line : methodLines) {
             currentLine++;
-//            if (isRegexMatches(line, SCOPE_CLOSE_LINE_END))
+
+            // Check return
+            if (isReturn(line)) {
+                if (currentLine == methodLines.size() - 1) {
+                    // Check scope is global and next line is end
+                    if ((currentScope != globalScope) ||
+                            (!LineValidator.isEndOfScope(methodLines.get(currentLine)))) {
+                        throw new IllegalReturnStatement();
+                    } else {
+                        return;
+                    }
+                }
+                continue;
+            }
+
+//            if (LineValidator.isEndOfScope(line)) {
+//                currentScope = currentScope.getParentScope();
+//            }
 
             if (Scope.isValidScopeDeclaration(line)) {
                 // if / while
@@ -38,6 +59,13 @@ public class MethodValidator {
                 checkMethodCall(line);
             }
         }
+        // If got here there was no return statement
+        throw new IllegalReturnStatement();
+    }
+
+    private boolean isReturn(String line) {
+        Matcher m = RETURN_PATTERN.matcher(line);
+        return m.matches();
     }
 
     private boolean isMethodCall(String line) {

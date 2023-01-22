@@ -17,7 +17,7 @@ public class LineValidator {
     private static final Pattern VALID_END_REGEX = Pattern.compile(".*[;|}|{]\\s*");
     private static final Pattern VAR_LINE_END = Pattern.compile(".*;\\s*");
     private static final Pattern SCOPE_OPEN_LINE_END = Pattern.compile(".*\\{\\s*");
-    private static final Pattern SCOPE_CLOSE_LINE_END = Pattern.compile(".*\\}\\s*");
+    private static final Pattern SCOPE_CLOSE_LINE_END = Pattern.compile("\\s*\\}\\s*");
     private HashMap<String, List<String>> methodContent;
     private HashMap<String, Integer> methodStartLine;
     private int scopeOpenCounter;
@@ -66,7 +66,7 @@ public class LineValidator {
             } else {
                 throw new ScopeDeclarationException();
             }
-        } else if (isRegexMatches(SCOPE_CLOSE_LINE_END, line)) {
+        } else if (isEndOfScope(line)) {
             scopeCloseCounter++;
             if (scopeCloseCounter > scopeOpenCounter) {
                 throw new InvalidEndOfScopeException();
@@ -93,6 +93,10 @@ public class LineValidator {
     private static boolean isRegexMatches(Pattern pattern, String line) {
         Matcher m = pattern.matcher(line);
         return m.matches();
+    }
+
+    public static boolean isEndOfScope(String line) {
+        return isRegexMatches(SCOPE_CLOSE_LINE_END, line);
     }
 
     public List<String> getMethodLines(String methodName) {

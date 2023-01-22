@@ -75,4 +75,8 @@ public class Scope {
         }
         return false;
     }
+
+    public Scope getParentScope() {
+        return parentScope;
+    }
 }
