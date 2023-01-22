@@ -4,6 +4,9 @@ int foo =5;
 
 void foo (final int a, boolean b) {
     int b = a;
+    g();
+    foo_two(d a, int g);
+        foo_two(d a, int g)   ;
     if (a) {
         b = 8;
         int c = 7;

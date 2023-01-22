@@ -72,7 +72,7 @@ public class Sjavac {
                     continue;
                 }
                 try {
-                    lv.validate(line);
+                    lv.validate(line, lineIndex);
                 } catch (InvalidLineEndException | InvalidVarTypeException | VarNameInitializedException |
                          ValueMismatchException | InvalidVarDeclarationException |
                          InvalidEndOfScopeException | MethodDeclarationException |
@@ -99,7 +99,12 @@ public class Sjavac {
     private static boolean secondPass(GlobalScope globalScope, LineValidator lv) {
         for (String methodName : globalScope.getMethods()) {
             MethodValidator mv = new MethodValidator(globalScope, lv, methodName);
-            mv.validate();
+            try {
+                mv.validate();
+            } catch (IllegalMethodCallException e) {
+                printError(e, lv.getMethodStartLine(methodName) + mv.getCurrentLine());
+                return false;
+            }
         }
         return true;
     }

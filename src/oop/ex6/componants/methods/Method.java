@@ -64,14 +64,12 @@ public class Method extends Scope {
         return name;
     }
 
-    public static String getNameFromDeclaration(String line) {
-        Matcher m = INIT_PATTERN.matcher(line);
-        m.matches();
-        return m.group(1);
-    }
-
     public static boolean checkIsMethod(String line) {
         Matcher m = VOID_PATTERN.matcher(line);
         return m.lookingAt();
+    }
+
+    public boolean methodCall() {
+        return true;
     }
 }
