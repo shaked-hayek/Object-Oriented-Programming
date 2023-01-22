@@ -36,9 +36,9 @@ public class VarTypeFactory {
             case STRING:
                 return val -> validValueToType(STRING_PATTERN, val);
             case BOOLEAN:
-                return val -> validValueToType(CHAR_PATTERN, val);
-            case CHAR:
                 return val -> validValueToType(BOOLEAN_PATTERN, val);
+            case CHAR:
+                return val -> validValueToType(CHAR_PATTERN, val);
             default:
                 throw new InvalidVarTypeException();
         }
