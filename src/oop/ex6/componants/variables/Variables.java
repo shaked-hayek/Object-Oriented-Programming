@@ -104,7 +104,7 @@ public class Variables {
         // Get different vars
         String[] vars = splitVarsLine(restOfLine);
         for (String var : vars) {
-            Variable variable = new Variable(type, var, scope, isFinal);
+            Variable variable = new Variable(type, var, scope, isFinal, false);
             if (!scope.addVarToScopeMap(variable)) {
                 throw new VarNameInitializedException();
             }

@@ -1,4 +1,4 @@
 final int a = 6;
 final String b = "5";
 final char c = 'd';
-final boolean t, tt = true;
+final boolean t = true;

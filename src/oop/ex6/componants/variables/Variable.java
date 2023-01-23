@@ -12,6 +12,7 @@ public class Variable {
     private boolean isFinal;
     private String name;
     private Function<String, Boolean> isValidTypeFunc;
+    private boolean methodParam;
     private boolean isInitialized = false;
 
     private static final String NAME_REGEX = "([a-zA-Z]+[a-zA-Z0-9_]*|_+[a-zA-Z0-9_]+)";
@@ -24,7 +25,7 @@ public class Variable {
     private static final Pattern NAME_PATTERN = Pattern.compile(NAME_REGEX);
     private VarType type;
 
-    public Variable(VarType type, String declaration, Scope scope, boolean isFinal)
+    public Variable(VarType type, String declaration, Scope scope, boolean isFinal, boolean methodParam)
             throws ValueMismatchException, VarNameInitializedException, InvalidVarTypeException,
             IllegalFinalVarAssigmentException {
         this.type = type;
@@ -32,10 +33,14 @@ public class Variable {
         this.isFinal = isFinal;
 
         isValidTypeFunc = VarTypeFactory.getValValidationFunc(type);
+        this.methodParam = methodParam;
         if (isValidTypeFunc == null) {
             throw new InvalidVarTypeException();
         }
         create(declaration);
+        if (methodParam) {
+            isInitialized = true;
+        }
     }
 
     public void create(String declaration)
@@ -48,7 +53,7 @@ public class Variable {
             String value = initMatcher.group(2).stripTrailing();
             checkAssigment(value);
         } else if (declarationMatcher.matches()) {
-            if (isFinal) {
+            if (isFinal && !methodParam) {
                 throw new IllegalFinalVarAssigmentException();
             }
             name = declarationMatcher.group(1);
@@ -97,10 +102,6 @@ public class Variable {
 
     public boolean isFinal() {
         return isFinal;
-    }
-
-    public void setInitializedTrue() {
-        isInitialized = true;
     }
 
     public boolean isInitialized() {
