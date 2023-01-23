@@ -1,9 +1,26 @@
 shaked.hayek
 shirlevy
 
-shaked.hayek
-shirlevy
 
+Questions from ex:
+
+## Exceptions - report in your README file
+   how you handled s-Java code errors in this exercise, and why you chose to do so
+
+## OOP - You are required to specify your design, as well as your thinking process and the alternatives you
+         ruled out, in your README file.
+
+   ## How would you modify your code to add new types of variables (e.g., float)?
+
+   ## describe which modifications/extensions you would have to make in your code
+      in order to support them. Please briefly describe which classes you would add to your code,
+      which methods you would add to existing classes, and which classes you would modify
+
+      # Using methods of standard java (i.e System.out.println).
+      # Classes.
+
+## REGEX -  please describe two of the main regular expressions you
+           used in your code.
 
 #####################################
 ############### TESTS ###############
@@ -32,10 +49,11 @@ test 20: make sure same variable name for variables in different scopes is valid
 
 
 
+-----------
 We chose to print the error with the name of the Exception class to make it easier for users
 to find the error
 
-Can extent method to also be under different scopes (other than global)
+Can extend method to also be under different scopes (other than global)
 
 We compile regex patterns only once for efficiency.
 
