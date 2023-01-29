@@ -125,6 +125,6 @@ public class MethodValidator {
     }
 
     private boolean checkVarInMethodCall(Variable var, VarType type) {
-        return Variable.isTypesMatch(type, var.getType()) && var.isInitialized();
+        return VarTypeFactory.assignTypesMatch(type, var.getType()) && var.isInitialized();
     }
 }

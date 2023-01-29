@@ -22,8 +22,6 @@ public class Scope {
 
     private static final Pattern SCOPE_PATTERN = Pattern.compile(SCOPE_REGEX);
     private static final Pattern CONDITION_PATTERN = Pattern.compile(CONDITION_REGEX);
-    private static final List<VarType> CONDITION_TYPE_ALLOWED =
-            List.of(new VarType[]{VarType.INT, VarType.DOUBLE, VarType.BOOLEAN});
 
 
     public Scope(Scope parentScope) {
@@ -88,7 +86,8 @@ public class Scope {
         }
 
         Variable var = parentScope.isVarInScope(statement);
-        if (var != null && var.isInitialized() && CONDITION_TYPE_ALLOWED.contains(var.getType())) {
+        if (var != null && var.isInitialized() &&
+                VarTypeFactory.CONDITION_TYPE_ALLOWED.contains(var.getType())) {
             return true;
         }
         return false;

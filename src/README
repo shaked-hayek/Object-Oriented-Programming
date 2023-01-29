@@ -2,7 +2,9 @@ shaked.hayek
 shirlevy
 
 
-Questions from ex:
+#################################################
+############ Questions from exercise ############
+#################################################
 
 ## Exceptions - report in your README file
    how you handled s-Java code errors in this exercise, and why you chose to do so
@@ -10,7 +12,15 @@ Questions from ex:
 ## OOP - You are required to specify your design, as well as your thinking process and the alternatives you
          ruled out, in your README file.
 
-   ## How would you modify your code to add new types of variables (e.g., float)?
+## How would you modify your code to add new types of variables (e.g., float)?
+If we wanted to add a new type of variable, all we had to do was add to the Enum (VarType) the name of the
+type, and add to the class VarTypeFactory the new type - that would require:
+ * Adding the type to the switch statement in the getType method
+ * Adding a regex pattern that checks a valid value to this type
+ * Adding the getValValidationFunc method a lambda expression that checks this regex
+This is an implementation of the Single Choice principle, because there is only one main object that knows
+all of the different types. Adding a new type requires change in that class alone.
+The types doesn't appear anywhere else in the project, besides the class VarTypeFactory and the enum VarType.
 
    ## describe which modifications/extensions you would have to make in your code
       in order to support them. Please briefly describe which classes you would add to your code,
@@ -19,8 +29,8 @@ Questions from ex:
       # Using methods of standard java (i.e System.out.println).
       # Classes.
 
-## REGEX -  please describe two of the main regular expressions you
-           used in your code.
+## REGEX -  please describe two of the main regular expressions you used in your code:
+
 
 #####################################
 ############### TESTS ###############
@@ -56,4 +66,4 @@ to find the error
 Can extend method to also be under different scopes (other than global)
 
 We compile regex patterns only once for efficiency.
-
+Open closed prinsable

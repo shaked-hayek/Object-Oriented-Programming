@@ -81,19 +81,7 @@ public class Variable {
     }
 
     public boolean isVarTypeMatch(VarType assignedType) {
-        return isTypesMatch(type, assignedType);
-    }
-
-    public static boolean isTypesMatch(VarType varType, VarType assignedType) {
-        if (varType == assignedType) {
-            return true;
-        } else if (varType == VarType.DOUBLE && assignedType == VarType.INT) {
-            return true;
-        } else if (varType == VarType.BOOLEAN &&
-                (assignedType == VarType.INT || assignedType == VarType.DOUBLE)) {
-            return true;
-        }
-        return false;
+        return VarTypeFactory.assignTypesMatch(type, assignedType);
     }
 
     public VarType getType() {

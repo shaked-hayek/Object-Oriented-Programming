@@ -2,6 +2,7 @@ package oop.ex6.componants.variables;
 
 import oop.ex6.componants.VarType;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +26,11 @@ public class VarTypeFactory {
     private static final String BOOLEAN = "boolean";
     private static final String CHAR = "char";
     private static final String[] TYPES = {INT, DOUBLE, STRING, BOOLEAN, CHAR};
+    /**
+     * All types allowed as condition statement
+     */
+    public static final List<VarType> CONDITION_TYPE_ALLOWED =
+            List.of(new VarType[]{VarType.INT, VarType.DOUBLE, VarType.BOOLEAN});
 
 
     public static Function<String, Boolean> getValValidationFunc(VarType type) {
@@ -68,5 +74,17 @@ public class VarTypeFactory {
 
     public static String getTypeRegex() {
         return "(" + String.join("|", TYPES) + ")";
+    }
+
+    public static boolean assignTypesMatch(VarType varType, VarType assignedType) {
+        if (varType == assignedType) {
+            return true;
+        } else if (varType == VarType.DOUBLE && assignedType == VarType.INT) {
+            return true;
+        } else if (varType == VarType.BOOLEAN &&
+                (assignedType == VarType.INT || assignedType == VarType.DOUBLE)) {
+            return true;
+        }
+        return false;
     }
 }
