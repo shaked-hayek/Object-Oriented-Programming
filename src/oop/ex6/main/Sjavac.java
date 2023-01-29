@@ -75,9 +75,8 @@ public class Sjavac {
                 }
                 try {
                     lv.validate(line);
-                } catch (ScopeException | InvalidVarTypeException | VarNameInitializedException |
-                         ValueMismatchException | InvalidVarDeclarationException |
-                         MethodDeclarationException | IllegalFinalVarAssigmentException e) {
+                } catch (ScopeException | InvalidVarTypeException | VariableDeclarationException |
+                         MethodDeclarationException | VariableAssignmentException e) {
                     printError(e, String.format(LINE_CODE, lineIndex));
                     return false;
                 }
@@ -102,11 +101,8 @@ public class Sjavac {
             MethodValidator mv = new MethodValidator(globalScope, lv, methodName);
             try {
                 mv.validate();
-            } catch (IllegalMethodCallException | ReturnStatementException |
-                     IllegalConditionException |
-                     IllegalFinalVarAssigmentException | InvalidVarTypeException |
-                     InvalidVarDeclarationException | VarNameInitializedException |
-                     ValueMismatchException e) {
+            } catch (IllegalMethodCallException | ReturnStatementException | IllegalConditionException |
+                     InvalidVarTypeException | VariableDeclarationException | VariableAssignmentException e) {
                 printError(e, String.format(METHOD_LINE_CODE, methodName));
                 return false;
             }

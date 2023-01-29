@@ -37,10 +37,8 @@ public class MethodValidator {
     }
 
     public void validate()
-            throws IllegalMethodCallException, ReturnStatementException,
-            IllegalConditionException, IllegalFinalVarAssigmentException,
-            InvalidVarTypeException, InvalidVarDeclarationException, VarNameInitializedException,
-            ValueMismatchException {
+            throws IllegalMethodCallException, ReturnStatementException, IllegalConditionException,
+            InvalidVarTypeException, VariableDeclarationException, VariableAssignmentException {
         methodLines.remove(0);
         int currentLine = 0;
         for (String line : methodLines) {

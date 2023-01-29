@@ -8,6 +8,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class VarTypeFactory {
+    private static final String INVALID_VAR_TYPE_EXCEPTION_MSG = "Invalid var type";
+
     private static final String INT_REGEX = "[+|-]?[0-9]+";
     private static final String DOUBLE_REGEX = "([\\+|\\-]?[0-9]+\\.?[0-9]*)|([\\+|\\-]?[0-9]*\\.?[0-9]+)";
     private static final String STRING_REGEX = "[\"][^\"]*[\"]";
@@ -63,7 +65,7 @@ public class VarTypeFactory {
             case CHAR:
                 return VarType.CHAR;
             default:
-                throw new InvalidVarTypeException();
+                throw new InvalidVarTypeException(INVALID_VAR_TYPE_EXCEPTION_MSG);
         }
     }
 

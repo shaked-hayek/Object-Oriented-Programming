@@ -38,9 +38,9 @@ public class LineValidator {
     }
 
     public void validate(String line)
-            throws InvalidVarTypeException, ValueMismatchException,
-            InvalidVarDeclarationException, VarNameInitializedException, ScopeException,
-            MethodDeclarationException, IllegalFinalVarAssigmentException {
+            throws InvalidVarTypeException,
+            VariableDeclarationException, ScopeException,
+            MethodDeclarationException, VariableAssignmentException {
         if (!isRegexMatches(VALID_END_REGEX, line)) {
             throw new ScopeException(LINE_END_EXCEPTION_MSG);
         }
@@ -98,9 +98,8 @@ public class LineValidator {
         return methodContent.get(methodName);
     }
 
-    private String handleVariableLine(String line) throws IllegalFinalVarAssigmentException,
-            InvalidVarTypeException, InvalidVarDeclarationException, VarNameInitializedException,
-            ValueMismatchException {
+    private String handleVariableLine(String line) throws
+            InvalidVarTypeException, VariableDeclarationException, VariableAssignmentException {
         line = line.trim().replaceAll(";$","");
         if (currentMethodName == null) {
             Variables variables = new Variables(globalScope);
@@ -110,8 +109,7 @@ public class LineValidator {
     }
 
     private void handleMethodDeclareLine(String line) throws MethodDeclarationException,
-            IllegalFinalVarAssigmentException, InvalidVarTypeException, VarNameInitializedException,
-            ValueMismatchException {
+            InvalidVarTypeException, VariableDeclarationException, VariableAssignmentException {
         Method method = new Method(globalScope, line);
         if (!globalScope.addMethodToScopeMap(method)) {
             throw new MethodDeclarationException();

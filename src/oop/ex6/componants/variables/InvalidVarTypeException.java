@@ -1,10 +1,9 @@
 package oop.ex6.componants.variables;
 
-public class InvalidVarTypeException extends Exception {
-    private static final String ERROR_MSG = "Invalid var type";
+import oop.ex6.main.SjavacException;
 
-    @Override
-    public String getMessage() {
-        return ERROR_MSG;
+public class InvalidVarTypeException  extends SjavacException {
+    public InvalidVarTypeException(String message){
+        super(message);
     }
 }
