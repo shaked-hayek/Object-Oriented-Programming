@@ -10,6 +10,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Method extends Scope {
+    private static final String VAR_METHOD_DECLARATION_EXCEPTION_MSG =
+            "Illegal variable in method declaration";
+    private static final String METHOD_DECLARATION_EXCEPTION_MSG = "Illegal method declaration";
+
     private static final String NAME_REGEX = "([a-zA-Z]+[a-zA-Z0-9_]*)";
     private static final String VOID_REGEX = "void";
     private static final Pattern VOID_PATTERN =  Pattern.compile("\\s*" + VOID_REGEX);
@@ -30,7 +34,7 @@ public class Method extends Scope {
 
         Matcher m = INIT_PATTERN.matcher(line);
         if (!m.matches()){
-            throw new MethodDeclarationException();
+            throw new MethodDeclarationException(METHOD_DECLARATION_EXCEPTION_MSG);
         }
         name = m.group(1);
         String[] vars = m.group(2).split(",");
@@ -49,11 +53,11 @@ public class Method extends Scope {
                     Variable var = new Variable(
                             VarTypeFactory.getType(m.group(1)), varName, parentScope, isVarFinal, true);
                     if (!addVarToScopeMap(var)) {
-                        throw new MethodDeclarationException();
+                        throw new MethodDeclarationException(VAR_METHOD_DECLARATION_EXCEPTION_MSG);
                     }
                     paramsList.add(varType);
                 } else {
-                    throw new MethodDeclarationException();
+                    throw new MethodDeclarationException(METHOD_DECLARATION_EXCEPTION_MSG);
                 }
             }
         }

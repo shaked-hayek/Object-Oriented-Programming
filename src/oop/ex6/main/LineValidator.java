@@ -28,6 +28,7 @@ public class LineValidator {
     private static final String LINE_END_EXCEPTION_MSG = "Line ends with wrong char or invalid structure";
     private static final String SCOPE_DECLARATION_EXCEPTION_MSG = "Scope declaration is illegal";
     private static final String BLOCK_OUT_OF_METHOD_EXCEPTION_MSG = "Block declaration out of method";
+    private static final String METHOD_NAME_EXCEPTION_MSG = "Method name already exists";
 
     public LineValidator(GlobalScope globalScope) {
         this.globalScope = globalScope;
@@ -112,7 +113,7 @@ public class LineValidator {
             InvalidVarTypeException, VariableDeclarationException, VariableAssignmentException {
         Method method = new Method(globalScope, line);
         if (!globalScope.addMethodToScopeMap(method)) {
-            throw new MethodDeclarationException();
+            throw new MethodDeclarationException(METHOD_NAME_EXCEPTION_MSG);
         }
         methodContent.put(method.getName(), new ArrayList<>());
         currentMethodName = method.getName();

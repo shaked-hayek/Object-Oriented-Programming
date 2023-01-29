@@ -1,10 +1,10 @@
 package oop.ex6.componants.methods;
 
-public class IllegalConditionException extends Exception {
-    private static final String ERROR_MSG = "Illegal condition statement";
+import oop.ex6.main.SjavacException;
 
-    @Override
-    public String getMessage() {
-        return ERROR_MSG;
+public class IllegalConditionException extends SjavacException {
+    public IllegalConditionException(String message){
+        super(message);
     }
 }
+

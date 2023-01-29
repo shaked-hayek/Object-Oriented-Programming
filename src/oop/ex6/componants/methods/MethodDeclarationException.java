@@ -1,10 +1,9 @@
 package oop.ex6.componants.methods;
 
-public class MethodDeclarationException extends Exception {
-    private static final String ERROR_MSG = "Illegal method declaration";
+import oop.ex6.main.SjavacException;
 
-    @Override
-    public String getMessage() {
-        return ERROR_MSG;
+public class MethodDeclarationException extends SjavacException {
+    public MethodDeclarationException(String message){
+        super(message);
     }
 }
