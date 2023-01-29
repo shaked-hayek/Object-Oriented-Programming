@@ -1,6 +1,6 @@
 package oop.ex6.componants.methods;
 
-import oop.ex6.componants.VarType;
+import oop.ex6.componants.variables.VarType;
 import oop.ex6.componants.variables.*;
 
 import java.util.ArrayList;

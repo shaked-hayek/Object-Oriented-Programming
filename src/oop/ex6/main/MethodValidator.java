@@ -1,6 +1,5 @@
 package oop.ex6.main;
 
-import oop.ex6.componants.*;
 import oop.ex6.componants.methods.GlobalScope;
 import oop.ex6.componants.methods.IllegalConditionException;
 import oop.ex6.componants.methods.Method;

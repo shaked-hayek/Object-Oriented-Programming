@@ -1,6 +1,5 @@
 package oop.ex6.componants.variables;
 
-import oop.ex6.componants.VarType;
 import oop.ex6.componants.methods.Scope;
 
 import java.util.regex.Matcher;
