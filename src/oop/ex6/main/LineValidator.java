@@ -1,4 +1,4 @@
-package oop.ex6.componants;
+package oop.ex6.main;
 
 import oop.ex6.componants.methods.GlobalScope;
 import oop.ex6.componants.methods.Method;
@@ -27,7 +27,7 @@ public class LineValidator {
     private static final String SCOPE_END_EXCEPTION_MSG = "Scope ends in illegal manner";
     private static final String LINE_END_EXCEPTION_MSG = "Line ends with wrong char or invalid structure";
     private static final String SCOPE_DECLARATION_EXCEPTION_MSG = "Scope declaration is illegal";
-    private static final String CONDITION_OUT_OF_METHOD_EXCEPTION_MSG = "Scope declaration out of method";
+    private static final String BLOCK_OUT_OF_METHOD_EXCEPTION_MSG = "Block declaration out of method";
 
     public LineValidator(GlobalScope globalScope) {
         this.globalScope = globalScope;
@@ -40,12 +40,12 @@ public class LineValidator {
     public void validate(String line)
             throws InvalidVarTypeException, ValueMismatchException,
             InvalidVarDeclarationException, VarNameInitializedException, ScopeException,
-            MethodDeclarationException, IllegalFinalVarAssigmentException, ScopeDeclarationException {
+            MethodDeclarationException, IllegalFinalVarAssigmentException {
         if (!isRegexMatches(VALID_END_REGEX, line)) {
             throw new ScopeException(LINE_END_EXCEPTION_MSG);
         }
         if (isRegexMatches(VAR_LINE_END, line)) {
-            handleVariableLine(line);
+            line = handleVariableLine(line);
 
         } else if (isRegexMatches(SCOPE_OPEN_LINE_END, line)) {
             scopeOpenCounter++;
@@ -54,10 +54,10 @@ public class LineValidator {
                 handleMethodDeclareLine(line);
             } else if (Scope.isValidScopeDeclaration(line)) {
                 if (currentMethodName == null) {
-                    throw new ScopeException(SCOPE_DECLARATION_EXCEPTION_MSG);
+                    throw new ScopeException(BLOCK_OUT_OF_METHOD_EXCEPTION_MSG);
                 }
             } else {
-                throw new ScopeDeclarationException();
+                throw new ScopeException(SCOPE_DECLARATION_EXCEPTION_MSG);
             }
         } else if (isEndOfScope(line)) {
             scopeCloseCounter++;
@@ -98,7 +98,7 @@ public class LineValidator {
         return methodContent.get(methodName);
     }
 
-    private void handleVariableLine(String line) throws IllegalFinalVarAssigmentException,
+    private String handleVariableLine(String line) throws IllegalFinalVarAssigmentException,
             InvalidVarTypeException, InvalidVarDeclarationException, VarNameInitializedException,
             ValueMismatchException {
         line = line.trim().replaceAll(";$","");
@@ -106,6 +106,7 @@ public class LineValidator {
             Variables variables = new Variables(globalScope);
             variables.processVarsLine(line);
         }
+        return line;
     }
 
     private void handleMethodDeclareLine(String line) throws MethodDeclarationException,

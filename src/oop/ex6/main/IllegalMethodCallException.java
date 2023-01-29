@@ -1,6 +1,5 @@
-package oop.ex6.componants;
+package oop.ex6.main;
 
-import oop.ex6.main.SjavacException;
 
 public class IllegalMethodCallException extends SjavacException {
     public IllegalMethodCallException(String message){

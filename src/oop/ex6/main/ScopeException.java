@@ -1,6 +1,4 @@
-package oop.ex6.componants;
-
-import oop.ex6.main.SjavacException;
+package oop.ex6.main;
 
 public class ScopeException extends SjavacException {
     public ScopeException(String message){

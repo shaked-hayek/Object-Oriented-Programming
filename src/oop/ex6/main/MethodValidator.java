@@ -1,5 +1,6 @@
-package oop.ex6.componants;
+package oop.ex6.main;
 
+import oop.ex6.componants.*;
 import oop.ex6.componants.methods.GlobalScope;
 import oop.ex6.componants.methods.IllegalConditionException;
 import oop.ex6.componants.methods.Method;
@@ -14,6 +15,10 @@ import static oop.ex6.componants.methods.Scope.isValidCondition;
 
 public class MethodValidator {
     private static final String METHOD_CALL_EXCEPTION_MSG = "Illegal method call - method doesn't exist";
+    private static final String NO_RETURN_EXCEPTION_MSG = "Method ended without return statement";
+    private static final String ILLEGAL_RETURN_EXCEPTION_MSG = "Illegal return statement";
+    private static final String ILLEGAL_METHOD_CALL_EXCEPTION_MSG =
+            "Illegal method call - parameters doesn't match method's expected parameters";
 
     private static final String PARENTHESES_REGEX = "\\((.*)\\)";
     private static final String METHOD_CALL_REGEX = "\\s*(\\S+)\\s*" + PARENTHESES_REGEX + "\\s*";
@@ -32,8 +37,8 @@ public class MethodValidator {
     }
 
     public void validate()
-            throws IllegalMethodCallException, IllegalVarInMethodCallException, IllegalReturnStatement,
-            InvalidEndOfScopeException, IllegalConditionException, IllegalFinalVarAssigmentException,
+            throws IllegalMethodCallException, ReturnStatementException,
+            IllegalConditionException, IllegalFinalVarAssigmentException,
             InvalidVarTypeException, InvalidVarDeclarationException, VarNameInitializedException,
             ValueMismatchException {
         methodLines.remove(0);
@@ -47,7 +52,7 @@ public class MethodValidator {
                     // Check scope is global and next line is end
                     if ((currentScope != method) ||
                             (!LineValidator.isEndOfScope(methodLines.get(currentLine)))) {
-                        throw new IllegalReturnStatement();
+                        throw new ReturnStatementException(ILLEGAL_RETURN_EXCEPTION_MSG);
                     } else {
                         return;
                     }
@@ -57,7 +62,7 @@ public class MethodValidator {
 
             if (LineValidator.isEndOfScope(line)) { // }
                 if (currentScope == method) {
-                    throw new InvalidEndOfScopeException();
+                    throw new ReturnStatementException(NO_RETURN_EXCEPTION_MSG);
                 }
                 currentScope = currentScope.getParentScope();
             } else if (Scope.isValidScopeDeclaration(line)) { // while / if
@@ -71,7 +76,7 @@ public class MethodValidator {
             }
         }
         // If got here there was no return statement
-        throw new IllegalReturnStatement();
+        throw new ReturnStatementException(NO_RETURN_EXCEPTION_MSG);
     }
 
     private boolean isReturn(String line) {
@@ -84,8 +89,7 @@ public class MethodValidator {
         return m.matches();
     }
 
-    private void checkMethodCall(String line)
-            throws IllegalMethodCallException, IllegalVarInMethodCallException {
+    private void checkMethodCall(String line) throws IllegalMethodCallException {
         Matcher m = METHOD_CALL_PATTERN.matcher(line);
         m.matches();
         String methodName = m.group(1);
@@ -98,7 +102,7 @@ public class MethodValidator {
             vars = new String[]{};
         }
         if (!checkMethodCallVars(methodCalled, vars)) {
-            throw new IllegalVarInMethodCallException();
+            throw new IllegalMethodCallException(ILLEGAL_METHOD_CALL_EXCEPTION_MSG);
         }
     }
 

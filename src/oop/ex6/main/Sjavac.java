@@ -1,6 +1,5 @@
 package oop.ex6.main;
 
-import oop.ex6.componants.*;
 import oop.ex6.componants.methods.GlobalScope;
 import oop.ex6.componants.methods.IllegalConditionException;
 import oop.ex6.componants.methods.MethodDeclarationException;
@@ -75,18 +74,17 @@ public class Sjavac {
                     continue;
                 }
                 try {
-                    lv.validate(line, lineIndex);
-                } catch (InvalidLineEndException | InvalidVarTypeException | VarNameInitializedException |
+                    lv.validate(line);
+                } catch (ScopeException | InvalidVarTypeException | VarNameInitializedException |
                          ValueMismatchException | InvalidVarDeclarationException |
-                         InvalidEndOfScopeException | MethodDeclarationException |
-                         IllegalFinalVarAssigmentException | ScopeDeclarationException e) {
+                         MethodDeclarationException | IllegalFinalVarAssigmentException e) {
                     printError(e, String.format(LINE_CODE, lineIndex));
                     return false;
                 }
             }
             try {
                 lv.finalCheck();
-            } catch (InvalidEndOfScopeException e) {
+            } catch (ScopeException e) {
                 printError(e, String.format(LINE_CODE, lineIndex));
                 return false;
             }
@@ -104,8 +102,8 @@ public class Sjavac {
             MethodValidator mv = new MethodValidator(globalScope, lv, methodName);
             try {
                 mv.validate();
-            } catch (IllegalMethodCallException | IllegalVarInMethodCallException | IllegalReturnStatement |
-                     IllegalConditionException | InvalidEndOfScopeException |
+            } catch (IllegalMethodCallException | ReturnStatementException |
+                     IllegalConditionException |
                      IllegalFinalVarAssigmentException | InvalidVarTypeException |
                      InvalidVarDeclarationException | VarNameInitializedException |
                      ValueMismatchException e) {
