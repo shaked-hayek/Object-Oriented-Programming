@@ -12,7 +12,7 @@ shirlevy
 ## OOP - You are required to specify your design, as well as your thinking process and the alternatives you
          ruled out, in your README file.
 
-## How would you modify your code to add new types of variables (e.g., float)?
+### How would you modify your code to add new types of variables (e.g., float)?
 If we wanted to add a new type of variable, all we had to do was add to the Enum (VarType) the name of the
 type, and add to the class VarTypeFactory the new type - that would require:
  * Adding the type to the switch statement in the getType method
@@ -22,14 +22,23 @@ This is an implementation of the Single Choice principle, because there is only 
 all of the different types. Adding a new type requires change in that class alone.
 The types doesn't appear anywhere else in the project, besides the class VarTypeFactory and the enum VarType.
 
-   ## describe which modifications/extensions you would have to make in your code
-      in order to support them. Please briefly describe which classes you would add to your code,
-      which methods you would add to existing classes, and which classes you would modify
+### Modifications/extensions we would have to make in our code to support these additions:
+## Using methods of standard java (i.e System.out.println)
+In order to allow using standard methods, we can add a class of StandardJavaScope extending GlobalScope,
+that loads all of the methods in the standard library to the methodHashMap. We will need to create for each
+a Method object that specifies it's expected parameters.
+Then we can just have the globalScope check the map of StandardJavaScope as well when looking for existing
+methods (at getMethodFromMap method). That will be the only change necessary in order to allow this addition.
+## Classes
+In order to support classes we could add another class that extends GlobalScope.
+We had Method receive general parent scope (and not necessarily the global scope) so that it is irrelevant
+for the method what is it's parent scope. We did the same with the variables. Because of that, the addition
+of classes requires no change in the Method and Variable classes.
+We will only need to add to the LineValidator an option for processing class declarations, and creating the
+object of a class.
 
-      # Using methods of standard java (i.e System.out.println).
-      # Classes.
+### REGEX -  please describe two of the main regular expressions you used in your code:
 
-## REGEX -  please describe two of the main regular expressions you used in your code:
 
 
 #####################################

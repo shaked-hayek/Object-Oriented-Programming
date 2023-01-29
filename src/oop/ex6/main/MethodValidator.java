@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 import static oop.ex6.componants.methods.Scope.isValidCondition;
 
 public class MethodValidator {
+    private static final String METHOD_CALL_EXCEPTION_MSG = "Illegal method call - method doesn't exist";
+
     private static final String PARENTHESES_REGEX = "\\((.*)\\)";
     private static final String METHOD_CALL_REGEX = "\\s*(\\S+)\\s*" + PARENTHESES_REGEX + "\\s*";
     private static final Pattern METHOD_CALL_PATTERN =  Pattern.compile(METHOD_CALL_REGEX);
@@ -89,7 +91,7 @@ public class MethodValidator {
         String methodName = m.group(1);
         Method methodCalled = globalScope.getMethodFromMap(methodName);
         if (methodCalled == null) {
-            throw new IllegalMethodCallException();
+            throw new IllegalMethodCallException(METHOD_CALL_EXCEPTION_MSG);
         }
         String[] vars = m.group(2).split(",");
         if (Method.isNoVars(vars)) {
