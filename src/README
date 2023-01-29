@@ -1,16 +1,23 @@
 shaked.hayek
 shirlevy
 
-
 #################################################
 ############ Questions from exercise ############
 #################################################
 
-## Exceptions - report in your README file
+### Exceptions - report in your README file
    how you handled s-Java code errors in this exercise, and why you chose to do so
+We chose to create an SjavacException class that all other exceptions extend.
+We chose to have a general exception class for each issue group, and have a specific message for each
+specific error.
+We chose to throw the exception in the place that it was detected, and only catch it in the main Sjavac
+class, where we printed the exception class name, the message and the line / method name in which the issue
+occurred. We chose to print the error with this additional information in order to make it easier for users
+to find the error.
 
-## OOP - You are required to specify your design, as well as your thinking process and the alternatives you
-         ruled out, in your README file.
+## You are required to specify your design, as well as your thinking process and the alternatives you
+ruled out
+XXXXXXXXXXXXXXXX
 
 ### How would you modify your code to add new types of variables (e.g., float)?
 If we wanted to add a new type of variable, all we had to do was add to the Enum (VarType) the name of the
@@ -38,6 +45,8 @@ We will only need to add to the LineValidator an option for processing class dec
 object of a class.
 
 ### REGEX -  please describe two of the main regular expressions you used in your code:
+XXXXXXXXXXXXXXXX
+We compile regex patterns only once for efficiency.
 
 
 
@@ -66,13 +75,3 @@ test 18: make sure return in function is valid as long as there's return stateme
 test 19: make sure while scope inside of if scope many times is valid
 test 20: make sure same variable name for variables in different scopes is valid
 
-
-
------------
-We chose to print the error with the name of the Exception class to make it easier for users
-to find the error
-
-Can extend method to also be under different scopes (other than global)
-
-We compile regex patterns only once for efficiency.
-Open closed prinsable

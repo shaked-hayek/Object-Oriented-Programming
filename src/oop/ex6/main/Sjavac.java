@@ -44,7 +44,6 @@ public class Sjavac {
         }
 
         System.out.println(VALID_CODE);
-
     }
 
     private static boolean isEmptyLine(String line) {
@@ -81,15 +80,22 @@ public class Sjavac {
                     return false;
                 }
             }
-            try {
-                lv.finalCheck();
-            } catch (ScopeException e) {
-                printError(e, String.format(LINE_CODE, lineIndex));
+            if (!finalCheck(lv, lineIndex)) {
                 return false;
             }
         } catch (IOException e) {
             System.out.println(IO_ERROR_CODE);
             System.err.println(IO_ERR_MSG);
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean finalCheck(LineValidator lv, int lineIndex) {
+        try {
+            lv.finalCheck();
+        } catch (ScopeException e) {
+            printError(e, String.format(LINE_CODE, lineIndex));
             return false;
         }
         return true;
@@ -109,5 +115,4 @@ public class Sjavac {
         }
         return true;
     }
-
 }
