@@ -46,22 +46,43 @@ public class Sjavac {
         System.out.println(VALID_CODE);
     }
 
+    /**
+     * checks if a line contains only whitespace
+     * @param line to be checked
+     * @return true if a line contains only whitespace, else false
+     */
     private static boolean isEmptyLine(String line) {
         Matcher m = SPACE_PATTERN.matcher(line);
         return m.matches();
     }
 
+    /**
+     * checks if a line represents a comment line
+     * @param line to be checked
+     * @return true if a line represents a comment line (starts with //)
+     */
     private static boolean isComment(String line) {
         Matcher m = COMMENT_PATTERN.matcher(line);
         return m.matches();
     }
 
+    /**
+     * used whenever an Exception was raised to print the most specific informative message to the user
+     * @param e Exception that was raised
+     * @param lineMsg specific informative message to the user
+     */
     private static void printError(Exception e, String lineMsg) {
         System.out.println(INVALID_CODE);
         System.err.printf(e + lineMsg);
         System.out.println();
     }
 
+    /**
+     * goes over the code for the first time and make sure it's valid
+     * @param lv object goes over the code for the first time - keeps variables and methods declarations
+     * @param fileName containing the code
+     * @return false if any issue was raised going over the code the first time, otherwise true
+     */
     private static boolean firstPass(LineValidator lv, String fileName) {
         String line;
         int lineIndex = 0;
@@ -91,6 +112,12 @@ public class Sjavac {
         return true;
     }
 
+    /**
+     * makes sure the code has equal number of openers and closers "{", "}"
+     * @param lv object goes over the code for the first time - keeps variables and methods declarations
+     * @param lineIndex of issue
+     * @return false if number of openers and closers is not the same at the end of code, otherwise true
+     */
     private static boolean finalCheck(LineValidator lv, int lineIndex) {
         try {
             lv.finalCheck();
@@ -102,6 +129,13 @@ public class Sjavac {
     }
 
 
+    /**
+     * goes over the code for the second time (mostly methods content and inner if\while content),
+     * and make sure it's valid
+     * @param globalScope most upper scope in code, now containing all variables\method declarations
+     * @param lv object goes over the code for the first time - keeps variables and methods declarations
+     * @return false if any issue was raised going over the code the second time, otherwise true
+     */
     private static boolean secondPass(GlobalScope globalScope, LineValidator lv) {
         for (String methodName : globalScope.getMethods()) {
             MethodValidator mv = new MethodValidator(globalScope, lv, methodName);

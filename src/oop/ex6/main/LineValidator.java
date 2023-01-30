@@ -30,6 +30,11 @@ public class LineValidator {
     private static final String BLOCK_OUT_OF_METHOD_EXCEPTION_MSG = "Block declaration out of method";
     private static final String METHOD_NAME_EXCEPTION_MSG = "Method name already exists";
 
+    /**
+     * constructor
+     * object goes over the code for the first time - keeps variables and methods declarations and params
+     * @param globalScope the most upper scope in code
+     */
     public LineValidator(GlobalScope globalScope) {
         this.globalScope = globalScope;
         methodContent = new HashMap<>();
@@ -38,6 +43,17 @@ public class LineValidator {
         currentMethodName = null;
     }
 
+    /**
+     * helper to go over the code for the first time - keeps variables and methods declarations and params
+     * makes sure every line is valid,
+     * otherwise - raises specific exception
+     * @param line to validate
+     * @throws InvalidVarTypeException when variable type invalid
+     * @throws VariableDeclarationException when the variable declaration is illegal
+     * @throws ScopeException when scope's structure\syntax is invalid
+     * @throws MethodDeclarationException when the method declaration is illegal
+     * @throws VariableAssignmentException when the variable assignment is illegal
+     */
     public void validate(String line)
             throws InvalidVarTypeException,
             VariableDeclarationException, ScopeException,
@@ -74,31 +90,63 @@ public class LineValidator {
         addLineToMethodContent(line);
     }
 
+    /**
+     * adds a line to the list containing all the method's content lines (by method's name)
+     * @param line representing part of method content - to be added to the list
+     */
     private void addLineToMethodContent(String line) {
         if (currentMethodName != null) {
             methodContent.get(currentMethodName).add(line);
         }
     }
 
+    /**
+     * makes sure a scope has equal number of openers and closers "{", "}"
+     * @throws ScopeException number of openers and closers is not the same at the end of code
+     */
     public void finalCheck() throws ScopeException {
         if (scopeOpenCounter != scopeCloseCounter) {
             throw new ScopeException(SCOPE_END_EXCEPTION_MSG);
         }
     }
 
+    /**
+     * checks if a line fits line pattern provided
+     * @param pattern the line should fit
+     * @param line to check if fits
+     * @return true if a line fits line pattern provided, else false
+     */
     private static boolean isRegexMatches(Pattern pattern, String line) {
         Matcher m = pattern.matcher(line);
         return m.matches();
     }
 
+    /**
+     * checks if a scope ends in a valid way
+     * @param line to be checked
+     * @return true if a scope ends in a valid way as in "}", else false
+     */
     public static boolean isEndOfScope(String line) {
         return isRegexMatches(SCOPE_CLOSE_LINE_END, line);
     }
 
+    /**
+     * gets all method's content by its name
+     * @param methodName of method to get its content
+     * @return a list containing all methods content (lines by their order)
+     */
     public List<String> getMethodLines(String methodName) {
         return methodContent.get(methodName);
     }
 
+    /**
+     * goes over a line containing variable declaration\assignment and saves\changes them properly
+     * @param line containing variable declaration\assignment to be handled
+     * @return the rest of line (after handling the variables)
+     * @throws InvalidVarTypeException when variable type invalid
+     * @throws VariableDeclarationException when the variable declaration is illegal
+     * @throws VariableAssignmentException when the variable assignment is illegal
+     */
     private String handleVariableLine(String line) throws
             InvalidVarTypeException, VariableDeclarationException, VariableAssignmentException {
         line = line.trim().replaceAll(";$","");
@@ -109,6 +157,14 @@ public class LineValidator {
         return line;
     }
 
+    /**
+     * goes over a line containing method declaration and saves it properly
+     * @param line containing method declaration to be handled
+     * @throws MethodDeclarationException when the method declaration is illegal
+     * @throws InvalidVarTypeException when variable type invalid
+     * @throws VariableDeclarationException when the variable declaration is illegal
+     * @throws VariableAssignmentException when the variable assignment is illegal
+     */
     private void handleMethodDeclareLine(String line) throws MethodDeclarationException,
             InvalidVarTypeException, VariableDeclarationException, VariableAssignmentException {
         Method method = new Method(globalScope, line);

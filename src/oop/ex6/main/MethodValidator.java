@@ -28,6 +28,13 @@ public class MethodValidator {
     private Scope currentScope;
     private GlobalScope globalScope;
 
+    /**
+     * constructor
+     * object goes over the code the second time: validates method's content
+     * @param globalScope most upper scope in code (all functions are located in global scope)
+     * @param lv object goes over the code for the first time - keeps variables and methods declarations
+     * @param methodName to be validated
+     */
     public MethodValidator(GlobalScope globalScope, LineValidator lv, String methodName) {
         method = globalScope.getMethodFromMap(methodName);
         this.globalScope = globalScope;
@@ -35,6 +42,15 @@ public class MethodValidator {
         currentScope = method;
     }
 
+    /**
+     * goes over the method's content to make sure it's valid
+     * @throws IllegalMethodCallException when calling illegal method
+     * @throws ReturnStatementException when return statement is missing or invalid
+     * @throws IllegalConditionException when the condition is invalid
+     * @throws InvalidVarTypeException when variable type invalid
+     * @throws VariableDeclarationException when the variable declaration is illegal
+     * @throws VariableAssignmentException when the variable assignment is illegal
+     */
     public void validate()
             throws IllegalMethodCallException, ReturnStatementException, IllegalConditionException,
             InvalidVarTypeException, VariableDeclarationException, VariableAssignmentException {
@@ -76,16 +92,31 @@ public class MethodValidator {
         throw new ReturnStatementException(NO_RETURN_EXCEPTION_MSG);
     }
 
+    /**
+     * checks if a line represents valid return statement
+     * @param line to be checked
+     * @return true if the line represents valid return statement, else false
+     */
     private boolean isReturn(String line) {
         Matcher m = RETURN_PATTERN.matcher(line);
         return m.matches();
     }
 
+    /**
+     * checks if a line represents valid method call statement
+     * @param line to be checked
+     * @return true if the line represents valid method call, else false
+     */
     private boolean isMethodCall(String line) {
         Matcher m = METHOD_CALL_PATTERN.matcher(line);
         return m.matches();
     }
 
+    /**
+     * make sure the method call is valid
+     * @param line representing method call
+     * @throws IllegalMethodCallException when calling illegal method
+     */
     private void checkMethodCall(String line) throws IllegalMethodCallException {
         Matcher m = METHOD_CALL_PATTERN.matcher(line);
         m.matches();
@@ -103,6 +134,13 @@ public class MethodValidator {
         }
     }
 
+    /**
+     * checks if method exists and variables sent fit variables that the method should get as params
+     * @param methodCalled a method that was called to check if fits
+     * @param vars array of variables that were sent to the method as params
+     * @return true if method exists and variables sent fit variables that the method should get as params,
+     * otherwise false
+     */
     private boolean checkMethodCallVars(Method methodCalled, String[] vars) {
         List<VarType> paramsList = methodCalled.getParamList();
         if (vars.length != paramsList.size()) {
@@ -127,6 +165,12 @@ public class MethodValidator {
         return true;
     }
 
+    /**
+     * checks if a variable that was sent to method fits the type of param in method call
+     * @param var that was sent to method
+     * @param type of param in method call
+     * @return
+     */
     private boolean checkVarInMethodCall(Variable var, VarType type) {
         return VarTypeFactory.assignTypesMatch(type, var.getType()) && var.isInitialized();
     }
