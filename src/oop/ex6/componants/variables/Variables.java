@@ -1,6 +1,6 @@
 package oop.ex6.componants.variables;
 
-import oop.ex6.componants.methods.Scope;
+import oop.ex6.componants.scopes.Scope;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,7 +18,7 @@ public class Variables {
     private static final String TOO_MANY_COMMAS_EXCEPTION_MSG = "Too many commas in declaration";
     private static final String VAR_DECLARATION_EXCEPTION_MSG = "Illegal variable declaration";
 
-    private static final String NAME_REGEX = "([a-zA-Z]+[a-zA-Z0-9_]*|_+[a-zA-Z0-9_]+)";
+    private static final String NAME_REGEX = "([a-zA-Z][a-zA-Z0-9_]*|_[a-zA-Z0-9_]+)";
     private static final String FINAL_REGEX = "\\s*final\\s+";
     private static final Pattern FINAL_PATTERN = Pattern.compile(FINAL_REGEX);
     private static final Pattern TYPE_PATTERN = Pattern.compile("\\s*([a-zA-Z]+)\\s+(.*)");
@@ -39,9 +39,9 @@ public class Variables {
     /**
      * Process a line of initialization or assigment to variables and add them to scope.
      * @param line the line from file without ;.
-     * @throws InvalidVarTypeException              The var type doesn't exist.
+     * @throws InvalidVarTypeException            The var type doesn't exist.
      * @throws VariableDeclarationException       The var declaration doesn't match the rules.
-     * @throws VariableAssignmentException          Illegal assigment to a final variable.
+     * @throws VariableAssignmentException        Illegal assigment to a final variable.
      */
     public void processVarsLine(String line) throws InvalidVarTypeException, VariableDeclarationException,
             VariableAssignmentException {
@@ -93,6 +93,7 @@ public class Variables {
      * @param initLine initialization line
      * @throws InvalidVarTypeException          The var type doesn't exist.
      * @throws VariableDeclarationException   The var declaration doesn't match the rules.
+     * @throws VariableAssignmentException        Illegal assigment to a final variable.
      */
     private void varInitialization(String initLine)
             throws InvalidVarTypeException, VariableDeclarationException,

@@ -1,6 +1,6 @@
 package oop.ex6.componants.variables;
 
-import oop.ex6.componants.methods.Scope;
+import oop.ex6.componants.scopes.Scope;
 
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -20,7 +20,7 @@ public class Variable {
     private static final String VALUE_ASSIGNMENT_EXCEPTION_MSG =
             "Value assigment failed - value doesn't match type declared or not initialized";
 
-    private static final String NAME_REGEX = "([a-zA-Z]+[a-zA-Z0-9_]*|_+[a-zA-Z0-9_]+)";
+    private static final String NAME_REGEX = "([a-zA-Z][a-zA-Z0-9_]*|_[a-zA-Z0-9_]+)";
     private static final String SPACE_REGEX = "\\s*";
     private static final Pattern DECLARATION_PATTERN = Pattern.compile(
             SPACE_REGEX + NAME_REGEX + SPACE_REGEX);

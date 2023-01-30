@@ -1,8 +1,8 @@
 package oop.ex6.main;
 
-import oop.ex6.componants.methods.GlobalScope;
-import oop.ex6.componants.methods.IllegalConditionException;
-import oop.ex6.componants.methods.MethodDeclarationException;
+import oop.ex6.componants.scopes.GlobalScope;
+import oop.ex6.componants.scopes.IllegalConditionException;
+import oop.ex6.componants.scopes.MethodDeclarationException;
 import oop.ex6.componants.variables.*;
 
 import java.io.BufferedReader;

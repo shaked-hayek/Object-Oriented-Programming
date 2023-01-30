@@ -9,7 +9,7 @@ public class VarTypeFactory {
     private static final String INVALID_VAR_TYPE_EXCEPTION_MSG = "Invalid var type";
 
     private static final String INT_REGEX = "[+|-]?[0-9]+";
-    private static final String DOUBLE_REGEX = "([\\+|\\-]?[0-9]+\\.?[0-9]*)|([\\+|\\-]?[0-9]*\\.?[0-9]+)";
+    private static final String DOUBLE_REGEX = "([\\+|\\-]?\\d+\\.?\\d*)|([\\+|\\-]?\\d*\\.?\\d+)";
     private static final String STRING_REGEX = "[\"][^\"]*[\"]";
     private static final String CHAR_REGEX = "['].[']";
     private static final String BOOLEAN_REGEX = "true|false|" + INT_REGEX + "|" + DOUBLE_REGEX;

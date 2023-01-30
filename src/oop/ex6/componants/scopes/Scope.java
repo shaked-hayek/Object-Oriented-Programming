@@ -1,4 +1,4 @@
-package oop.ex6.componants.methods;
+package oop.ex6.componants.scopes;
 
 import oop.ex6.componants.variables.VarType;
 import oop.ex6.componants.variables.VarTypeFactory;
@@ -27,7 +27,7 @@ public class Scope {
     private static final String SCOPE_REGEX = "\\s*" + SCOPE_NAMES_REGEX + "\\s*" + PARENTHESES_REGEX + "\\s*";
     private static final String[] LEGAL_AND_OR_REGEX = {"\\&\\&", "\\|\\|"};
     private static final String AND_OR_REGEX = "(" + String.join("|", LEGAL_AND_OR_REGEX) + ")";
-    private static final String CONDITION_REGEX ="\\s*(\\S+)[\\s*\\#\\s*(\\S+)\\s*]*";
+    private static final String CONDITION_REGEX = "\\s*(\\S+)[\\s*\\#\\s*(\\S+)\\s*]*";
 
     private static final Pattern SCOPE_PATTERN = Pattern.compile(SCOPE_REGEX);
     private static final Pattern CONDITION_PATTERN = Pattern.compile(CONDITION_REGEX);

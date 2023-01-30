@@ -1,16 +1,16 @@
 package oop.ex6.main;
 
-import oop.ex6.componants.methods.GlobalScope;
-import oop.ex6.componants.methods.IllegalConditionException;
-import oop.ex6.componants.methods.Method;
-import oop.ex6.componants.methods.Scope;
+import oop.ex6.componants.scopes.GlobalScope;
+import oop.ex6.componants.scopes.IllegalConditionException;
+import oop.ex6.componants.scopes.Method;
+import oop.ex6.componants.scopes.Scope;
 import oop.ex6.componants.variables.*;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static oop.ex6.componants.methods.Scope.isValidCondition;
+import static oop.ex6.componants.scopes.Scope.isValidCondition;
 
 public class MethodValidator {
     private static final String METHOD_CALL_EXCEPTION_MSG = "Illegal method call - method doesn't exist";
