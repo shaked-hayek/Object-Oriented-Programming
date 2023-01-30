@@ -113,7 +113,7 @@ public class MethodValidator {
             String var = vars[i].strip();
 
             // Check if var value match type
-            if (!VarTypeFactory.getValValidationFunc(paramType).apply(var)) {
+            if (!VarTypeFactory.getValValidationFunc(paramType).test(var)) {
                 // Check if value is a variable in this method scope
                 Variable varInScope = currentScope.isVarInScope(var);
                 if (varInScope == null) {

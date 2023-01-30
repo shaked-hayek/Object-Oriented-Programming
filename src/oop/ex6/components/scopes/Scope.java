@@ -127,7 +127,7 @@ public class Scope {
      */
     private static boolean isValidSingleCondition(String statement, Scope parentScope) {
         // Check if statement is a valid boolean value
-        if (VarTypeFactory.getValValidationFunc(VarType.BOOLEAN).apply(statement)) {
+        if (VarTypeFactory.getValValidationFunc(VarType.BOOLEAN).test(statement)) {
             return true;
         }
 

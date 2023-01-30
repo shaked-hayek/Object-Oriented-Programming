@@ -5,9 +5,88 @@ shirlevy
 ############### Files description ###############
 #################################################
 ## package oop.ex6.main
+Sjavac - The main class, responsible to manage exceptions catching and printing correct message, managing the
+         file streams and calling the validator classes.
+LineValidator - Manages first pass on the file lines. Verifies each line in the given code and saves the
+                global information about global variables and methods.
+MethodValidator - Manages validation for each method and it's content.
+SjavacException
+IllegalMethodCallException
+ReturnStatementException
+ScopeException
 
-## package oop.ex6.components
+## package oop.ex6.components.scopes
+Scope
+GlobalScope
+Method
+IllegalConditionException
+MethodDeclarationException
 
+## package oop.ex6.components.variables
+VarType
+VarTypeFactory
+Variables
+Variable
+InvalidVarTypeException
+VariableAssignmentException
+VariableDeclarationException
+
+
+#################################################
+############## Inheritance Hierarchy ############
+#################################################
+
+Scope <- GlobalScope
+         Method
+Exception <- SjavacException <- IllegalMethodCallException
+                                ReturnStatementException
+                                ScopeException
+                                IllegalConditionException
+                                MethodDeclarationException
+                                InvalidVarTypeException
+                                VariableAssignmentException
+                                VariableDeclarationException
+
+
+#################################################
+################# Design Choices ################
+#################################################
+
+We chose to have the main class responsibility be to print errors and information about the program outcome.
+Also we chose that it will be the only part in the code that is responsible on opening and managing the file
+stream.
+
+We chose to have two classes that manage each a single pass on all the text. We wanted to have a first pass
+to validate each line, and process lines that are outside of methods and method declarations. That way we
+can ignore the location of global variables and methods, and save them in the relevant data structures.
+We wanted to have a second pass only on the content of the methods. This is why we created LineValidator that
+validate each line independently, and we created MethodValidator that validates each method in it's context.
+
+We chose to have a Scope class that held all of the information about it's scope. It holds a hash map that
+maps all variable names to it's variable object. This way a scope can know what are the variables defines in
+it. We had GlobalScope extend Scope and add it's own functionality of saving the methods in the scope.
+It has a hash map that maps method names to their object.
+The hash map in both class was chosen to allow fast access to the object by name, whenever we needed to check
+whether or not a method or variable existed in the scope.
+We also chose to have Method extend scope, because it's a type of scope. It has added functionality of having
+a list of variables type that it expects to get on the method call.
+If and while blocks are represented by scopes as well.
+
+We chose to handle the different variable types using a factory in class VarTypeFactory. This was to hold
+the single choice principle. Only this class knows and gets all the different types.
+In it we also have the method assignTypesMatch that connects the different types that can be assigned to one
+another.
+In order to have VarTypeFactory be the only class that knows all the different variable types, we wanted it
+to handle the validation of value assigned to variable. At first we thought to have a method or class for
+each var type, but we decided to use functional interface instead, because the different types were had
+different actions, and it was a shorter code this way. So the method getValValidationFunc returns a predicate
+for each variable type that uses regex in order to verify the value.
+In order to have an object for the types without having a class for each of them we added an enum of the
+different types.
+
+Variables class is a class that handles the variables lines of declaration and assigment. Variable class
+represent a single variable and it's data - it's parent scope, variable type, is it final and is it
+initialized.
 
 
 #################################################
@@ -28,24 +107,6 @@ create a class for each general type of problem, and let the classes that throws
 relevant error message. That way we managed to have less classes, we managed to allow the users to get more
 specific information about the error occurred, and also give the throwing class the responsibility to
 specify the problem occurred.
-
-### You are required to specify your design:
-We chose to have the main class responsibility be to print errors and information about the program outcome.
-Also we chose that it will be the only part in the code that is responsible on opening and managing the file
-stream.
-
-We chose to have two classes that manage each a single pass on all the text. We wanted to have a first pass
-to validate each line, and process lines that are outside of methods and method declarations. That way we
-can ignore the location of global variables and methods, and save them in the relevant data structures.
-We wanted to have a second pass only on the content of the methods. This is why we created LineValidator that
-validate each line independently, and we created MethodValidator that validates each method in it's context.
-
-We chose to have a Scope class that held all of the information about it's scope. We had GlobalScope extend
-it and add it's own functionality XXXXXXXXXX
-
-VarTypeFactory - why we chose factory XXXXXXXX
-
-functional programming in VarTypeFactory XXXXXXXX
 
 ### How would you modify your code to add new types of variables (e.g., float)?
 If we wanted to add a new type of variable, all we had to do was add to the Enum (VarType) the name of the
@@ -88,7 +149,7 @@ We also wanted to capture the group chosen. That is why we put () around the two
 
 
 #################################################
-##################### TESTS #####################
+##################### Tests #####################
 #################################################
 
 test 1: make sure we skip whitespaces and comments

@@ -2,7 +2,7 @@ package oop.ex6.components.variables;
 
 import oop.ex6.components.scopes.Scope;
 
-import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,7 +10,7 @@ public class Variable {
     private Scope scope;
     private boolean isFinal;
     private String name;
-    private Function<String, Boolean> isValidTypeFunc;
+    private Predicate<String> isValidTypeFunc;
     private boolean methodParam;
     private boolean isInitialized = false;
 
@@ -63,7 +63,7 @@ public class Variable {
     }
 
     public void checkAssigment(String value) throws VariableAssignmentException {
-        if (!isValidTypeFunc.apply(value)) {
+        if (!isValidTypeFunc.test(value)) {
             if (!checkValueInScope(value)) {
                 throw new VariableAssignmentException(VALUE_ASSIGNMENT_EXCEPTION_MSG);
             }

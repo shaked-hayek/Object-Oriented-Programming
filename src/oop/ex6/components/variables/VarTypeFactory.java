@@ -1,7 +1,7 @@
 package oop.ex6.components.variables;
 
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +33,7 @@ public class VarTypeFactory {
             List.of(new VarType[]{VarType.INT, VarType.DOUBLE, VarType.BOOLEAN});
 
 
-    public static Function<String, Boolean> getValValidationFunc(VarType type) {
+    public static Predicate<String> getValValidationFunc(VarType type) {
         switch (type) {
             case INT:
                 return val -> validValueToType(INT_PATTERN, val);
