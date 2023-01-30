@@ -33,6 +33,11 @@ public class VarTypeFactory {
             List.of(new VarType[]{VarType.INT, VarType.DOUBLE, VarType.BOOLEAN});
 
 
+    /**
+     * get a function that checks if a String matches a specific VarType
+     * @param type a VarType
+     * @return a Predicate function that gets a String and tests if it fits a specific varType pattern
+     */
     public static Predicate<String> getValValidationFunc(VarType type) {
         switch (type) {
             case INT:
@@ -50,6 +55,12 @@ public class VarTypeFactory {
         }
     }
 
+    /**
+     * used to get the matching varType to type
+     * @param type String representing the variable type
+     * @return variable Type enum that fits type
+     * @throws InvalidVarTypeException when variable type invalid
+     */
     public static VarType getType(String type) throws InvalidVarTypeException {
         switch (type) {
             case INT:
@@ -67,15 +78,31 @@ public class VarTypeFactory {
         }
     }
 
+    /**
+     * checks if variable's type fits its value
+     * @param pattern of a type
+     * @param val the value of the variable
+     * @return true if val fits the pattern of the type
+     */
     private static boolean validValueToType(Pattern pattern, String val) {
         Matcher m = pattern.matcher(val);
         return m.matches();
     }
 
+    /**
+     * get regex matching to any variable type separated by |
+     * @return regex representing all variable types
+     */
     public static String getTypeRegex() {
         return "(" + String.join("|", TYPES) + ")";
     }
 
+    /**
+     * checks if the assigned type matches the variable type
+     * @param varType to match
+     * @param assignedType to check if matches
+     * @return true if the assigned type fits a variable type
+     */
     public static boolean assignTypesMatch(VarType varType, VarType assignedType) {
         if (varType == assignedType) {
             return true;

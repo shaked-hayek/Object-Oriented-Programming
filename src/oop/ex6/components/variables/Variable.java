@@ -30,8 +30,18 @@ public class Variable {
     private static final Pattern NAME_PATTERN = Pattern.compile(NAME_REGEX);
     private VarType type;
 
+    /**
+     * variable object constructor
+     * @param type of variable
+     * @param declaration line of variable
+     * @param scope current scope
+     * @param isFinal true if variable is set as final
+     * @param methodParam true if param line contains objects of variable
+     * @throws VariableAssignmentException when variable assignment illegal or has unknown value
+     * @throws VariableDeclarationException when the variable declaration is illegal
+     */
     public Variable(VarType type, String declaration, Scope scope, boolean isFinal, boolean methodParam)
-            throws InvalidVarTypeException, VariableAssignmentException, VariableDeclarationException {
+            throws VariableAssignmentException, VariableDeclarationException {
         this.type = type;
         this.scope = scope;
         this.isFinal = isFinal;
@@ -44,6 +54,12 @@ public class Variable {
         }
     }
 
+    /**
+     * creates a variable and fills its filed properly
+     * @param declaration the line representing a variable declaration
+     * @throws VariableDeclarationException when the variable declaration is illegal
+     * @throws VariableAssignmentException when variable assignment illegal or has unknown value
+     */
     public void create(String declaration) throws VariableDeclarationException, VariableAssignmentException {
         Matcher declarationMatcher = DECLARATION_PATTERN.matcher(declaration);
         Matcher initMatcher = INITIALIZATION_PATTERN.matcher(declaration);
@@ -62,6 +78,12 @@ public class Variable {
         }
     }
 
+    /**
+     * checks if the value of variable fits its type and that it has a valid value, and sets isInitialized
+     * accordingly
+     * @param value of a variable
+     * @throws VariableAssignmentException when variable assignment illegal (value\type is invalid)
+     */
     public void checkAssigment(String value) throws VariableAssignmentException {
         if (!isValidTypeFunc.test(value)) {
             if (!checkValueInScope(value)) {
@@ -71,6 +93,11 @@ public class Variable {
         isInitialized = true;
     }
 
+    /**
+     * checks if a variable exists in the current scope
+     * @param value
+     * @return
+     */
     private boolean checkValueInScope(String value) {
         Variable var = scope.getVarFromMap(value);
         if (var != null) {
@@ -79,26 +106,52 @@ public class Variable {
         return false;
     }
 
+    /**
+     * checks if the assigned type matches the variable type using the factory
+     * @param assignedType to check if matches the declared type
+     * @return true if assignedType matches the declared type, otherwise false
+     */
     public boolean isVarTypeMatch(VarType assignedType) {
         return VarTypeFactory.assignTypesMatch(type, assignedType);
     }
 
+    /**
+     * get the type of variable
+     * @return of variable
+     */
     public VarType getType() {
         return type;
     }
 
+    /**
+     * checks if a variable is final
+     * @return true if variable is final, else false
+     */
     public boolean isFinal() {
         return isFinal;
     }
 
+    /**
+     * checks if a variable is initialized
+     * @return true if variable is initialized, else false
+     */
     public boolean isInitialized() {
         return isInitialized;
     }
 
+    /**
+     * get the name of variable
+     * @return variable's name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * checks if varName is valid
+     * @param varName String representing the variable's name
+     * @return true if varName matches the name pattern value
+     */
     public static boolean isValidName(String varName){
         Matcher m = NAME_PATTERN.matcher(varName);
         return m.matches();
