@@ -1,10 +1,10 @@
 package oop.ex6.main;
 
-import oop.ex6.componants.scopes.GlobalScope;
-import oop.ex6.componants.scopes.Method;
-import oop.ex6.componants.scopes.MethodDeclarationException;
-import oop.ex6.componants.scopes.Scope;
-import oop.ex6.componants.variables.*;
+import oop.ex6.components.scopes.GlobalScope;
+import oop.ex6.components.scopes.Method;
+import oop.ex6.components.scopes.MethodDeclarationException;
+import oop.ex6.components.scopes.Scope;
+import oop.ex6.components.variables.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

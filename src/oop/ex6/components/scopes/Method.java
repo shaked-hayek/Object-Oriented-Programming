@@ -1,7 +1,7 @@
-package oop.ex6.componants.scopes;
+package oop.ex6.components.scopes;
 
-import oop.ex6.componants.variables.VarType;
-import oop.ex6.componants.variables.*;
+import oop.ex6.components.variables.VarType;
+import oop.ex6.components.variables.*;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,6 +2,15 @@ shaked.hayek
 shirlevy
 
 #################################################
+############### Files description ###############
+#################################################
+## package oop.ex6.main
+
+## package oop.ex6.components
+
+
+
+#################################################
 ############ Questions from exercise ############
 #################################################
 
@@ -20,8 +29,7 @@ relevant error message. That way we managed to have less classes, we managed to 
 specific information about the error occurred, and also give the throwing class the responsibility to
 specify the problem occurred.
 
-### You are required to specify your design, as well as your thinking process and the alternatives you
-    ruled out
+### You are required to specify your design:
 We chose to have the main class responsibility be to print errors and information about the program outcome.
 Also we chose that it will be the only part in the code that is responsible on opening and managing the file
 stream.
@@ -79,9 +87,9 @@ that with allowing two options, where in both we must have at least one number.
 We also wanted to capture the group chosen. That is why we put () around the two options.
 
 
-#####################################
-############### TESTS ###############
-#####################################
+#################################################
+##################### TESTS #####################
+#################################################
 
 test 1: make sure we skip whitespaces and comments
 test 2: make sure valid declaration and initialization of non-final variables

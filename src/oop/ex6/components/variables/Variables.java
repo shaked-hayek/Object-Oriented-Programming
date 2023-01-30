@@ -1,6 +1,6 @@
-package oop.ex6.componants.variables;
+package oop.ex6.components.variables;
 
-import oop.ex6.componants.scopes.Scope;
+import oop.ex6.components.scopes.Scope;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

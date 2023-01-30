@@ -1,4 +1,4 @@
-package oop.ex6.componants.variables;
+package oop.ex6.components.variables;
 
 import oop.ex6.main.SjavacException;
 

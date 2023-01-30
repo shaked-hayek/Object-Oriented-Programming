@@ -1,4 +1,4 @@
-package oop.ex6.componants.scopes;
+package oop.ex6.components.scopes;
 
 import oop.ex6.main.SjavacException;
 

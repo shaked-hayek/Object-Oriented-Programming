@@ -1,6 +1,6 @@
-package oop.ex6.componants.scopes;
+package oop.ex6.components.scopes;
 
-import oop.ex6.componants.variables.Variable;
+import oop.ex6.components.variables.Variable;
 
 import java.util.HashMap;
 import java.util.Set;

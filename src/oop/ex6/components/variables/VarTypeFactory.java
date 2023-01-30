@@ -1,4 +1,4 @@
-package oop.ex6.componants.variables;
+package oop.ex6.components.variables;
 
 import java.util.List;
 import java.util.function.Function;
