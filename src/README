@@ -5,8 +5,7 @@ shirlevy
 ############ Questions from exercise ############
 #################################################
 
-### Exceptions - report in your README file
-   how you handled s-Java code errors in this exercise, and why you chose to do so
+### Exceptions - report in your README file how you handled s-Java code errors in this exercise:
 We chose to create an SjavacException class that all other exceptions extend.
 We chose to have a general exception class for each issue group, and have a specific message for each
 specific error.
@@ -14,10 +13,31 @@ We chose to throw the exception in the place that it was detected, and only catc
 class, where we printed the exception class name, the message and the line / method name in which the issue
 occurred. We chose to print the error with this additional information in order to make it easier for users
 to find the error.
+At first we thought we should have a different Exception class for each different case of invalid text in the
+file. But we soon found out that there are many different reasons for exceptions and that it is better to
+create a class for each general type of problem, and let the classes that throws those exceptions add a
+relevant error message. That way we managed to have less classes, we managed to allow the users to get more
+specific information about the error occurred, and also give the throwing class the responsibility to
+specify the problem occurred.
 
-## You are required to specify your design, as well as your thinking process and the alternatives you
-ruled out
-XXXXXXXXXXXXXXXX
+### You are required to specify your design, as well as your thinking process and the alternatives you
+    ruled out
+We chose to have the main class responsibility be to print errors and information about the program outcome.
+Also we chose that it will be the only part in the code that is responsible on opening and managing the file
+stream.
+
+We chose to have two classes that manage each a single pass on all the text. We wanted to have a first pass
+to validate each line, and process lines that are outside of methods and method declarations. That way we
+can ignore the location of global variables and methods, and save them in the relevant data structures.
+We wanted to have a second pass only on the content of the methods. This is why we created LineValidator that
+validate each line independently, and we created MethodValidator that validates each method in it's context.
+
+We chose to have a Scope class that held all of the information about it's scope. We had GlobalScope extend
+it and add it's own functionality XXXXXXXXXX
+
+VarTypeFactory - why we chose factory XXXXXXXX
+
+functional programming in VarTypeFactory XXXXXXXX
 
 ### How would you modify your code to add new types of variables (e.g., float)?
 If we wanted to add a new type of variable, all we had to do was add to the Enum (VarType) the name of the
@@ -45,9 +65,18 @@ We will only need to add to the LineValidator an option for processing class dec
 object of a class.
 
 ### REGEX -  please describe two of the main regular expressions you used in your code:
-XXXXXXXXXXXXXXXX
-We compile regex patterns only once for efficiency.
-
+All of the regex patterns in our program are compiled only once for efficiency.
+1. The regex pattern for a valid name of a variable: "([a-zA-Z][a-zA-Z0-9_]*|_[a-zA-Z0-9_]+)".
+This regex only matches a name that starts with a letter and then can contain letters, numbers and _, OR
+starts with _, but doesn't matches _.
+In order to do that we divided the pattern into 2 parts with or on between.
+2. The regex pattern for a valid double value: "([\+|\-]?\d+\.?\d*)|([\+|\-]?\d*\.?\d+)".
+We had to allow matching of few different options -
+* Having zero or one + or - sign at the beginning, that is why we had the expression [\+|\-]?. The ? allows
+one or zero.
+* Having a numbers with dot in the muddle, beginning or end but not allowing a dot alone. We chose to capture
+that with allowing two options, where in both we must have at least one number.
+We also wanted to capture the group chosen. That is why we put () around the two options.
 
 
 #####################################
