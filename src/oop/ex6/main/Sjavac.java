@@ -27,6 +27,10 @@ public class Sjavac {
     private static final String SPACE_REGEX = "\\s*";
     private static final Pattern SPACE_PATTERN = Pattern.compile(SPACE_REGEX);
 
+    /**
+     * Manages the main program flow.
+     * @param args args[0] should be the file name
+     */
     public static void main(String[] args) {
         if (args.length != VALID_ARG_NUM) {
             System.out.println(IO_ERROR_CODE);
