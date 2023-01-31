@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class Scope {
     /**
-     * hashMap of all local variables in the scope (or gloval in GlobalScope)
+     * hashMap of all local variables in the scope (or global in GlobalScope)
      */
     protected HashMap<String, Variable> variableHashMap;
     /**

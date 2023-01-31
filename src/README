@@ -10,26 +10,32 @@ Sjavac - The main class, responsible to manage exceptions catching and printing 
 LineValidator - Manages first pass on the file lines. Verifies each line in the given code and saves the
                 global information about global variables and methods.
 MethodValidator - Manages validation for each method and it's content.
-SjavacException
-IllegalMethodCallException
-ReturnStatementException
-ScopeException
+SjavacException - Extends Exception and used as super class for more specific Exceptions
+IllegalMethodCallException - Extends SjavacException, raises specific Exception when calling illegal method
+ReturnStatementException - Extends SjavacException, raises specific Exception when return statement is
+                           missing or invalid
+ScopeException - Extends SjavacException, raises specific Exception when scope's structure\syntax is invalid
 
 ## package oop.ex6.components.scopes
-Scope
-GlobalScope
-Method
-IllegalConditionException
-MethodDeclarationException
+Scope - Manages the process of validation within a scope, adding variables to scope's hashMap and handaling it
+GlobalScope - Manages the process of validation within the global scope, adding methods and variables to
+              GlobalScope's hashMaps and handaling them
+Method - Goes over method declaration and gathers all information (name, param list)
+IllegalConditionException - Extends SjavacException, raises specific Exception when condition in if\while is
+                            invalid
+MethodDeclarationException - Extends SjavacException, raises specific Exception when the method declaration
+                             is invalid
 
 ## package oop.ex6.components.variables
-VarType
-VarTypeFactory
-Variables
-Variable
-InvalidVarTypeException
-VariableAssignmentException
-VariableDeclarationException
+VarType - enum representing all valid types for variables
+VarTypeFactory - defines the variable's type according to line
+Variables - Process a line of initialization or assigment to variables and adds them to scope
+Variable - Process a single initialization or assigment to variables and adds it to correct scope
+InvalidVarTypeException - Extends SjavacException, raises specific Exception when variable type invalid
+VariableAssignmentException - Extends SjavacException, raises specific Exception when variable assignment
+                              is illegal
+VariableDeclarationException - Extends SjavacException, raises specific Exception when the variable
+                               declaration is illegal
 
 
 #################################################

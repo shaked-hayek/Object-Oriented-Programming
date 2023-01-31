@@ -35,6 +35,7 @@ public class Method extends Scope {
 
     /**
      * constructor
+     * object that goes over method declaration and gather all information (name, param list)
      * @param parentScope global scope
      * @param line of method declaration
      * @throws MethodDeclarationException when method declaration is invalid
