@@ -1,0 +1,4 @@
+String str_1   ="i$*#"   ;
+String str_2   = str_1   ;
+String str_3   = "   !@   "   ;
+str_2   = str_3   ;

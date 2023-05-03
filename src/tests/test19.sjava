@@ -1,0 +1,19 @@
+double d = 6;
+
+void foo (int a) {
+
+    if (a) {
+        while(d) {
+            if (5) {
+                int s = 6;
+                while ( true) {
+                    if (s) {
+                        return;
+                    }
+                }
+
+            }
+        }
+    }
+    return;
+  }

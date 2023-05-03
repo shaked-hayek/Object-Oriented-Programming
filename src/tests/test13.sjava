@@ -1,0 +1,7 @@
+
+void foo() {
+    b = 8;
+    return;
+}
+
+int b = 5;

@@ -1,0 +1,11 @@
+void foo (int a) {
+    return;
+
+    if (a) {
+        return;
+    }
+            return;
+    int c = 7;
+    return;
+    return;
+  }

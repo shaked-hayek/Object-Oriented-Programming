@@ -1,0 +1,5 @@
+final int a = 6;
+final String b = "5";
+final char c = 'd';
+final double d = 7.8;
+final boolean e = true;

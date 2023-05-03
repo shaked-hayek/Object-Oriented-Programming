@@ -1,0 +1,181 @@
+shaked.hayek
+shirlevy
+
+#################################################
+############### Files description ###############
+#################################################
+## package oop.ex6.main
+Sjavac - The main class, responsible to manage exceptions catching and printing correct message, managing the
+         file streams and calling the validator classes.
+LineValidator - Manages first pass on the file lines. Verifies each line in the given code and saves the
+                global information about global variables and methods.
+MethodValidator - Manages validation for each method and it's content.
+SjavacException - Extends Exception and used as super class for more specific Exceptions
+IllegalMethodCallException - Extends SjavacException, raises specific Exception when calling illegal method
+ReturnStatementException - Extends SjavacException, raises specific Exception when return statement is
+                           missing or invalid
+ScopeException - Extends SjavacException, raises specific Exception when scope's structure\syntax is invalid
+
+## package oop.ex6.components.scopes
+Scope - Manages the process of validation within a scope, adding variables to scope's hashMap and handaling it
+GlobalScope - Manages the process of validation within the global scope, adding methods and variables to
+              GlobalScope's hashMaps and handaling them
+Method - Goes over method declaration and gathers all information (name, param list)
+IllegalConditionException - Extends SjavacException, raises specific Exception when condition in if\while is
+                            invalid
+MethodDeclarationException - Extends SjavacException, raises specific Exception when the method declaration
+                             is invalid
+
+## package oop.ex6.components.variables
+VarType - enum representing all valid types for variables
+VarTypeFactory - defines the variable's type according to line
+Variables - Process a line of initialization or assigment to variables and adds them to scope
+Variable - Process a single initialization or assigment to variables and adds it to correct scope
+InvalidVarTypeException - Extends SjavacException, raises specific Exception when variable type invalid
+VariableAssignmentException - Extends SjavacException, raises specific Exception when variable assignment
+                              is illegal
+VariableDeclarationException - Extends SjavacException, raises specific Exception when the variable
+                               declaration is illegal
+
+
+#################################################
+############## Inheritance Hierarchy ############
+#################################################
+
+Scope <- GlobalScope
+         Method
+Exception <- SjavacException <- IllegalMethodCallException
+                                ReturnStatementException
+                                ScopeException
+                                IllegalConditionException
+                                MethodDeclarationException
+                                InvalidVarTypeException
+                                VariableAssignmentException
+                                VariableDeclarationException
+
+
+#################################################
+################# Design Choices ################
+#################################################
+
+We chose to have the main class responsibility be to print errors and information about the program outcome.
+Also we chose that it will be the only part in the code that is responsible on opening and managing the file
+stream.
+
+We chose to have two classes that manage each a single pass on all the text. We wanted to have a first pass
+to validate each line, and process lines that are outside of methods and method declarations. That way we
+can ignore the location of global variables and methods, and save them in the relevant data structures.
+We wanted to have a second pass only on the content of the methods. This is why we created LineValidator that
+validate each line independently, and we created MethodValidator that validates each method in it's context.
+
+We chose to have a Scope class that held all of the information about it's scope. It holds a hash map that
+maps all variable names to it's variable object. This way a scope can know what are the variables defines in
+it. We had GlobalScope extend Scope and add it's own functionality of saving the methods in the scope.
+It has a hash map that maps method names to their object.
+The hash map in both class was chosen to allow fast access to the object by name, whenever we needed to check
+whether or not a method or variable existed in the scope.
+We also chose to have Method extend scope, because it's a type of scope. It has added functionality of having
+a list of variables type that it expects to get on the method call.
+If and while blocks are represented by scopes as well.
+
+We chose to handle the different variable types using a factory in class VarTypeFactory. This was to hold
+the single choice principle. Only this class knows and gets all the different types.
+In it we also have the method assignTypesMatch that connects the different types that can be assigned to one
+another.
+In order to have VarTypeFactory be the only class that knows all the different variable types, we wanted it
+to handle the validation of value assigned to variable. At first we thought to have a method or class for
+each var type, but we decided to use functional interface instead, because the different types were had
+different actions, and it was a shorter code this way. So the method getValValidationFunc returns a predicate
+for each variable type that uses regex in order to verify the value.
+In order to have an object for the types without having a class for each of them we added an enum of the
+different types.
+
+Variables class is a class that handles the variables lines of declaration and assigment. Variable class
+represent a single variable and it's data - it's parent scope, variable type, is it final and is it
+initialized.
+
+
+#################################################
+############ Questions from exercise ############
+#################################################
+
+### Exceptions - report in your README file how you handled s-Java code errors in this exercise:
+We chose to create an SjavacException class that all other exceptions extend.
+We chose to have a general exception class for each issue group, and have a specific message for each
+specific error.
+We chose to throw the exception in the place that it was detected, and only catch it in the main Sjavac
+class, where we printed the exception class name, the message and the line / method name in which the issue
+occurred. We chose to print the error with this additional information in order to make it easier for users
+to find the error.
+At first we thought we should have a different Exception class for each different case of invalid text in the
+file. But we soon found out that there are many different reasons for exceptions and that it is better to
+create a class for each general type of problem, and let the classes that throws those exceptions add a
+relevant error message. That way we managed to have less classes, we managed to allow the users to get more
+specific information about the error occurred, and also give the throwing class the responsibility to
+specify the problem occurred.
+
+### How would you modify your code to add new types of variables (e.g., float)?
+If we wanted to add a new type of variable, all we had to do was add to the Enum (VarType) the name of the
+type, and add to the class VarTypeFactory the new type - that would require:
+ * Adding the type to the switch statement in the getType method
+ * Adding a regex pattern that checks a valid value to this type
+ * Adding the getValValidationFunc method a lambda expression that checks this regex
+This is an implementation of the Single Choice principle, because there is only one main object that knows
+all of the different types. Adding a new type requires change in that class alone.
+The types doesn't appear anywhere else in the project, besides the class VarTypeFactory and the enum VarType.
+
+### Modifications/extensions we would have to make in our code to support these additions:
+## Using methods of standard java (i.e System.out.println)
+In order to allow using standard methods, we can add a class of StandardJavaScope extending GlobalScope,
+that loads all of the methods in the standard library to the methodHashMap. We will need to create for each
+a Method object that specifies it's expected parameters.
+Then we can just have the globalScope check the map of StandardJavaScope as well when looking for existing
+methods (at getMethodFromMap method). That will be the only change necessary in order to allow this addition.
+## Classes
+In order to support classes we could add another class that extends GlobalScope.
+We had Method receive general parent scope (and not necessarily the global scope) so that it is irrelevant
+for the method what is it's parent scope. We did the same with the variables. Because of that, the addition
+of classes requires no change in the Method and Variable classes.
+We will only need to add to the LineValidator an option for processing class declarations, and creating the
+object of a class.
+
+### REGEX -  please describe two of the main regular expressions you used in your code:
+All of the regex patterns in our program are compiled only once for efficiency.
+1. The regex pattern for a valid name of a variable: "([a-zA-Z][a-zA-Z0-9_]*|_[a-zA-Z0-9_]+)".
+This regex only matches a name that starts with a letter and then can contain letters, numbers and _, OR
+starts with _, but doesn't matches _.
+In order to do that we divided the pattern into 2 parts with or on between.
+2. The regex pattern for a valid double value: "([\+|\-]?\d+\.?\d*)|([\+|\-]?\d*\.?\d+)".
+We had to allow matching of few different options -
+* Having zero or one + or - sign at the beginning, that is why we had the expression [\+|\-]?. The ? allows
+one or zero.
+* Having a numbers with dot in the muddle, beginning or end but not allowing a dot alone. We chose to capture
+that with allowing two options, where in both we must have at least one number.
+We also wanted to capture the group chosen. That is why we put () around the two options.
+
+
+#################################################
+##################### Tests #####################
+#################################################
+
+test 1: make sure we skip whitespaces and comments
+test 2: make sure valid declaration and initialization of non-final variables
+test 3: make sure variable names are valid
+test 4: make sure final initialization is valid for all types
+test 5: make sure a function is able to get a final variable
+test 6: make sure double value is valid for boolean variable
+test 7: make sure int value is valid for boolean variable
+test 8: make sure int value is valid for double variable
+test 9: make sure String initialization is valid (with spaces and signs)
+test 10: make sure assignment of declared String and int in same line is valid.
+test 11: make sure all options of double are valid
+test 12: make sure name of variable and function is the same - valid
+test 13: make sure global variable is initialized only after a function where it's used - valid
+test 14: make sure functions calls are valid
+test 15: make sure function recursive calls are valid
+test 16: make sure conditions in if are valid
+test 17: make sure conditions with "||" (or) and "&&" (and)
+test 18: make sure return in function is valid as long as there's return statement in the last line of it
+test 19: make sure while scope inside of if scope many times is valid
+test 20: make sure same variable name for variables in different scopes is valid
+
